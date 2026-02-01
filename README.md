@@ -14,7 +14,6 @@ A professional, secure, and responsive event management website built with HTML,
 - Run `start-server.bat` in the project folder
 - Open http://localhost:3000/index.html (main site)
 - Open http://localhost:3000/admin.html (admin panel)
-- Login: `admin123`
 
 ### Option 2: VS Code Live Server
 - Install "Live Server" extension
@@ -127,3 +126,4 @@ event copy/
 ## License
 
 This project is provided as-is for demonstration purposes.
+
