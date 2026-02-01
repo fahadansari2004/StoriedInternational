@@ -3,7 +3,7 @@
  * Handles interactivity, form validation, and user experience enhancements
  */
 
-(function() {
+(function () {
     'use strict';
 
     // DOM Elements
@@ -12,7 +12,7 @@
     const contactForm = document.getElementById('contactForm');
 
     // Initialize on DOM load
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         initNavbar();
         initScrollToTop();
         initContactForm();
@@ -28,7 +28,7 @@
     function initNavbar() {
         if (!navbar) return;
 
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             if (window.scrollY > 50) {
                 navbar.classList.add('scrolled');
             } else {
@@ -43,7 +43,7 @@
     function initScrollToTop() {
         if (!scrollToTopBtn) return;
 
-        window.addEventListener('scroll', function() {
+        window.addEventListener('scroll', function () {
             if (window.scrollY > 300) {
                 scrollToTopBtn.style.display = 'block';
             } else {
@@ -51,7 +51,7 @@
             }
         });
 
-        scrollToTopBtn.addEventListener('click', function(e) {
+        scrollToTopBtn.addEventListener('click', function (e) {
             e.preventDefault();
             window.scrollTo({
                 top: 0,
@@ -65,9 +65,9 @@
      */
     function initSmoothScroll() {
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
+            anchor.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
-                
+
                 // Skip empty hash or just #
                 if (href === '#' || href === '') {
                     return;
@@ -77,7 +77,7 @@
                 if (target) {
                     e.preventDefault();
                     const offsetTop = target.offsetTop - 76; // Account for fixed navbar
-                    
+
                     window.scrollTo({
                         top: offsetTop,
                         behavior: 'smooth'
@@ -105,11 +105,11 @@
         // Real-time validation
         const inputs = contactForm.querySelectorAll('input, textarea, select');
         inputs.forEach(input => {
-            input.addEventListener('blur', function() {
+            input.addEventListener('blur', function () {
                 validateField(this);
             });
 
-            input.addEventListener('input', function() {
+            input.addEventListener('input', function () {
                 if (this.classList.contains('is-invalid')) {
                     validateField(this);
                 }
@@ -117,9 +117,9 @@
         });
 
         // Form submission
-        contactForm.addEventListener('submit', function(e) {
+        contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
-            
+
             if (!validateForm()) {
                 // Scroll to first error
                 const firstError = contactForm.querySelector('.is-invalid');
@@ -129,7 +129,7 @@
                 }
                 return false;
             }
-            
+
             // If validation passes, submit the form
             submitForm();
         });
@@ -141,12 +141,7 @@
             return;
         }
 
-        // Rate limiting check
-        const formIdentifier = 'contact-form-submission';
-        if (!SecurityUtils.rateLimit.check(formIdentifier, 3, 60000)) {
-            showAlert('Please wait before submitting again. Too many requests.', 'warning');
-            return;
-        }
+
     }
 
     /**
@@ -264,7 +259,7 @@
     }
 
     /**
-     * Submit form - Uses native form submission to FormSubmit.co (most reliable)
+     * Submit form - Google Forms via hidden iframe
      */
     function submitForm() {
         const submitButton = contactForm.querySelector('button[type="submit"]');
@@ -274,14 +269,44 @@
         submitButton.disabled = true;
         submitButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting...';
 
-        // Show success message
-        showAlert('Submitting your message...', 'info');
+        // Show processing message
+        // showAlert('Submitting your message...', 'info'); // Optional: Google forms is usually fast enough we might not need this double alert if we just wait for load
 
-        // Allow the native form submission to proceed
-        // FormSubmit.co will handle the email sending
-        setTimeout(() => {
-            contactForm.submit();
-        }, 500);
+        // The form will submit naturally to the iframe target because we continue execution
+        // We just need to listen for the iframe load to know when it's done
+        const hiddenIframe = document.getElementById('hidden_iframe');
+        let submitted = false;
+
+        // Define the handler so we can remove it (in case of timeouts etc, though unlikely for simple form)
+        const activeHandler = function () {
+            if (submitted) return; // Prevent double firing if possible
+            submitted = true;
+
+            // Reset button
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalText;
+
+            // Show success
+            showAlert('Message sent successfully! We will contact you shortly.', 'success');
+
+            // Reset form
+            contactForm.reset();
+
+            // Remove validation classes
+            contactForm.querySelectorAll('.is-valid, .is-invalid').forEach(el => {
+                el.classList.remove('is-valid', 'is-invalid');
+            });
+
+            // Remove this listener
+            hiddenIframe.removeEventListener('load', activeHandler);
+        };
+
+        hiddenIframe.addEventListener('load', activeHandler);
+
+        // Verify submit happens - we need to actually let the submit event finish
+        // The original code was preventing default and calling this. 
+        // We need to manually submit because the initContactForm prevented default.
+        contactForm.submit();
     }
 
     /**
@@ -320,7 +345,7 @@
     function initGallery() {
         const galleryContainer = document.getElementById('gallery-container');
         const container = galleryContainer || document.body;
-        container.addEventListener('click', function(e) {
+        container.addEventListener('click', function (e) {
             const item = e.target.closest('.gallery-item');
             if (item) {
                 const img = item.querySelector('img');
@@ -363,7 +388,7 @@
         bsModal.show();
 
         // Remove modal from DOM after hiding
-        modal.addEventListener('hidden.bs.modal', function() {
+        modal.addEventListener('hidden.bs.modal', function () {
             modal.remove();
         });
     }
@@ -377,7 +402,7 @@
             rootMargin: '0px 0px -50px 0px'
         };
 
-        const observer = new IntersectionObserver(function(entries) {
+        const observer = new IntersectionObserver(function (entries) {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('fade-in-up');
@@ -397,7 +422,7 @@
      */
     function initDropdowns() {
         // Close dropdown when clicking outside
-        document.addEventListener('click', function(e) {
+        document.addEventListener('click', function (e) {
             if (!e.target.closest('.dropdown')) {
                 document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
                     const dropdown = bootstrap.Dropdown.getInstance(menu.previousElementSibling);
