@@ -1,0 +1,640 @@
+/* Custom CSS for Event Management Website */
+
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --success-color: #198754;
+    --danger-color: #dc3545;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+    --purple-color: #6f42c1;
+    --dark-color: #212529;
+    --light-color: #f8f9fa;
+}
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    overflow-x: hidden;
+}
+
+/* Navigation - solid dark bar, little smaller height (as before) */
+.navbar {
+    transition: all 0.3s ease;
+    padding: 0.35rem 0;
+}
+
+.navbar.scrolled {
+    background-color: rgba(33, 37, 41, 0.98) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-brand {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    text-decoration: none !important;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.navbar-brand:hover {
+    opacity: 0.92;
+    transform: scale(1.02);
+}
+
+/* Logo in navbar */
+.navbar-brand img {
+    height: 80px;
+    width: auto;
+    max-width: 280px;
+    min-height: 44px;
+    object-fit: contain;
+    object-position: left center;
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 1px rgba(255, 255, 255, 0.15));
+}
+
+/* Logo in footer - same asset, bigger */
+.footer-logo {
+    height: 88px;
+    width: auto;
+    max-width: 380px;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35)) drop-shadow(0 0 1px rgba(255, 255, 255, 0.12));
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: var(--warning-color);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    width: 80%;
+}
+
+.nav-link:hover {
+    color: var(--warning-color) !important;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920&h=1080&fit=crop');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    padding-top: 72px;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 1;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    40% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+    60% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+/* Service Cards */
+.service-card {
+    transition: all 0.3s ease;
+    border-radius: 10px;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+.service-icon {
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-icon {
+    transform: scale(1.1);
+}
+
+.text-purple {
+    color: var(--purple-color) !important;
+}
+
+/* Testimonial Cards */
+.testimonial-card {
+    transition: all 0.3s ease;
+    border-radius: 10px;
+}
+
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+}
+
+.avatar {
+    font-weight: bold;
+}
+
+/* Gallery */
+.gallery-item {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    height: 300px;
+    overflow: hidden;
+}
+
+.gallery-item img {
+    transition: transform 0.5s ease;
+    height: 100%;
+    object-fit: cover;
+}
+
+.gallery-overlay {
+    background: rgba(0, 0, 0, 0.7);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+    opacity: 1;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+/* Contact Form */
+#contactForm .form-control:focus,
+#contactForm .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+#contactForm .form-control.is-invalid,
+#contactForm .form-select.is-invalid {
+    border-color: var(--danger-color);
+}
+
+#contactForm .form-control.is-valid,
+#contactForm .form-select.is-valid {
+    border-color: var(--success-color);
+}
+
+.contact-info-card {
+    transition: all 0.3s ease;
+    background-color: var(--light-color);
+}
+
+.contact-info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Footer */
+footer {
+    background-color: var(--dark-color) !important;
+}
+
+footer a {
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: var(--warning-color) !important;
+}
+
+.social-links a {
+    transition: transform 0.3s ease;
+}
+
+.social-links a:hover {
+    transform: scale(1.2);
+}
+
+/* Scroll to Top Button */
+#scrollToTop {
+    transition: all 0.3s ease;
+}
+
+#scrollToTop:hover {
+    transform: scale(1.1);
+}
+
+/* Phone and Email Links */
+a[href^="tel:"] {
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+a[href^="tel:"]:hover {
+    color: var(--primary-color) !important;
+    text-decoration: underline !important;
+    transform: translateX(3px);
+}
+
+a[href^="mailto:"] {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    word-break: break-all;
+}
+
+a[href^="mailto:"]:hover {
+    color: var(--primary-color) !important;
+    text-decoration: underline !important;
+}
+
+/* Make phone and email buttons more prominent on mobile */
+@media (max-width: 768px) {
+    a[href^="tel:"],
+    a[href^="mailto:"] {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+    
+    a[href^="tel:"]:active,
+    a[href^="mailto:"]:active {
+        background-color: rgba(13, 110, 253, 0.1);
+    }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Section Spacing */
+section {
+    padding: 80px 0;
+}
+
+/* Logo responsive fit */
+@media (max-width: 576px) {
+    .navbar-brand img {
+        height: 46px;
+        max-width: 220px;
+    }
+    .footer-logo {
+        height: 68px;
+        max-width: 280px;
+    }
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+    .navbar-brand img {
+        height: 50px;
+        max-width: 250px;
+    }
+    
+    .display-2 {
+        font-size: 2.5rem;
+    }
+    
+    .display-5 {
+        font-size: 2rem;
+    }
+    
+    .hero-section {
+        background-attachment: scroll;
+    }
+    
+    section {
+        padding: 60px 0;
+    }
+}
+
+/* Loading Spinner */
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+    border-width: 0.15em;
+}
+
+/* Utility Classes */
+.text-white-50 {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.bg-white-50 {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Enhanced Clickable Links */
+a[href^="tel:"] {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+a[href^="tel:"]:hover {
+    transform: scale(1.05);
+    color: var(--primary-color) !important;
+}
+
+a[href^="mailto:"] {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+a[href^="mailto:"]:hover {
+    transform: scale(1.05);
+    color: var(--primary-color) !important;
+    text-decoration: underline !important;
+}
+
+/* Mobile-specific enhancements for tel and mailto links */
+@media (max-width: 768px) {
+    a[href^="tel:"],
+    a[href^="mailto:"] {
+        -webkit-tap-highlight-color: rgba(13, 110, 253, 0.3);
+        touch-action: manipulation;
+    }
+}
+
+/* Smooth Transitions */
+a, button, .card, .btn {
+    transition: all 0.3s ease;
+}
+
+/* Accessibility */
+:focus {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+/* Chatbot Styles */
+#chatbot-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#chatbot-toggle {
+    transition: all 0.3s ease;
+    border: none;
+}
+
+#chatbot-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 5px 20px rgba(13, 110, 253, 0.4) !important;
+}
+
+#chatbot-window {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#chatbot-messages {
+    background-color: #f8f9fa;
+}
+
+#chatbot-messages::-webkit-scrollbar {
+    width: 6px;
+}
+
+#chatbot-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+#chatbot-messages::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+#chatbot-messages::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.chat-message {
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.user-message .bg-primary {
+    max-width: 250px;
+    word-wrap: break-word;
+}
+
+.bot-message .bg-light {
+    max-width: 250px;
+    word-wrap: break-word;
+}
+
+.typing-dots {
+    display: flex;
+    gap: 4px;
+    padding: 5px 0;
+}
+
+.typing-dots span {
+    width: 8px;
+    height: 8px;
+    background-color: #6c757d;
+    border-radius: 50%;
+    animation: typingDot 1.4s infinite;
+}
+
+.typing-dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typingDot {
+    0%, 60%, 100% {
+        opacity: 0.3;
+        transform: translateY(0);
+    }
+    30% {
+        opacity: 1;
+        transform: translateY(-5px);
+    }
+}
+
+.quick-reply-btn {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.quick-reply-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#chatbot-close {
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
+}
+
+#chatbot-close:hover {
+    opacity: 1;
+}
+
+/* Responsive chatbot */
+@media (max-width: 768px) {
+    #chatbot-window {
+        width: calc(100vw - 2rem) !important;
+        max-width: 350px;
+        right: 1rem !important;
+    }
+    
+    #chatbot-toggle {
+        width: 55px !important;
+        height: 55px !important;
+    }
+}
+
+/* Print Styles */
+@media print {
+    .navbar,
+    .scroll-indicator,
+    #scrollToTop,
+    #chatbot-container,
+    footer {
+        display: none;
+    }
+    
+    .hero-section {
+        min-height: auto;
+        padding: 2rem 0;
+    }
+}
+
+/* WhatsApp Widget */
+.whatsapp-float {
+    position: fixed;
+    bottom: 110px; /* Positioned above the chatbot toggle */
+    right: 24px;
+    width: 60px;
+    height: 60px;
+    background-color: #25d366;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 3px #999;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    text-decoration: none !important;
+}
+
+.whatsapp-float:hover {
+    background-color: #128c7e;
+    color: white !important;
+    transform: scale(1.1);
+}
+
+.whatsapp-float i {
+    margin-top: 2px;
+}
+
+/* Responsiveness for WhatsApp button */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        width: 55px;
+        height: 55px;
+        font-size: 28px;
+        bottom: 100px;
+        right: 16px;
+    }
+}
+
+@media print {
+    .whatsapp-float {
+        display: none;
+    }
+}

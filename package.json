@@ -1,0 +1,9 @@
+{
+  "name": "event-pro-website",
+  "version": "1.0.0",
+  "description": "Event Management Website",
+  "scripts": {
+    "start": "npx serve -l 3000",
+    "serve": "npx serve -l 3000"
+  }
+}
