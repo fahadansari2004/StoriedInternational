@@ -48,7 +48,20 @@ const DEFAULT_CONTENT = {
 function getSiteContent() {
     try {
         const stored = localStorage.getItem(CONTENT_STORAGE_KEY);
-        return stored ? Object.assign({}, DEFAULT_CONTENT, JSON.parse(stored)) : Object.assign({}, DEFAULT_CONTENT);
+        if (stored) {
+            const parsed = JSON.parse(stored);
+            // Force update if old contact info is found
+            if (parsed.contact && (
+                parsed.contact.phoneRaw === '7591920678' ||
+                parsed.contact.phoneRaw === '+917591920678' ||
+                parsed.contact.email === 'ansaryfahad950@gmail.com'
+            )) {
+                localStorage.removeItem(CONTENT_STORAGE_KEY);
+                return Object.assign({}, DEFAULT_CONTENT);
+            }
+            return Object.assign({}, DEFAULT_CONTENT, parsed);
+        }
+        return Object.assign({}, DEFAULT_CONTENT);
     } catch (e) {
         return Object.assign({}, DEFAULT_CONTENT);
     }
