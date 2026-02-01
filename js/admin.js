@@ -34,9 +34,9 @@ const DEFAULT_CONTENT = {
     ],
     contact: {
         address: "123 Event Street, City, State 12345",
-        phone: "+91-759-192-0678",
-        phoneRaw: "+917591920678",
-        email: "ansaryfahad950@gmail.com"
+        phone: "+91 73560 44637",
+        phoneRaw: "+917356044637",
+        email: "Storiedeventplanners@gmail.com"
     },
     footer: {
         companyName: "Storied International",

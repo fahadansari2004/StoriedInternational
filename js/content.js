@@ -3,7 +3,7 @@
  * Content is managed via admin panel
  */
 
-(function() {
+(function () {
     'use strict';
 
     const STORAGE_KEY = 'eventpro_site_content';
@@ -42,9 +42,9 @@
             address: "123 Event Street, City, State 12345",
             addressLine1: "123 Event Street",
             addressLine2: "City, State 12345",
-            phone: "+91-759-192-0678",
-            phoneRaw: "+917591920678",
-            email: "ansaryfahad950@gmail.com"
+            phone: "+91 73560 44637",
+            phoneRaw: "+917356044637",
+            email: "Storiedeventplanners@gmail.com"
         },
         footer: {
             companyName: "Storied International",
@@ -139,7 +139,7 @@
                             <p class="card-text mb-4">"${escapeHtml(t.quote)}"</p>
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
-                                    <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">${escapeHtml(t.initials || (t.name || '').substring(0,2).toUpperCase())}</div>
+                                    <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">${escapeHtml(t.initials || (t.name || '').substring(0, 2).toUpperCase())}</div>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <h6 class="mb-0">${escapeHtml(t.name)}</h6>
@@ -173,11 +173,13 @@
         if (contactPhone1) { contactPhone1.href = `tel:${phoneRaw}`; contactPhone1.textContent = phoneDisplay; }
         if (contactEmail1) { contactEmail1.href = `mailto:${content.contact.email}`; contactEmail1.textContent = content.contact.email; }
 
-        // Update contact form action for FormSubmit.co
+        // REMOVED: Overwriting contactForm action to allow Google Form submission
+        /*
         const contactForm = document.getElementById('contactForm');
         if (contactForm && content.contact.email) {
             contactForm.action = `https://formsubmit.co/${content.contact.email}`;
         }
+        */
 
         // Footer contact
         const footerAddress = document.getElementById('footer-address');

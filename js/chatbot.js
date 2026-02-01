@@ -3,7 +3,7 @@
  * Provides automated responses to common queries
  */
 
-(function() {
+(function () {
     'use strict';
 
     // DOM Elements
@@ -40,7 +40,7 @@ Would you like to know more about any specific service?`
 • Venue selection
 • Date and duration
 
-Average pricing ranges from ₹3 lakhs to ₹15 lakhs. For a detailed quote tailored to your needs, please fill out our contact form or call us at +91-759-192-0678.`
+Average pricing ranges from ₹3 lakhs to ₹15 lakhs. For a detailed quote tailored to your needs, please fill out our contact form or call us at +91 73560 44637.`
         },
         booking: {
             keywords: ['book', 'booking', 'reserve', 'schedule', 'plan event', 'organize'],
@@ -57,8 +57,8 @@ Would you like me to direct you to the contact form?`
             keywords: ['contact', 'phone', 'email', 'reach', 'call', 'address'],
             response: `You can reach us through:
 
-📞 Phone: +91-759-192-0678
-📧 Email: ansaryfahad950@gmail.com
+📞 Phone: +91 73560 44637
+📧 Email: Storiedeventplanners@gmail.com
 📍 Address: 123 Event Street, City
 
 Our team is available Monday to Saturday, 9 AM - 6 PM. Feel free to call or email us anytime!`
@@ -108,8 +108,8 @@ We use the latest equipment to ensure stunning results!`
             response: `To check availability for your event date:
 
 1. Fill out our contact form with your preferred date
-2. Call us directly at +91-759-192-0678
-3. Email us at ansaryfahad950@gmail.com
+2. Call us directly at +91 73560 44637
+3. Email us at Storiedeventplanners@gmail.com
 
 We'll respond within 24 hours with our availability and next steps!`
         },
@@ -152,7 +152,7 @@ What would you like to know?`
 
         // Handle quick reply buttons
         quickReplyButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 const message = this.getAttribute('data-message');
                 sendMessage(message);
             });
@@ -166,7 +166,7 @@ What would you like to know?`
     function toggleChatbot() {
         const isVisible = chatbotWindow.style.display !== 'none';
         chatbotWindow.style.display = isVisible ? 'none' : 'block';
-        
+
         if (!isVisible) {
             chatbotInput.focus();
             removeNotificationBadge();
@@ -182,7 +182,7 @@ What would you like to know?`
     function handleSubmit(e) {
         e.preventDefault();
         const message = chatbotInput.value.trim();
-        
+
         if (message) {
             sendMessage(message);
             chatbotInput.value = '';
@@ -287,8 +287,8 @@ What would you like to know?`
 • Corporate Events
 
 Please ask me about any of these topics, or you can:
-📞 Call us: +91-759-192-0678
-📧 Email: ansaryfahad950@gmail.com`;
+📞 Call us: +91 73560 44637
+📧 Email: Storiedeventplanners@gmail.com`;
     }
 
     // Show notification badge

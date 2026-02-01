@@ -1,6 +1,6 @@
 # Email Setup Instructions
 
-The contact form is configured to send emails to: **ansaryfahad950@gmail.com**
+The contact form is configured to send emails to: **Storiedeventplanners@gmail.com**
 
 ## Method 1: FormSubmit.co (Currently Active - No Setup Required)
 
@@ -14,7 +14,7 @@ The form is already configured with FormSubmit.co. Here's what you need to do:
    - Click Submit
 
 2. **Confirm Your Email**
-   - Check the inbox of **ansaryfahad950@gmail.com**
+   - Check the inbox of **Storiedeventplanners@gmail.com**
    - You'll receive a confirmation email from FormSubmit.co
    - Click the confirmation link in that email
    - This is a ONE-TIME setup to verify you own the email
@@ -24,7 +24,7 @@ The form is already configured with FormSubmit.co. Here's what you need to do:
    - No additional setup needed
 
 ### How It Works:
-- Form submits to: `https://formsubmit.co/ansaryfahad950@gmail.com`
+- Form submits to: `https://formsubmit.co/Storiedeventplanners@gmail.com`
 - FormSubmit.co sends the form data to your email
 - User is redirected to `thank-you.html` after submission
 - You receive a nicely formatted email with all form details
@@ -46,7 +46,7 @@ If FormSubmit.co doesn't work, you can use EmailJS:
    - Go to Email Services
    - Click "Add New Service"
    - Choose Gmail
-   - Connect your Gmail account (ansaryfahad950@gmail.com)
+   - Connect your Gmail account (Storiedeventplanners@gmail.com)
    - Note the Service ID (e.g., `service_abc123`)
 
 3. **Create Email Template**
@@ -156,7 +156,7 @@ function submitForm() {
     const subject = encodeURIComponent('New Contact Form Submission - Event Management');
     const body = encodeURIComponent(emailBody);
     
-    window.location.href = `mailto:ansaryfahad950@gmail.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:Storiedeventplanners@gmail.com?subject=${subject}&body=${body}`;
     
     showAlert('Opening your email client...', 'info');
 }
@@ -188,9 +188,9 @@ function submitForm() {
 
 ## Current Configuration
 
-**Email Address:** ansaryfahad950@gmail.com  
-**Phone Number:** +91-759-192-0678  
-**Method:** FormSubmit.co (native form submission)  
+**Email Address:** Storiedeventplanners@gmail.com  
+**Phone Number:** +91 73560 44637  
+**Method:** Google Forms (native form submission)  
 **Redirect:** thank-you.html
 
 **Form Fields:**
