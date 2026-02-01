@@ -264,7 +264,7 @@
     }
 
     /**
-     * Submit form - Uses native form submission to FormSubmit.co (most reliable)
+     * Submit form - Google Forms via hidden iframe
      */
     function submitForm() {
         const submitButton = contactForm.querySelector('button[type="submit"]');
@@ -274,14 +274,44 @@
         submitButton.disabled = true;
         submitButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting...';
 
-        // Show success message
-        showAlert('Submitting your message...', 'info');
+        // Show processing message
+        // showAlert('Submitting your message...', 'info'); // Optional: Google forms is usually fast enough we might not need this double alert if we just wait for load
 
-        // Allow the native form submission to proceed
-        // FormSubmit.co will handle the email sending
-        setTimeout(() => {
-            contactForm.submit();
-        }, 500);
+        // The form will submit naturally to the iframe target because we continue execution
+        // We just need to listen for the iframe load to know when it's done
+        const hiddenIframe = document.getElementById('hidden_iframe');
+        let submitted = false;
+        
+        // Define the handler so we can remove it (in case of timeouts etc, though unlikely for simple form)
+        const activeHandler = function() {
+            if (submitted) return; // Prevent double firing if possible
+            submitted = true;
+            
+            // Reset button
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalText;
+            
+            // Show success
+            showAlert('Message sent successfully! We will contact you shortly.', 'success');
+            
+            // Reset form
+            contactForm.reset();
+            
+            // Remove validation classes
+            contactForm.querySelectorAll('.is-valid, .is-invalid').forEach(el => {
+                el.classList.remove('is-valid', 'is-invalid');
+            });
+            
+            // Remove this listener
+            hiddenIframe.removeEventListener('load', activeHandler);
+        };
+        
+        hiddenIframe.addEventListener('load', activeHandler);
+        
+        // Verify submit happens - we need to actually let the submit event finish
+        // The original code was preventing default and calling this. 
+        // We need to manually submit because the initContactForm prevented default.
+        contactForm.submit();
     }
 
     /**
