@@ -53,26 +53,31 @@
         }
     };
 
+    function deepMerge(target, source) {
+        const result = { ...target };
+        if (!source) return result;
+
+        Object.keys(source).forEach(key => {
+            if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+                result[key] = deepMerge(target[key] || {}, source[key]);
+            } else {
+                result[key] = source[key];
+            }
+        });
+        return result;
+    }
+
     function getContent() {
         try {
             const stored = localStorage.getItem(STORAGE_KEY);
             if (stored) {
                 const parsed = JSON.parse(stored);
-                // Force update if old contact info is found
-                if (parsed.contact && (
-                    parsed.contact.phoneRaw === '7591920678' ||
-                    parsed.contact.phoneRaw === '+917591920678' ||
-                    parsed.contact.email === 'ansaryfahad950@gmail.com'
-                )) {
-                    localStorage.removeItem(STORAGE_KEY);
-                    return Object.assign({}, DEFAULT_CONTENT);
-                }
-                return Object.assign({}, DEFAULT_CONTENT, parsed);
+                return deepMerge(DEFAULT_CONTENT, parsed);
             }
         } catch (e) {
             console.error('Error loading content:', e);
         }
-        return Object.assign({}, DEFAULT_CONTENT);
+        return JSON.parse(JSON.stringify(DEFAULT_CONTENT));
     }
 
     function escapeHtml(str) {
