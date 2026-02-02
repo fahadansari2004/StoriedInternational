@@ -50,7 +50,15 @@
             companyName: "Storied International",
             description: "Planning a full event has never been easier! Storied International offers a wide range of services to make your events stress-free and memorable.",
             copyright: "© 2024 Storied International. All Rights Reserved."
-        }
+        },
+        gallery: [
+            { url: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&h=400&fit=crop', title: 'Event 1' },
+            { url: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&h=400&fit=crop', title: 'Event 2' },
+            { url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&h=400&fit=crop', title: 'Event 3' },
+            { url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&h=400&fit=crop', title: 'Event 4' },
+            { url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=400&fit=crop', title: 'Event 5' },
+            { url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&h=400&fit=crop', title: 'Event 6' }
+        ]
     };
 
     function deepMerge(target, source) {
@@ -244,6 +252,7 @@
                 .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'site_content' }, payload => {
                     if (payload.new && payload.new.content) {
                         renderContent();
+                        if (window.renderGallery) window.renderGallery(); // Added: refresh gallery too
                     }
                 })
                 .subscribe();

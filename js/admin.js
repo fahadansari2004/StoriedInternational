@@ -42,7 +42,15 @@ const DEFAULT_CONTENT = {
         companyName: "Storied International",
         description: "Planning a full event has never been easier! Storied International offers a wide range of services to make your events stress-free and memorable.",
         copyright: "© 2024 Storied International. All Rights Reserved."
-    }
+    },
+    gallery: [
+        { url: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&h=400&fit=crop', title: 'Event 1' },
+        { url: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&h=400&fit=crop', title: 'Event 2' },
+        { url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&h=400&fit=crop', title: 'Event 3' },
+        { url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&h=400&fit=crop', title: 'Event 4' },
+        { url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=400&fit=crop', title: 'Event 5' },
+        { url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&h=400&fit=crop', title: 'Event 6' }
+    ]
 };
 
 function deepMerge(target, source) {
@@ -437,31 +445,31 @@ async function renderTestimonialsList() {
     }
 }
 
-function approveTestimonial(index) {
-    const c = getSiteContent();
+async function approveTestimonial(index) {
+    const c = await getSiteContent();
     if (c.testimonials && c.testimonials[index]) {
         c.testimonials[index].status = 'approved';
         c.testimonials[index].rating = c.testimonials[index].rating || 5;
-        saveSiteContent(c);
+        await saveSiteContent(c);
         renderTestimonialsList();
         alert('Review approved and published!');
     }
 }
 
-function rejectTestimonial(index) {
+async function rejectTestimonial(index) {
     if (!confirm('Reject this review? It will be removed permanently.')) return;
-    const c = getSiteContent();
+    const c = await getSiteContent();
     c.testimonials.splice(index, 1);
-    saveSiteContent(c);
+    await saveSiteContent(c);
     renderTestimonialsList();
     alert('Review rejected and removed.');
 }
 
-function removeTestimonial(index) {
+async function removeTestimonial(index) {
     if (!confirm('Remove this testimonial from the website?')) return;
-    const c = getSiteContent();
+    const c = await getSiteContent();
     c.testimonials.splice(index, 1);
-    saveSiteContent(c);
+    await saveSiteContent(c);
     renderTestimonialsList();
 }
 
@@ -469,21 +477,15 @@ window.removeTestimonial = removeTestimonial;
 window.approveTestimonial = approveTestimonial;
 window.rejectTestimonial = rejectTestimonial;
 
-function getGalleryImages() {
-    try {
-        const stored = localStorage.getItem(GALLERY_CONFIG.STORAGE_KEY);
-        if (stored) {
-            const parsed = JSON.parse(stored);
-            return Array.isArray(parsed) && parsed.length > 0 ? parsed : [...GALLERY_CONFIG.DEFAULT_IMAGES];
-        }
-    } catch (e) {
-        console.error('Error loading gallery:', e);
-    }
-    return [...GALLERY_CONFIG.DEFAULT_IMAGES];
+async function getGalleryImages() {
+    const c = await getSiteContent();
+    return Array.isArray(c.gallery) && c.gallery.length > 0 ? c.gallery : [...GALLERY_CONFIG.DEFAULT_IMAGES];
 }
 
-function saveGalleryImages(images) {
-    localStorage.setItem(GALLERY_CONFIG.STORAGE_KEY, JSON.stringify(images));
+async function saveGalleryImages(images) {
+    const c = await getSiteContent();
+    c.gallery = images;
+    await saveSiteContent(c);
     renderGalleryList();
 }
 
@@ -531,10 +533,10 @@ function handleAddImage(e) {
     addImageAndSave(imageData);
 }
 
-function addImageAndSave(imageData) {
-    const images = getGalleryImages();
+async function addImageAndSave(imageData) {
+    const images = await getGalleryImages();
     images.unshift(imageData);
-    saveGalleryImages(images);
+    await saveGalleryImages(images);
 
     // Reset form
     addImageForm.reset();
@@ -548,16 +550,16 @@ function addImageAndSave(imageData) {
     alert('Image added successfully!');
 }
 
-function removeImage(index) {
+async function removeImage(index) {
     if (!confirm('Remove this image from the gallery?')) return;
 
-    const images = getGalleryImages();
+    const images = await getGalleryImages();
     images.splice(index, 1);
-    saveGalleryImages(images);
+    await saveGalleryImages(images);
 }
 
-function renderGalleryList() {
-    const images = getGalleryImages();
+async function renderGalleryList() {
+    const images = await getGalleryImages();
     imageCountBadge.textContent = `${images.length} image${images.length !== 1 ? 's' : ''}`;
 
     galleryList.innerHTML = images.map((img, index) => `

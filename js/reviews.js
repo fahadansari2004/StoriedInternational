@@ -3,36 +3,52 @@
  * Submits reviews to localStorage - admin approves before they appear on site
  */
 
-(function() {
+(function () {
     'use strict';
 
     const CONTENT_STORAGE_KEY = 'eventpro_site_content';
 
-    function getContent() {
-        try {
-            const stored = localStorage.getItem(CONTENT_STORAGE_KEY);
-            if (stored) {
-                const parsed = JSON.parse(stored);
-                return parsed && typeof parsed === 'object' ? parsed : {};
+    function deepMerge(target, source) {
+        const result = { ...target };
+        if (!source) return result;
+        Object.keys(source).forEach(key => {
+            if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+                result[key] = deepMerge(target[key] || {}, source[key]);
+            } else {
+                result[key] = source[key];
             }
-        } catch (e) {}
-        return {};
+        });
+        return result;
     }
 
-    function saveContent(content) {
+    async function getSiteContent() {
+        try {
+            if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+                const { data, error } = await supabaseClient.from('site_content').select('content').single();
+                if (data && data.content) return data.content;
+            }
+            const stored = localStorage.getItem(CONTENT_STORAGE_KEY);
+            return stored ? JSON.parse(stored) : {};
+        } catch (e) { return {}; }
+    }
+
+    async function saveSiteContent(content) {
         localStorage.setItem(CONTENT_STORAGE_KEY, JSON.stringify(content));
+        if (typeof supabaseClient !== 'undefined' && supabaseClient) {
+            await supabaseClient.from('site_content').upsert({ id: 1, content: content });
+        }
         if (window.EventProContent?.renderContent) {
             EventProContent.renderContent();
         }
     }
 
-    function init() {
+    async function init() {
         const form = document.getElementById('clientReviewForm');
         const successMsg = document.getElementById('reviewSuccessMsg');
 
         if (!form) return;
 
-        form.addEventListener('submit', function(e) {
+        form.addEventListener('submit', async function (e) {
             e.preventDefault();
 
             const name = document.getElementById('reviewName').value.trim();
@@ -45,7 +61,6 @@
                 return;
             }
 
-            // Basic validation
             if (reviewText.length < 20) {
                 alert('Please write a more detailed review (at least 20 characters).');
                 return;
@@ -65,10 +80,10 @@
                 submittedAt: Date.now()
             };
 
-            const content = getContent();
+            const content = await getSiteContent();
             content.testimonials = content.testimonials || [];
             content.testimonials.unshift(newReview);
-            saveContent(content);
+            await saveSiteContent(content);
 
             form.reset();
             if (successMsg) {
