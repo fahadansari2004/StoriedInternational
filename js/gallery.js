@@ -61,6 +61,8 @@
                     <div class="gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
                         <i class="bi bi-zoom-in text-white fs-1"></i>
                     </div>
+                </div>
+            </div>
         `).join('');
     }
 
