@@ -95,8 +95,12 @@ async function getSiteContent() {
 }
 
 async function saveSiteContent(content) {
-    // Save to localStorage (local backup)
-    localStorage.setItem(CONTENT_STORAGE_KEY, JSON.stringify(content));
+    try {
+        // Save to localStorage (local backup)
+        localStorage.setItem(CONTENT_STORAGE_KEY, JSON.stringify(content));
+    } catch (e) {
+        console.warn('LocalStorage save failed (likely quota exceeded):', e);
+    }
 
     // Save to Supabase (global)
     if (typeof supabaseClient !== 'undefined' && supabaseClient && SUPABASE_CONFIG.URL !== 'https://your-project-url.supabase.co') {
@@ -114,7 +118,9 @@ async function saveSiteContent(content) {
         console.warn('Supabase not configured, saving locally only');
     }
 
-    if (window.EventProContent?.renderContent) EventProContent.renderContent();
+    if (window.EventProContent?.renderContent) {
+        await window.EventProContent.renderContent();
+    }
 }
 
 async function checkSupabaseConnection() {
@@ -155,7 +161,7 @@ let loginSection, adminSection, loginForm, logoutBtn;
 let addImageForm, galleryList, imageCountBadge;
 let sourceUrl, sourceUpload, urlInputGroup, uploadInputGroup, imageFile, imagePreview;
 
-function init() {
+async function init() {
     loginSection = document.getElementById('loginSection');
     adminSection = document.getElementById('adminSection');
     loginForm = document.getElementById('loginForm');
@@ -176,10 +182,9 @@ function init() {
     // Login form
     loginForm?.addEventListener('submit', handleLogin);
 
-    // Check if already logged in (must attach handlers first - logout won't work after reload otherwise)
+    // Check if already logged in
     if (sessionStorage.getItem(GALLERY_CONFIG.ADMIN_SESSION_KEY) === 'true') {
-        showAdminDashboard();
-        return;
+        await showAdminDashboard();
     }
 
     // Source type toggle
@@ -193,12 +198,10 @@ function init() {
         imageFile?.focus();
     });
 
-    // Browse button - triggers file input (fixes file manager not opening)
+    // Browse button
     document.getElementById('browseImageBtn')?.addEventListener('click', (e) => {
         e.preventDefault();
-        if (imageFile) {
-            imageFile.click();
-        }
+        imageFile?.click();
     });
 
     // File preview
@@ -211,7 +214,7 @@ function init() {
     document.getElementById('resetGalleryBtn')?.addEventListener('click', handleResetGallery);
 
     // Content forms
-    initContentForms();
+    await initContentForms();
 }
 
 function handleResetGallery() {
@@ -451,7 +454,7 @@ async function approveTestimonial(index) {
         c.testimonials[index].status = 'approved';
         c.testimonials[index].rating = c.testimonials[index].rating || 5;
         await saveSiteContent(c);
-        renderTestimonialsList();
+        await renderTestimonialsList();
         alert('Review approved and published!');
     }
 }
@@ -461,7 +464,7 @@ async function rejectTestimonial(index) {
     const c = await getSiteContent();
     c.testimonials.splice(index, 1);
     await saveSiteContent(c);
-    renderTestimonialsList();
+    await renderTestimonialsList();
     alert('Review rejected and removed.');
 }
 
@@ -470,7 +473,7 @@ async function removeTestimonial(index) {
     const c = await getSiteContent();
     c.testimonials.splice(index, 1);
     await saveSiteContent(c);
-    renderTestimonialsList();
+    await renderTestimonialsList();
 }
 
 window.removeTestimonial = removeTestimonial;
@@ -478,15 +481,25 @@ window.approveTestimonial = approveTestimonial;
 window.rejectTestimonial = rejectTestimonial;
 
 async function getGalleryImages() {
-    const c = await getSiteContent();
-    return Array.isArray(c.gallery) && c.gallery.length > 0 ? c.gallery : [...GALLERY_CONFIG.DEFAULT_IMAGES];
+    try {
+        const c = await getSiteContent();
+        return Array.isArray(c.gallery) && c.gallery.length > 0 ? c.gallery : [...GALLERY_CONFIG.DEFAULT_IMAGES];
+    } catch (e) {
+        console.error('getGalleryImages error:', e);
+        return [...GALLERY_CONFIG.DEFAULT_IMAGES];
+    }
 }
 
 async function saveGalleryImages(images) {
-    const c = await getSiteContent();
-    c.gallery = images;
-    await saveSiteContent(c);
-    renderGalleryList();
+    try {
+        const c = await getSiteContent();
+        c.gallery = images;
+        await saveSiteContent(c);
+        await renderGalleryList();
+    } catch (e) {
+        console.error('saveGalleryImages error:', e);
+        alert('Failed to save gallery: ' + e.message);
+    }
 }
 
 function handleFilePreview() {
@@ -534,20 +547,33 @@ function handleAddImage(e) {
 }
 
 async function addImageAndSave(imageData) {
-    const images = await getGalleryImages();
-    images.unshift(imageData);
-    await saveGalleryImages(images);
+    try {
+        console.log('Adding new image to gallery...', imageData.title);
+        const images = await getGalleryImages();
 
-    // Reset form
-    addImageForm.reset();
-    document.getElementById('imageUrl').value = '';
-    document.getElementById('imageTitle').value = '';
-    imagePreview.innerHTML = `
-        <i class="bi bi-cloud-upload fs-1"></i>
-        <p class="mb-0 mt-2 small">Preview will appear here</p>
-    `;
+        // Safety check: avoid duplicates or infinite growth if something is wrong
+        if (!Array.isArray(images)) {
+            console.error('Gallery images is not an array:', images);
+            throw new Error('Gallery data is corrupted. Resetting to defaults.');
+        }
 
-    alert('Image added successfully!');
+        images.unshift(imageData);
+        await saveGalleryImages(images);
+
+        // Reset form
+        addImageForm.reset();
+        document.getElementById('imageUrl').value = '';
+        document.getElementById('imageTitle').value = '';
+        imagePreview.innerHTML = `
+            <i class="bi bi-cloud-upload fs-1"></i>
+            <p class="mb-0 mt-2 small">Preview will appear here</p>
+        `;
+
+        alert('Image added successfully!');
+    } catch (e) {
+        console.error('addImageAndSave error:', e);
+        alert('Could not add image: ' + e.message);
+    }
 }
 
 async function removeImage(index) {
