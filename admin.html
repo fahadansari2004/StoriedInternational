@@ -198,9 +198,40 @@
                                         <textarea class="form-control" id="aboutP2" rows="3"></textarea>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">Image URL</label>
-                                        <input type="url" class="form-control" id="aboutImageUrl"
-                                            placeholder="https://example.com/image.jpg">
+                                        <label class="form-label">Image Source</label>
+                                        <div class="btn-group btn-group-sm w-100 mb-3" role="group">
+                                            <input type="radio" class="btn-check" name="aboutSourceType"
+                                                id="aboutSourceUrl" value="url" checked>
+                                            <label class="btn btn-outline-primary" for="aboutSourceUrl">Image
+                                                URL</label>
+
+                                            <input type="radio" class="btn-check" name="aboutSourceType"
+                                                id="aboutSourceUpload" value="upload">
+                                            <label class="btn btn-outline-primary" for="aboutSourceUpload">Upload
+                                                File</label>
+                                        </div>
+
+                                        <div id="aboutUrlGroup">
+                                            <label class="form-label small text-muted">Image URL</label>
+                                            <input type="url" class="form-control" id="aboutImageUrl"
+                                                placeholder="https://example.com/image.jpg">
+                                        </div>
+
+                                        <div id="aboutUploadGroup" style="display: none;">
+                                            <label class="form-label small text-muted">Choose Image</label>
+                                            <div class="d-flex gap-2">
+                                                <input type="file" id="aboutImageFile" accept="image/*" class="d-none">
+                                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                                    id="aboutBrowseBtn">
+                                                    <i class="bi bi-folder2-open me-1"></i>Browse...
+                                                </button>
+                                                <div id="aboutImagePreview"
+                                                    class="border rounded p-1 text-center bg-white"
+                                                    style="width: 50px; height: 50px;">
+                                                    <i class="bi bi-image text-muted" style="font-size: 1.5rem;"></i>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Badge Text</label>

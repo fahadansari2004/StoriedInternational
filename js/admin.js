@@ -187,6 +187,7 @@ function compressImage(base64Str, maxWidth = 1200, quality = 0.7) {
 let loginSection, adminSection, loginForm, logoutBtn;
 let addImageForm, galleryList, imageCountBadge;
 let sourceUrl, sourceUpload, urlInputGroup, uploadInputGroup, imageFile, imagePreview;
+let aboutSourceUrl, aboutSourceUpload, aboutUrlGroup, aboutUploadGroup, aboutImageFile, aboutImagePreview, aboutBrowseBtn;
 
 async function init() {
     loginSection = document.getElementById('loginSection');
@@ -202,6 +203,15 @@ async function init() {
     uploadInputGroup = document.getElementById('uploadInputGroup');
     imageFile = document.getElementById('imageFile');
     imagePreview = document.getElementById('imagePreview');
+
+    // About section elements
+    aboutSourceUrl = document.getElementById('aboutSourceUrl');
+    aboutSourceUpload = document.getElementById('aboutSourceUpload');
+    aboutUrlGroup = document.getElementById('aboutUrlGroup');
+    aboutUploadGroup = document.getElementById('aboutUploadGroup');
+    aboutImageFile = document.getElementById('aboutImageFile');
+    aboutImagePreview = document.getElementById('aboutImagePreview');
+    aboutBrowseBtn = document.getElementById('aboutBrowseBtn');
 
     // Always attach logout handler (needed when reloading while logged in)
     logoutBtn?.addEventListener('click', handleLogout);
@@ -246,6 +256,18 @@ async function init() {
 
     // Reset gallery
     document.getElementById('resetGalleryBtn')?.addEventListener('click', handleResetGallery);
+
+    // About toggle
+    aboutSourceUrl?.addEventListener('change', () => {
+        aboutUrlGroup.style.display = 'block';
+        aboutUploadGroup.style.display = 'none';
+    });
+    aboutSourceUpload?.addEventListener('change', () => {
+        aboutUrlGroup.style.display = 'none';
+        aboutUploadGroup.style.display = 'block';
+    });
+    aboutBrowseBtn?.addEventListener('click', () => aboutImageFile?.click());
+    aboutImageFile?.addEventListener('change', handleAboutFilePreview);
 
     // Content forms
     await initContentForms();
@@ -363,13 +385,28 @@ async function initContentForms() {
     document.getElementById('aboutForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const c = await getSiteContent();
+
+        let aboutImageUrl = document.getElementById('aboutImageUrl').value;
+
+        // Handle uploaded image
+        if (aboutSourceUpload?.checked && aboutImageFile?.files[0]) {
+            const file = aboutImageFile.files[0];
+            const reader = new Promise((resolve) => {
+                const r = new FileReader();
+                r.onload = (event) => resolve(event.target.result);
+                r.readAsDataURL(file);
+            });
+            const base64 = await reader;
+            aboutImageUrl = await compressImage(base64);
+        }
+
         c.about = {
             ...c.about,
             heading: document.getElementById('aboutHeading').value,
             title: document.getElementById('aboutTitle').value,
             paragraph1: document.getElementById('aboutP1').value,
             paragraph2: document.getElementById('aboutP2').value,
-            imageUrl: document.getElementById('aboutImageUrl').value,
+            imageUrl: aboutImageUrl,
             badgeText: document.getElementById('aboutBadge').value
         };
         await saveSiteContent(c);
@@ -545,6 +582,17 @@ function handleFilePreview() {
         imagePreview.innerHTML = `
             <img src="${e.target.result}" class="img-fluid rounded" style="max-height: 140px; object-fit: contain;">
         `;
+    };
+    reader.readAsDataURL(file);
+}
+
+function handleAboutFilePreview() {
+    const file = aboutImageFile.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        aboutImagePreview.innerHTML = `<img src="${e.target.result}" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover;">`;
     };
     reader.readAsDataURL(file);
 }
