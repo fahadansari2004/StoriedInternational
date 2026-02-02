@@ -221,5 +221,12 @@
         renderContent();
     }
 
+    // Update content live if changed in another tab (admin panel)
+    window.addEventListener('storage', (e) => {
+        if (e.key === STORAGE_KEY) {
+            renderContent();
+        }
+    });
+
     window.EventProContent = { getContent, renderContent };
 })();

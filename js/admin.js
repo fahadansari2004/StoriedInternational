@@ -254,7 +254,11 @@ function initContentForms() {
     document.getElementById('certForm')?.addEventListener('submit', (e) => {
         e.preventDefault();
         const c = getSiteContent();
-        c.certification = { line1: document.getElementById('certLine1').value, line2: document.getElementById('certLine2').value };
+        c.certification = {
+            ...c.certification,
+            line1: document.getElementById('certLine1').value,
+            line2: document.getElementById('certLine2').value
+        };
         saveSiteContent(c);
         alert('Certification saved!');
     });
@@ -300,6 +304,7 @@ function initContentForms() {
         const c = getSiteContent();
         const phone = document.getElementById('contactPhone').value;
         c.contact = {
+            ...c.contact,
             address: document.getElementById('contactAddress').value,
             phone,
             phoneRaw: phone.replace(/\D/g, ''),
@@ -313,6 +318,7 @@ function initContentForms() {
         e.preventDefault();
         const c = getSiteContent();
         c.footer = {
+            ...c.footer,
             companyName: document.getElementById('footerName').value,
             description: document.getElementById('footerDesc').value,
             copyright: document.getElementById('footerCopyright').value
