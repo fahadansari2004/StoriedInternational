@@ -4,7 +4,7 @@
  */
 const SUPABASE_CONFIG = {
     URL: 'https://bdkkonflbagulfiexkkk.supabase.co',
-    ANON_KEY: 'sb_secret_OrHMxyVS2mRQ0rjOxFvTew_qN5C2-Z4'
+    ANON_KEY: 'sb_publishable_Q993aN30rhit-cHlBw_PuA_GVaTGMPe'
 };
 
 // Initialize Supabase Client
