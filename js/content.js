@@ -67,8 +67,20 @@
         return result;
     }
 
-    function getContent() {
+    async function getContent() {
         try {
+            // Try Supabase first
+            if (typeof supabase !== 'undefined' && typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG.URL !== 'https://your-project-url.supabase.co') {
+                const { data, error } = await supabase
+                    .from('site_content')
+                    .select('content')
+                    .single();
+
+                if (data && data.content) {
+                    return deepMerge(DEFAULT_CONTENT, data.content);
+                }
+            }
+
             const stored = localStorage.getItem(STORAGE_KEY);
             if (stored) {
                 const parsed = JSON.parse(stored);
@@ -87,8 +99,8 @@
         return div.innerHTML;
     }
 
-    function renderContent() {
-        const content = getContent();
+    async function renderContent() {
+        const content = await getContent();
 
         // Hero
         const heroTagline = document.getElementById('hero-tagline');
@@ -215,18 +227,34 @@
         if (footerCopyright) footerCopyright.textContent = content.footer.copyright;
     }
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', renderContent);
-    } else {
+    function init() {
         renderContent();
+
+        // Update content live if changed in another tab (admin panel local)
+        window.addEventListener('storage', (e) => {
+            if (e.key === STORAGE_KEY) {
+                renderContent();
+            }
+        });
+
+        // Supabase Realtime Updates (Global)
+        if (typeof supabase !== 'undefined' && typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG.URL !== 'https://your-project-url.supabase.co') {
+            supabase
+                .channel('public:site_content')
+                .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'site_content' }, payload => {
+                    if (payload.new && payload.new.content) {
+                        renderContent();
+                    }
+                })
+                .subscribe();
+        }
     }
 
-    // Update content live if changed in another tab (admin panel)
-    window.addEventListener('storage', (e) => {
-        if (e.key === STORAGE_KEY) {
-            renderContent();
-        }
-    });
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
 
     window.EventProContent = { getContent, renderContent };
 })();

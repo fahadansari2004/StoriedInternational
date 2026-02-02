@@ -59,8 +59,21 @@ function deepMerge(target, source) {
     return result;
 }
 
-function getSiteContent() {
+async function getSiteContent() {
     try {
+        // Try Supabase first
+        if (typeof supabase !== 'undefined' && SUPABASE_CONFIG.URL !== 'https://your-project-url.supabase.co') {
+            const { data, error } = await supabase
+                .from('site_content')
+                .select('content')
+                .single();
+
+            if (data && data.content) {
+                return deepMerge(DEFAULT_CONTENT, data.content);
+            }
+            if (error) console.warn('Supabase fetch error, falling back to localStorage:', error);
+        }
+
         const stored = localStorage.getItem(CONTENT_STORAGE_KEY);
         if (stored) {
             const parsed = JSON.parse(stored);
@@ -68,12 +81,24 @@ function getSiteContent() {
         }
         return JSON.parse(JSON.stringify(DEFAULT_CONTENT));
     } catch (e) {
+        console.error('Content load error:', e);
         return JSON.parse(JSON.stringify(DEFAULT_CONTENT));
     }
 }
 
-function saveSiteContent(content) {
+async function saveSiteContent(content) {
+    // Save to localStorage (local backup)
     localStorage.setItem(CONTENT_STORAGE_KEY, JSON.stringify(content));
+
+    // Save to Supabase (global)
+    if (typeof supabase !== 'undefined' && SUPABASE_CONFIG.URL !== 'https://your-project-url.supabase.co') {
+        const { error } = await supabase
+            .from('site_content')
+            .upsert({ id: 1, content: content });
+
+        if (error) console.error('Supabase save error:', error);
+    }
+
     if (window.EventProContent?.renderContent) EventProContent.renderContent();
 }
 
