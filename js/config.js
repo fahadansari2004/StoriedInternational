@@ -8,4 +8,8 @@ const SUPABASE_CONFIG = {
 };
 
 // Initialize Supabase Client
+console.log('--- Supabase Initialization ---');
+console.log('Project URL:', SUPABASE_CONFIG.URL);
 const supabaseClient = typeof window !== 'undefined' && window.supabase ? window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY) : null;
+console.log('Client Created:', !!supabaseClient);
+console.log('-------------------------------');
