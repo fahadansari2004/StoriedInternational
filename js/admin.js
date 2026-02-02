@@ -156,6 +156,33 @@ const GALLERY_CONFIG = {
     ]
 };
 
+/**
+ * Compress an image before uploading to stay within Supabase size limits
+ */
+function compressImage(base64Str, maxWidth = 1200, quality = 0.7) {
+    return new Promise((resolve) => {
+        const img = new Image();
+        img.src = base64Str;
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let width = img.width;
+            let height = img.height;
+
+            if (width > maxWidth) {
+                height = (maxWidth / width) * height;
+                width = maxWidth;
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.onerror = () => resolve(base64Str); // Fallback to original
+    });
+}
+
 // DOM Elements
 let loginSection, adminSection, loginForm, logoutBtn;
 let addImageForm, galleryList, imageCountBadge;
@@ -186,6 +213,13 @@ async function init() {
     if (sessionStorage.getItem(GALLERY_CONFIG.ADMIN_SESSION_KEY) === 'true') {
         await showAdminDashboard();
     }
+
+    // Force sync button
+    document.getElementById('forceSyncBtn')?.addEventListener('click', async () => {
+        if (!confirm('This will overwrite your local changes with data from the Cloud. Continue?')) return;
+        localStorage.removeItem(CONTENT_STORAGE_KEY);
+        location.reload();
+    });
 
     // Source type toggle
     sourceUrl?.addEventListener('change', () => {
@@ -515,7 +549,7 @@ function handleFilePreview() {
     reader.readAsDataURL(file);
 }
 
-function handleAddImage(e) {
+async function handleAddImage(e) {
     e.preventDefault();
 
     const title = document.getElementById('imageTitle').value.trim() || 'Gallery Image';
@@ -535,15 +569,16 @@ function handleAddImage(e) {
             return;
         }
         const reader = new FileReader();
-        reader.onload = (event) => {
-            imageData = { url: event.target.result, title };
-            addImageAndSave(imageData);
+        reader.onload = async (event) => {
+            const compressedUrl = await compressImage(event.target.result);
+            imageData = { url: compressedUrl, title };
+            await addImageAndSave(imageData);
         };
         reader.readAsDataURL(file);
         return;
     }
 
-    addImageAndSave(imageData);
+    await addImageAndSave(imageData);
 }
 
 async function addImageAndSave(imageData) {
