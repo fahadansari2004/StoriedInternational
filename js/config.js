@@ -8,4 +8,4 @@ const SUPABASE_CONFIG = {
 };
 
 // Initialize Supabase Client
-const supabase = typeof supabase !== 'undefined' ? supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY) : null;
+const supabaseClient = typeof window !== 'undefined' && window.supabase ? window.supabase.createClient(SUPABASE_CONFIG.URL, SUPABASE_CONFIG.ANON_KEY) : null;

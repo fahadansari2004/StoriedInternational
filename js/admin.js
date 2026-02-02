@@ -62,8 +62,8 @@ function deepMerge(target, source) {
 async function getSiteContent() {
     try {
         // Try Supabase first
-        if (typeof supabase !== 'undefined' && SUPABASE_CONFIG.URL !== 'https://your-project-url.supabase.co') {
-            const { data, error } = await supabase
+        if (typeof supabaseClient !== 'undefined' && supabaseClient && SUPABASE_CONFIG.URL !== 'https://your-project-url.supabase.co') {
+            const { data, error } = await supabaseClient
                 .from('site_content')
                 .select('content')
                 .single();
@@ -91,8 +91,8 @@ async function saveSiteContent(content) {
     localStorage.setItem(CONTENT_STORAGE_KEY, JSON.stringify(content));
 
     // Save to Supabase (global)
-    if (typeof supabase !== 'undefined' && SUPABASE_CONFIG.URL !== 'https://your-project-url.supabase.co') {
-        const { error } = await supabase
+    if (typeof supabaseClient !== 'undefined' && supabaseClient && SUPABASE_CONFIG.URL !== 'https://your-project-url.supabase.co') {
+        const { error } = await supabaseClient
             .from('site_content')
             .upsert({ id: 1, content: content });
 
@@ -208,12 +208,12 @@ function handleLogout() {
     document.getElementById('adminPassword').classList.remove('is-invalid');
 }
 
-function showAdminDashboard() {
+async function showAdminDashboard() {
     loginSection.style.display = 'none';
     adminSection.style.display = 'block';
-    loadContentForms();
-    renderGalleryList();
-    renderTestimonialsList();
+    await loadContentForms();
+    await renderGalleryList();
+    await renderTestimonialsList();
 
     // Warn if opened via file:// - localStorage won't sync with main page
     if (window.location.protocol === 'file:') {
@@ -230,8 +230,8 @@ function showAdminDashboard() {
     }
 }
 
-function loadContentForms() {
-    const c = getSiteContent();
+async function loadContentForms() {
+    const c = await getSiteContent();
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
     set('heroTagline', c.hero.tagline);
     set('heroTitle', c.hero.title);
@@ -256,12 +256,12 @@ function loadContentForms() {
     set('footerCopyright', c.footer.copyright);
 }
 
-function initContentForms() {
-    const content = getSiteContent();
+async function initContentForms() {
+    // Initial load happens in showAdminDashboard
 
-    document.getElementById('heroForm')?.addEventListener('submit', (e) => {
+    document.getElementById('heroForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const c = getSiteContent();
+        const c = await getSiteContent();
         c.hero = {
             ...c.hero,
             tagline: document.getElementById('heroTagline').value,
@@ -272,25 +272,25 @@ function initContentForms() {
             eventsCount: document.getElementById('heroEvents').value,
             clientsCount: document.getElementById('heroClients').value
         };
-        saveSiteContent(c);
+        await saveSiteContent(c);
         alert('Hero section saved!');
     });
 
-    document.getElementById('certForm')?.addEventListener('submit', (e) => {
+    document.getElementById('certForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const c = getSiteContent();
+        const c = await getSiteContent();
         c.certification = {
             ...c.certification,
             line1: document.getElementById('certLine1').value,
             line2: document.getElementById('certLine2').value
         };
-        saveSiteContent(c);
+        await saveSiteContent(c);
         alert('Certification saved!');
     });
 
-    document.getElementById('aboutForm')?.addEventListener('submit', (e) => {
+    document.getElementById('aboutForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const c = getSiteContent();
+        const c = await getSiteContent();
         c.about = {
             ...c.about,
             heading: document.getElementById('aboutHeading').value,
@@ -300,13 +300,13 @@ function initContentForms() {
             imageUrl: document.getElementById('aboutImageUrl').value,
             badgeText: document.getElementById('aboutBadge').value
         };
-        saveSiteContent(c);
+        await saveSiteContent(c);
         alert('About section saved!');
     });
 
-    document.getElementById('addTestimonialForm')?.addEventListener('submit', (e) => {
+    document.getElementById('addTestimonialForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const c = getSiteContent();
+        const c = await getSiteContent();
         const name = document.getElementById('testimonialName').value;
         const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
         c.testimonials = c.testimonials || [];
@@ -318,15 +318,15 @@ function initContentForms() {
             status: 'approved',
             rating: 5
         });
-        saveSiteContent(c);
+        await saveSiteContent(c);
         document.getElementById('addTestimonialForm').reset();
-        renderTestimonialsList();
+        await renderTestimonialsList();
         alert('Testimonial added and published!');
     });
 
-    document.getElementById('adminContactForm')?.addEventListener('submit', (e) => {
+    document.getElementById('adminContactForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const c = getSiteContent();
+        const c = await getSiteContent();
         const phone = document.getElementById('contactPhone').value;
         c.contact = {
             ...c.contact,
@@ -335,20 +335,20 @@ function initContentForms() {
             phoneRaw: phone.replace(/\D/g, ''),
             email: document.getElementById('contactEmail').value
         };
-        saveSiteContent(c);
+        await saveSiteContent(c);
         alert('Contact info saved!');
     });
 
-    document.getElementById('footerForm')?.addEventListener('submit', (e) => {
+    document.getElementById('footerForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const c = getSiteContent();
+        const c = await getSiteContent();
         c.footer = {
             ...c.footer,
             companyName: document.getElementById('footerName').value,
             description: document.getElementById('footerDesc').value,
             copyright: document.getElementById('footerCopyright').value
         };
-        saveSiteContent(c);
+        await saveSiteContent(c);
         alert('Footer saved!');
     });
 }
@@ -360,8 +360,9 @@ function escapeHtml(str) {
     return div.innerHTML;
 }
 
-function renderTestimonialsList() {
-    const testimonials = getSiteContent().testimonials || [];
+async function renderTestimonialsList() {
+    const siteContent = await getSiteContent();
+    const testimonials = siteContent.testimonials || [];
     const pending = testimonials.filter(t => t.status === 'pending');
     const approved = testimonials.filter(t => t.status !== 'pending');
 

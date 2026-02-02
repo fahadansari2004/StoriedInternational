@@ -70,8 +70,8 @@
     async function getContent() {
         try {
             // Try Supabase first
-            if (typeof supabase !== 'undefined' && typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG.URL !== 'https://your-project-url.supabase.co') {
-                const { data, error } = await supabase
+            if (typeof supabaseClient !== 'undefined' && supabaseClient && typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG.URL !== 'https://your-project-url.supabase.co') {
+                const { data, error } = await supabaseClient
                     .from('site_content')
                     .select('content')
                     .single();
@@ -238,8 +238,8 @@
         });
 
         // Supabase Realtime Updates (Global)
-        if (typeof supabase !== 'undefined' && typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG.URL !== 'https://your-project-url.supabase.co') {
-            supabase
+        if (typeof supabaseClient !== 'undefined' && supabaseClient && typeof SUPABASE_CONFIG !== 'undefined' && SUPABASE_CONFIG.URL !== 'https://your-project-url.supabase.co') {
+            supabaseClient
                 .channel('public:site_content')
                 .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'site_content' }, payload => {
                     if (payload.new && payload.new.content) {
