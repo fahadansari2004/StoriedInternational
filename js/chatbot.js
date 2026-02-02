@@ -40,7 +40,7 @@ Would you like to know more about any specific service?`
 • Venue selection
 • Date and duration
 
-Average pricing ranges from ₹3 lakhs to ₹15 lakhs. For a detailed quote tailored to your needs, please fill out our contact form or call us at +91 73560 44637.`
+Average pricing ranges from ₹3 lakhs to ₹15 lakhs. For a detailed quote tailored to your needs, please fill out our contact form or call us at 7356044637.`
         },
         booking: {
             keywords: ['book', 'booking', 'reserve', 'schedule', 'plan event', 'organize'],
@@ -57,7 +57,7 @@ Would you like me to direct you to the contact form?`
             keywords: ['contact', 'phone', 'email', 'reach', 'call', 'address'],
             response: `You can reach us through:
 
-📞 Phone: +91 73560 44637
+📞 Phone: 7356044637
 📧 Email: Storiedeventplanners@gmail.com
 📍 Address: 123 Event Street, City
 
@@ -108,7 +108,7 @@ We use the latest equipment to ensure stunning results!`
             response: `To check availability for your event date:
 
 1. Fill out our contact form with your preferred date
-2. Call us directly at +91 73560 44637
+2. Call us directly at 7356044637
 3. Email us at Storiedeventplanners@gmail.com
 
 We'll respond within 24 hours with our availability and next steps!`
@@ -287,7 +287,7 @@ What would you like to know?`
 • Corporate Events
 
 Please ask me about any of these topics, or you can:
-📞 Call us: +91 73560 44637
+📞 Call us: 7356044637
 📧 Email: Storiedeventplanners@gmail.com`;
     }
 

@@ -42,8 +42,8 @@
             address: "123 Event Street, City, State 12345",
             addressLine1: "123 Event Street",
             addressLine2: "City, State 12345",
-            phone: "+91 73560 44637",
-            phoneRaw: "+917356044637",
+            phone: "7356044637",
+            phoneRaw: "7356044637",
             email: "Storiedeventplanners@gmail.com"
         },
         footer: {
