@@ -96,10 +96,36 @@ async function saveSiteContent(content) {
             .from('site_content')
             .upsert({ id: 1, content: content });
 
-        if (error) console.error('Supabase save error:', error);
+        if (error) {
+            console.error('Supabase save error:', error);
+            alert('Error saving to Cloud Database: ' + error.message + '\n\nData saved LOCALLY only.');
+        } else {
+            console.log('Successfully saved to Supabase');
+        }
+    } else {
+        console.warn('Supabase not configured, saving locally only');
     }
 
     if (window.EventProContent?.renderContent) EventProContent.renderContent();
+}
+
+async function checkSupabaseConnection() {
+    const statusEl = document.getElementById('db-status');
+    if (!statusEl) return;
+
+    if (typeof supabaseClient === 'undefined' || !supabaseClient || SUPABASE_CONFIG.URL.includes('your-project-url')) {
+        statusEl.innerHTML = '<span class="badge bg-danger">Database Not Configured</span>';
+        return;
+    }
+
+    try {
+        const { data, error } = await supabaseClient.from('site_content').select('id').limit(1);
+        if (error) throw error;
+        statusEl.innerHTML = '<span class="badge bg-success">Cloud Database Connected</span>';
+    } catch (e) {
+        console.error('Connection check failed:', e);
+        statusEl.innerHTML = `<span class="badge bg-warning text-dark">DB Error: ${e.message}</span>`;
+    }
 }
 
 const GALLERY_CONFIG = {
@@ -211,6 +237,7 @@ function handleLogout() {
 async function showAdminDashboard() {
     loginSection.style.display = 'none';
     adminSection.style.display = 'block';
+    await checkSupabaseConnection();
     await loadContentForms();
     await renderGalleryList();
     await renderTestimonialsList();
