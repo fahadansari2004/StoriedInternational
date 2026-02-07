@@ -374,8 +374,13 @@ html {
 }
 
 /* Typing Effect Cursor */
-.typing-cursor::after {
-    content: '|';
+.typing-cursor {
+    display: inline-block;
+    width: 4px;
+    height: 1em;
+    background-color: #ffc107;
+    margin-left: 5px;
+    vertical-align: text-bottom;
     animation: blink 1s step-end infinite;
 }
 
