@@ -167,6 +167,7 @@ body {
         margin: 0 !important;
     }
 
+    #recent-gallery-container .gallery-item-alt,
     #recent-gallery-container .gallery-item {
         height: 80px !important;
         border-radius: 2px !important;

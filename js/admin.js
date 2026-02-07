@@ -623,21 +623,43 @@ async function initContentForms() {
 
     document.getElementById('addRecentHighlightForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const c = await getSiteContent();
+        try {
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Adding...';
 
-        const imageUrl = await getFileData('recentHighlightFile', 'recentImageUrl');
-        if (!imageUrl) return alert('Please provide an image URL or upload a file.');
+            const c = await getSiteContent();
+            const imageUrl = await getFileData('recentHighlightFile', 'recentImageUrl');
 
-        c.gallery.recent = c.gallery.recent || [];
-        c.gallery.recent.unshift({
-            url: imageUrl,
-            title: 'Highlight'
-        });
-        await saveSiteContent(c);
-        e.target.reset();
-        document.getElementById('recentHighlightPreview').style.display = 'none';
-        await renderRecentHighlightsList();
-        alert('Highlight added!');
+            if (!imageUrl) {
+                alert('Please provide an image URL or choose a file.');
+                btn.disabled = false;
+                btn.innerHTML = 'Add Image';
+                return;
+            }
+
+            c.gallery.recent = c.gallery.recent || [];
+            c.gallery.recent.unshift({
+                url: imageUrl,
+                title: 'Highlight'
+            });
+
+            await saveSiteContent(c);
+            e.target.reset();
+            document.getElementById('recentHighlightPreview').style.display = 'none';
+            await renderRecentHighlightsList();
+            alert('Highlight added successfully!');
+
+            // Clear file input manually
+            document.getElementById('recentHighlightFile').value = '';
+        } catch (err) {
+            console.error('Error adding highlight:', err);
+            alert('Failed to add highlight: ' + err.message);
+        } finally {
+            const btn = e.target.querySelector('button[type="submit"]');
+            btn.disabled = false;
+            btn.innerHTML = 'Add Image';
+        }
     });
 
     document.getElementById('aboutForm')?.addEventListener('submit', async (e) => {
