@@ -40,11 +40,20 @@
 
 @media (max-width: 768px) {
     .whatsapp-float {
-        bottom: 70px;
+        bottom: 90px;
         right: 20px;
         width: 55px;
         height: 55px;
         font-size: 28px;
+    }
+
+    /* Fix hero button positioning on mobile */
+    .hero-section .btn {
+        margin-top: 20px !important;
+    }
+
+    .hero-section .d-flex.gap-3 {
+        margin-top: 30px !important;
     }
 }
 
