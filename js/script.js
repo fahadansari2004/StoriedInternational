@@ -301,6 +301,14 @@
             hiddenIframe.removeEventListener('load', activeHandler);
         };
 
+        // Safety timeout in case iframe load event doesn't fire (e.g., network issues or cross-origin blocking)
+        setTimeout(() => {
+            if (!submitted) {
+                console.warn('Iframe load timeout - assuming submission or network issue');
+                activeHandler();
+            }
+        }, 8000); // 8 seconds timeout
+
         hiddenIframe.addEventListener('load', activeHandler);
 
         // Verify submit happens - we need to actually let the submit event finish
