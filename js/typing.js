@@ -6,10 +6,9 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Expose init function to window so content.js can call it
     window.initTypingEffect = function () {
-        const titleElement = document.getElementById('hero-title');
         const dynamicElement = document.getElementById('dynamic-text');
 
-        if (!titleElement || !dynamicElement) return;
+        if (!dynamicElement) return;
 
         // Premium Phrases meant to follow "Partner with Storied International for "
         const phrases = [
