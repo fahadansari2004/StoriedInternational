@@ -80,31 +80,41 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero-section p-0">
-        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+        <div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="4000">
             <div id="hero-carousel-inner" class="carousel-inner">
-                <!-- Slides loaded dynamically -->
+                <!-- Image Slides loaded dynamically -->
                 <div class="carousel-item active">
                     <div class="hero-slide-bg"
                         style="background-image: url('https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1600&fit=crop');">
                     </div>
-                    <div class="hero-overlay"></div>
-                    <div class="container hero-container">
-                        <div class="row align-items-center min-vh-100">
-                            <div class="col-lg-8 text-white">
-                                <h6 class="text-uppercase text-warning mb-3">Kerala's #1 Exclusive Event Company</h6>
-                                <h1 class="display-2 fw-bold mb-4">Partner with Storied International for Your Dream
-                                    Events</h1>
-                                <p class="lead mb-4">We make everything from corporate event planning and personal
-                                    celebrations to customized event packages absolutely memorable!</p>
-                                <div class="d-flex flex-wrap gap-3">
-                                    <a href="#contact" class="btn btn-warning btn-lg">Contact Us</a>
-                                    <a href="#services" class="btn btn-outline-light btn-lg">Our Services</a>
-                                </div>
+                </div>
+            </div>
+
+            <!-- Static Global Overlay -->
+            <div class="hero-overlay"></div>
+
+            <!-- Static Content Overlay -->
+            <div class="fixed-overlay d-flex align-items-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-8 text-white hero-content-fade-in">
+                            <h6 id="hero-tagline" class="text-uppercase text-warning mb-3 fw-bold"
+                                style="letter-spacing: 2px;">Kerala's #1 Exclusive Event Company</h6>
+                            <h1 id="hero-title" class="display-2 fw-bold mb-4">Partner with Storied International for
+                                Your Dream Events</h1>
+                            <p id="hero-subtitle" class="lead mb-4 opacity-75">We make everything from corporate event
+                                planning and personal celebrations to customized event packages absolutely memorable!
+                            </p>
+                            <div class="d-flex flex-wrap gap-3">
+                                <a href="#contact" class="btn btn-warning btn-lg px-4 py-3 shadow-lg">Contact Us</a>
+                                <a href="#services" class="btn btn-outline-light btn-lg px-4 py-3 shadow-lg">Our
+                                    Services</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
             <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>

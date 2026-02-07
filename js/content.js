@@ -157,28 +157,27 @@
     async function renderContent() {
         const content = await getContent();
 
-        // Hero Carousel
+        // Hero Carousel & Static Text
         const carouselInner = document.getElementById('hero-carousel-inner');
-        if (carouselInner && content.hero.slides?.length) {
-            carouselInner.innerHTML = content.hero.slides.map((slide, index) => `
-                <div class="carousel-item ${index === 0 ? 'active' : ''}">
-                    <div class="hero-slide-bg" style="background-image: url('${slide.image}')"></div>
-                    <div class="hero-overlay"></div>
-                    <div class="container hero-container">
-                        <div class="row align-items-center min-vh-100">
-                            <div class="col-lg-8 text-white">
-                                <h6 class="text-uppercase text-warning mb-3">${escapeHtml(slide.tagline || '')}</h6>
-                                <h1 class="display-2 fw-bold mb-4">${escapeHtml(slide.title || '')}</h1>
-                                <p class="lead mb-4">${escapeHtml(slide.subtitle || '')}</p>
-                                <div class="d-flex flex-wrap gap-3">
-                                    <a href="#contact" class="btn btn-warning btn-lg">Contact Us</a>
-                                    <a href="#services" class="btn btn-outline-light btn-lg">Our Services</a>
-                                </div>
-                            </div>
-                        </div>
+        const heroTagline = document.getElementById('hero-tagline');
+        const heroTitle = document.getElementById('hero-title');
+        const heroSubtitle = document.getElementById('hero-subtitle');
+
+        if (content.hero.slides?.length) {
+            // Render images only
+            if (carouselInner) {
+                carouselInner.innerHTML = content.hero.slides.map((slide, index) => `
+                    <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                        <div class="hero-slide-bg" style="background-image: url('${slide.image}')"></div>
                     </div>
-                </div>
-            `).join('');
+                `).join('');
+            }
+
+            // Render static text from first slide
+            const firstSlide = content.hero.slides[0];
+            if (heroTagline) heroTagline.textContent = firstSlide.tagline || '';
+            if (heroTitle) heroTitle.textContent = firstSlide.title || '';
+            if (heroSubtitle) heroSubtitle.textContent = firstSlide.subtitle || '';
         }
 
         // Hero Stats
