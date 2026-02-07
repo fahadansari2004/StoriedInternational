@@ -509,9 +509,14 @@ footer a {
     }
 
     #hero-title.display-3 {
-        font-size: 1.8rem;
-        /* Smaller to prevent 4-line wrapping */
-        line-height: 1.3;
+        font-size: 2.2rem;
+        /* Slightly larger as requested */
+        line-height: 1.2;
+    }
+
+    #hero-subtitle {
+        display: none !important;
+        /* Hide on mobile */
     }
 
     h2.display-2 {
