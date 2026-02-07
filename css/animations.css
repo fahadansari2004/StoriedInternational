@@ -198,7 +198,7 @@ html {
 
 .reveal-scale {
     opacity: 0;
-    transform: scale(0.8);
+    transform: scale(0.9);
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -207,293 +207,46 @@ html {
     transform: scale(1);
 }
 
-/* ===== NAVBAR ANIMATIONS ===== */
-
-.navbar {
-    transition: all 0.3s ease;
-}
-
-.navbar.scrolled {
-    background: rgba(33, 37, 41, 0.98) !important;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-}
-
-.nav-link {
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-.nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background: #ffc107;
-    transition: all 0.3s ease;
-    transform: translateX(-50%);
-}
-
-.nav-link:hover::after,
-.nav-link.active::after {
-    width: 80%;
-}
-
-.nav-link:hover {
-    color: #ffc107 !important;
-    transform: translateY(-2px);
-}
-
-/* ===== TESTIMONIAL CARD ANIMATIONS ===== */
-
-.testimonial-card {
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+/* ===== SKELETON LOADING ===== */
+.skeleton {
+    background-color: #e0e0e0;
+    border-radius: 4px;
     position: relative;
     overflow: hidden;
 }
 
-.testimonial-card::before {
-    content: '';
+.skeleton::after {
+    content: "";
+    display: block;
     position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(circle, rgba(255, 193, 7, 0.1) 0%, transparent 70%);
-    transform: scale(0);
-    transition: transform 0.6s ease;
+    top: 0;
+    left: -150px;
+    height: 100%;
+    width: 150px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: shimmer 1.5s infinite;
 }
-
-.testimonial-card:hover::before {
-    transform: scale(1);
-}
-
-.testimonial-card:hover {
-    transform: translateY(-10px) rotate(1deg);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-}
-
-/* ===== CONTACT INFO ANIMATIONS ===== */
-
-.contact-info-card {
-    transition: all 0.4s ease;
-    cursor: pointer;
-}
-
-.contact-info-card:hover {
-    transform: translateY(-10px) scale(1.05);
-    box-shadow: 0 15px 30px rgba(255, 193, 7, 0.3) !important;
-    background: linear-gradient(135deg, #fff 0%, #fff9e6 100%);
-}
-
-.contact-info-card i {
-    transition: all 0.4s ease;
-}
-
-.contact-info-card:hover i {
-    transform: scale(1.2) rotate(10deg);
-    color: #ffc107 !important;
-}
-
-/* ===== FLOATING ANIMATION ===== */
-
-@keyframes float {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-20px);
-    }
-}
-
-.float-animation {
-    animation: float 3s ease-in-out infinite;
-}
-
-/* ===== SHIMMER EFFECT ===== */
 
 @keyframes shimmer {
     0% {
-        background-position: -1000px 0;
+        left: -150px;
     }
 
     100% {
-        background-position: 1000px 0;
+        left: 100%;
     }
-}
-
-.shimmer {
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-    background-size: 1000px 100%;
-    animation: shimmer 2s infinite;
-}
-
-/* ===== PULSE GLOW EFFECT ===== */
-
-@keyframes pulseGlow {
-
-    0%,
-    100% {
-        box-shadow: 0 0 20px rgba(255, 193, 7, 0.5);
-    }
-
-    50% {
-        box-shadow: 0 0 40px rgba(255, 193, 7, 0.8);
-    }
-}
-
-.pulse-glow {
-    animation: pulseGlow 2s ease-in-out infinite;
-}
-
-/* ===== FOOTER LINK ANIMATIONS ===== */
-
-footer a {
-    position: relative;
-    display: inline-block;
-    transition: all 0.3s ease;
-}
-
-footer a::before {
-    content: '→';
-    position: absolute;
-    left: -20px;
-    opacity: 0;
-    transition: all 0.3s ease;
-}
-
-footer a:hover::before {
-    left: -15px;
-    opacity: 1;
-}
-
-footer a:hover {
-    transform: translateX(5px);
-    color: #ffc107 !important;
-}
-
-/* ===== SOCIAL ICONS ANIMATION ===== */
-
-.social-links a {
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    display: inline-block;
-}
-
-.social-links a:hover {
-    transform: translateY(-5px) scale(1.2) rotate(10deg);
-    color: #ffc107 !important;
-}
-
-/* ===== LOADING SPINNER ANIMATION ===== */
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-.spinner-border {
-    animation: spin 0.75s linear infinite;
-}
-
-/* ===== IMAGE LOADING EFFECT ===== */
-
-img {
-    opacity: 0;
-    animation: fadeInImage 0.5s ease forwards;
-}
-
-@keyframes fadeInImage {
-    to {
-        opacity: 1;
-    }
-}
-
-/* ===== FORM INPUT ANIMATIONS ===== */
-
-.form-control,
-.form-select {
-    transition: all 0.3s ease;
-}
-
-.form-control:focus,
-.form-select:focus {
-    transform: scale(1.02);
-    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.2) !important;
-}
-
-/* ===== MOBILE OPTIMIZATIONS ===== */
-
-@media (max-width: 768px) {
-
-    .gallery-item:hover,
-    .gallery-item-alt:hover {
-        transform: scale(1.02);
-    }
-
-    .card:hover {
-        transform: translateY(-5px);
-    }
-}
-
-/* ===== PERFORMANCE OPTIMIZATIONS ===== */
-
-.gallery-item,
-.gallery-item-alt,
-.card,
-.btn {
-    will-change: transform;
-}
-
-/* Reduce animations for users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-/* ===== SKELETON LOADING ===== */
-.skeleton {
-    background: #e0e0e0;
-    background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
-    background-size: 200% 100%;
-    animation: skeleton-loading 1.5s infinite;
-    border-radius: 4px;
-    color: transparent !important;
-    pointer-events: none;
-    user-select: none;
 }
 
 .skeleton-text {
-    height: 1em;
-    margin-bottom: 0.5em;
-    border-radius: 4px;
+    height: 1rem;
+    margin-bottom: 0.5rem;
+    width: 100%;
 }
 
 .skeleton-img {
     width: 100%;
     height: 100%;
-    display: block;
-}
-
-@keyframes skeleton-loading {
-    0% {
-        background-position: 200% 0;
-    }
-
-    100% {
-        background-position: -200% 0;
-    }
+    background-color: #ccc;
 }
 
 /* ===== PARALLAX BACKGROUND ===== */
@@ -558,4 +311,108 @@ img {
 
 .stagger-fade-in>*:nth-child(12) {
     animation-delay: 0.65s;
+}
+
+/* ===== HIGH-END VISUALS UPDATE ===== */
+
+/* Glassmorphism Navbar */
+.navbar.scrolled {
+    background: rgba(33, 37, 41, 0.85) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Glassmorphism Cards */
+.glass-effect {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Animated Gradient Text */
+.gradient-text {
+    background: linear-gradient(300deg, #ffc107, #ff9800, #ff5722, #ffc107);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: gradientText 5s ease infinite;
+}
+
+@keyframes gradientText {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Background Blobs */
+.bg-blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+    opacity: 0.4;
+    animation: blobFloat 10s infinite alternate;
+}
+
+@keyframes blobFloat {
+    0% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    100% {
+        transform: translate(30px, -30px) scale(1.1);
+    }
+}
+
+/* Typing Effect Cursor */
+.typing-cursor::after {
+    content: '|';
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+/* Premium Button Gradient */
+.btn-premium {
+    background: linear-gradient(45deg, #ffc107, #ffca2c);
+    border: none;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.btn-premium::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #ffca2c, #ffc107);
+    opacity: 0;
+    z-index: -1;
+    transition: opacity 0.3s;
+}
+
+.btn-premium:hover::after {
+    opacity: 1;
 }
