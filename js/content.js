@@ -329,26 +329,12 @@
             threshold: 0.15,
             rootMargin: '0px 0px -50px 0px'
         };
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
-            observer.observe(el);
-        });
-    }
-
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
-    } else {
-        init();
-    }
-
-    window.EventProContent = { getContent, renderContent };
-})();
+        window.EventProContent = { getContent, renderContent };
+    }) ();
+    ```
