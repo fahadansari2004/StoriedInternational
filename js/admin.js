@@ -51,11 +51,15 @@ const DEFAULT_CONTENT = {
         albums: [
             {
                 id: 'album-1',
-                title: 'Wedding Events',
+                title: 'On the way this',
+                subtitle: 'A Beautiful Event Collection',
+                descriptionTitle: 'A Timeless Story',
+                description: 'A breathtaking celebration set against the majestic backdrop. Every detail, from the floral arrangements to the traditional ceremonies, was curated to reflect their timeless love story. The event was a beautiful blend of traditional rituals and modern festivities, creating memories that will be cherished for a lifetime.',
                 coverUrl: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&h=400&fit=crop',
                 images: [
                     { url: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&fit=crop', title: 'Wedding Day 1' },
-                    { url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&fit=crop', title: 'Wedding Day 2' }
+                    { url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&fit=crop', title: 'Wedding Day 2' },
+                    { url: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=800&fit=crop', title: 'Wedding Day 3' }
                 ]
             }
         ],
