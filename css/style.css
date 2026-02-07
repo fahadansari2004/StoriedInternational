@@ -706,3 +706,47 @@ button,
         display: none;
     }
 }
+/* Enhanced Gallery Item for Highlights */
+.gallery-item-alt {
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    background: #f8f9fa;
+    height: 250px;
+    z-index: 1;
+}
+
+.gallery-item-alt img {
+    transition: transform 0.6s ease;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.gallery-overlay-alt {
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+
+.gallery-item-alt:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
+}
+
+.gallery-item-alt:hover img {
+    transform: scale(1.1);
+}
+
+.gallery-item-alt:hover .gallery-overlay-alt {
+    opacity: 1;
+}
+
+.overlay-content {
+    transform: translateY(20px);
+    transition: transform 0.4s ease;
+}
+
+.gallery-item-alt:hover .overlay-content {
+    transform: translateY(0);
+}
