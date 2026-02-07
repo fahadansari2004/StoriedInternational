@@ -100,47 +100,78 @@
 
     // Open Album in Modal (Momenza-style)
     async function openAlbum(albumId) {
+        console.log('Opening album:', albumId);
         const content = await window.EventProContent.getContent();
         const album = content.gallery?.albums?.find(a => a.id === albumId);
-        if (!album) return;
+
+        if (!album) {
+            console.error('Album not found:', albumId);
+            return;
+        }
+
+        console.log('Album data:', album);
 
         // Set cover image
         const coverImg = document.getElementById('albumCoverImage');
-        if (coverImg) coverImg.src = album.coverUrl;
+        if (coverImg) {
+            coverImg.src = album.coverUrl || '';
+            console.log('Cover image set:', album.coverUrl);
+        }
 
         // Set title and subtitle
         const title = document.getElementById('albumModalLabel');
         const subtitle = document.getElementById('albumSubtitle');
-        if (title) title.textContent = album.title;
-        if (subtitle) subtitle.textContent = album.subtitle || 'A Beautiful Event Collection';
+        if (title) {
+            title.textContent = album.title || 'Untitled Album';
+            console.log('Title set:', album.title);
+        }
+        if (subtitle) {
+            subtitle.textContent = album.subtitle || 'A Beautiful Event Collection';
+            console.log('Subtitle set:', album.subtitle);
+        }
 
         // Set description section
         const descTitle = document.getElementById('albumDescriptionTitle');
         const descText = document.getElementById('albumDescriptionText');
-        if (descTitle) descTitle.textContent = album.descriptionTitle || 'A Timeless Story';
+        if (descTitle) {
+            descTitle.textContent = album.descriptionTitle || 'A Timeless Story';
+            console.log('Description title set:', album.descriptionTitle);
+        }
         if (descText) {
-            descText.textContent = album.description ||
-                'A breathtaking celebration set against the majestic backdrop. Every detail, from the floral arrangements to the traditional ceremonies, was curated to reflect their timeless love story. The event was a beautiful blend of traditional rituals and modern festivities, creating memories that will be cherished for a lifetime.';
+            const description = album.description || 'A breathtaking celebration set against the majestic backdrop. Every detail, from the floral arrangements to the traditional ceremonies, was curated to reflect their timeless love story. The event was a beautiful blend of traditional rituals and modern festivities, creating memories that will be cherished for a lifetime.';
+            descText.textContent = description;
+            console.log('Description set:', description.substring(0, 50) + '...');
         }
 
         // Populate gallery grid
         const row = document.getElementById('albumImagesRow');
         if (row) {
-            row.innerHTML = (album.images || []).map(img => `
-                <div class="col-6 col-md-4 col-lg-3">
-                    <div class="album-gallery-item position-relative overflow-hidden rounded shadow-sm" style="height: 250px; cursor: pointer;" onclick="window.openLightbox('${img.url}', '${sanitize(img.title || album.title)}')">
-                        <img src="${img.url}" alt="${sanitize(img.title || album.title)}" class="img-fluid w-100 h-100" style="object-fit: cover;">
-                        <div class="album-gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
-                            <i class="bi bi-zoom-in fs-1 text-white"></i>
+            const images = album.images || [];
+            console.log('Album images count:', images.length);
+
+            if (images.length > 0) {
+                row.innerHTML = images.map(img => `
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <div class="album-gallery-item position-relative overflow-hidden rounded shadow-sm" style="height: 250px; cursor: pointer;" onclick="window.openLightbox('${img.url}', '${sanitize(img.title || album.title)}')">
+                            <img src="${img.url}" alt="${sanitize(img.title || album.title)}" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                            <div class="album-gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                                <i class="bi bi-zoom-in fs-1 text-white"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('') || '<div class="col-12 text-center py-5"><p class="text-muted">No images in this album yet.</p></div>';
+                `).join('');
+            } else {
+                row.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No images in this album yet.</p></div>';
+            }
         }
 
         // Show modal
-        const modal = new bootstrap.Modal(document.getElementById('albumModal'));
-        modal.show();
+        const modalEl = document.getElementById('albumModal');
+        if (modalEl) {
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+            console.log('Modal shown');
+        }
     }
 
     // Global Lightbox Functions
