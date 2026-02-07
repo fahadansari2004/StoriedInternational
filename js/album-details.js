@@ -130,7 +130,7 @@
                     <div class="col-sm-6 col-md-4 col-lg-3">
                         <div class="gallery-item ratio ratio-1x1 position-relative overflow-hidden rounded shadow-sm"
                              onclick="window.openLightbox('${img.url}', '')">
-                            <img src="${img.url}" class="w-100 h-100 object-fit-cover" 
+                            <img src="${img.url}" class="w-100 h-100 object-fit-cover position-absolute top-0 start-0" 
                                  loading="${index < 8 ? 'eager' : 'lazy'}" 
                                  alt="${sanitize(img.title || 'Gallery Image')}">
                             <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-25 opacity-0 hover-opacity-100 transition-opacity">
