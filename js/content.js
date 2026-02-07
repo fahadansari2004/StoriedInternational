@@ -324,17 +324,11 @@
         }
     }
 
-    function setupScrollReveal() {
-        const observerOptions = {
-            threshold: 0.15,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            init();
-        }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
 
-        window.EventProContent = { getContent, renderContent };
-    }) ();
-    ```
+    window.EventProContent = { getContent, renderContent };
+})();
