@@ -1,0 +1,20 @@
+/* Carousel Scrollbar Hiding */
+#albums-carousel::-webkit-scrollbar {
+    height: 8px;
+    /* Allow a small visible scrollbar on desktop? or strict none? */
+    /* display: none; */
+}
+
+#albums-carousel::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+#albums-carousel::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+#albums-carousel::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}

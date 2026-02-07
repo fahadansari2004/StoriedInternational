@@ -49,23 +49,26 @@
     }
 
     async function renderGallery() {
-        const albumsGrid = document.getElementById('albums-grid');
+        const albumsCarousel = document.getElementById('albums-carousel');
         const recentContainer = document.getElementById('recent-gallery-container');
 
         const content = await window.EventProContent.getContent();
 
-        // Render Albums Grid
-        if (albumsGrid) {
+        // Render Albums Carousel
+        if (albumsCarousel) {
             const albums = content.gallery?.albums || [];
 
             if (albums.length > 0) {
-                albumsGrid.innerHTML = albums.map((album, index) => `
-                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch reveal-scale" style="transition-delay: ${index * 0.1}s">
-                        <div class="featured-album-cover w-100 shadow-sm" onclick="window.location.href='album-details.html?id=${album.id}'" style="cursor: pointer; height: 350px;">
-                            <img src="${album.coverUrl}" alt="${sanitize(album.title)}" loading="lazy" class="h-100 object-fit-cover">
+                albumsCarousel.innerHTML = albums.map((album, index) => `
+                    <div class="album-card flex-shrink-0" style="width: 300px; scroll-snap-align: start;">
+                        <div class="featured-album-cover w-100 shadow-sm rounded overflow-hidden position-relative h-100 reveal-scale active" 
+                             onclick="window.location.href='album-details.html?id=${album.id}'" 
+                             style="cursor: pointer; height: 400px; transition-delay: ${index * 0.05}s">
+                             
+                            <img src="${album.coverUrl}" alt="${sanitize(album.title)}" loading="lazy" class="w-100 h-100 object-fit-cover">
                             <div class="featured-album-overlay">
-                                <h3 class="featured-album-title fs-4">${sanitize(album.title)}</h3>
-                                <p class="featured-album-subtitle small mb-3">${sanitize(album.subtitle || '')}</p>
+                                <h3 class="featured-album-title fs-4" style="text-shadow: 0 2px 4px rgba(0,0,0,0.8)">${sanitize(album.title)}</h3>
+                                <p class="featured-album-subtitle small mb-3 text-white-50">${sanitize(album.subtitle || '')}</p>
                                 <div class="featured-album-cta">
                                     <span class="small text-uppercase fw-bold">View Album</span>
                                     <i class="bi bi-arrow-right ms-2"></i>
@@ -74,8 +77,15 @@
                         </div>
                     </div>
                 `).join('');
+
+                // Fix visibility: Force 'active' class on new elements if observer missed them
+                // Or re-trigger observer
+                if (window.EventProContent?.setupScrollReveal) {
+                    setTimeout(() => window.EventProContent.setupScrollReveal(), 100);
+                }
+
             } else {
-                albumsGrid.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No albums available yet.</p></div>';
+                albumsCarousel.innerHTML = '<div class="w-100 text-center py-5"><p class="text-muted">No albums available yet.</p></div>';
             }
         }
 

@@ -24,8 +24,9 @@
     <!-- Custom CSS -->
     <link href="css/style.css?v=2.2" rel="stylesheet">
     <link href="css/whatsapp-gallery.css?v=2.2" rel="stylesheet">
-    <link href="css/lightbox.css?v=2.2" rel="stylesheet">
-    <link href="css/animations.css?v=2.2" rel="stylesheet">
+    <link href="css/lightbox.css" rel="stylesheet">
+    <link href="css/carousel.css" rel="stylesheet">
+    <link href="css/animations.css" rel="stylesheet">
     <link href="css/effects.css?v=2.2" rel="stylesheet">
     <link href="css/album-modal.css?v=2.2" rel="stylesheet">
 </head>
@@ -362,14 +363,31 @@
                 <p class="lead">Explore curated collections of our special moments</p>
             </div>
 
-            <!-- Albums Grid -->
-            <div class="row g-4 justify-content-center" id="albums-grid">
-                <!-- Albums will be loaded here -->
-                <div class="col-12 text-center py-5">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading albums...</span>
+            <!-- Albums Carousel -->
+            <div id="albums-carousel-container" class="position-relative">
+                <div id="albums-carousel" class="d-flex overflow-auto pb-4 gap-4 px-2"
+                    style="scroll-behavior: smooth; scroll-snap-type: x mandatory;">
+                    <!-- Albums will be loaded here -->
+                    <div class="w-100 text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading albums...</span>
+                        </div>
                     </div>
                 </div>
+
+                <!-- Carousel Controls (Optional, for desktop convenience) -->
+                <button
+                    class="btn btn-dark position-absolute top-50 start-0 translate-middle-y rounded-circle shadow start-0 ms-2 d-none d-md-block"
+                    onclick="document.getElementById('albums-carousel').scrollBy({left: -350, behavior: 'smooth'})"
+                    style="z-index: 10; width: 45px; height: 45px;">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                <button
+                    class="btn btn-dark position-absolute top-50 end-0 translate-middle-y rounded-circle shadow end-0 me-2 d-none d-md-block"
+                    onclick="document.getElementById('albums-carousel').scrollBy({left: 350, behavior: 'smooth'})"
+                    style="z-index: 10; width: 45px; height: 45px;">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
             </div>
 
             <div class="text-center mt-5 mb-5 pt-5 border-top">
