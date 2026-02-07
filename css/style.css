@@ -128,8 +128,13 @@ body {
 }
 
 @keyframes kenburns {
-    from { transform: scale(1); }
-    to { transform: scale(1.15); }
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform: scale(1.15);
+    }
 }
 
 .hero-overlay {
@@ -138,7 +143,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.8) 100%);
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.85) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.8) 100%);
     z-index: 1;
 }
 
@@ -161,12 +166,19 @@ body {
 }
 
 @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-#heroCarousel, 
-#heroCarousel .carousel-inner, 
+#heroCarousel,
+#heroCarousel .carousel-inner,
 #heroCarousel .carousel-item {
     height: 100vh;
 }
@@ -180,58 +192,8 @@ body {
     z-index: 2;
 }
 
-/* Premium Highlights Refresh (Mobile) */
-@media (max-width: 576px) {
-    #recent-gallery-container {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 25px !important;
-        padding: 15px !important;
-    }
-    
-    #recent-gallery-container .col-highlight {
-        width: 100% !important;
-        padding: 0 !important;
-    }
 
-    .gallery-item-alt {
-        height: 380px !important; 
-        border-radius: 20px !important;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
-    }
-
-    .gallery-overlay-alt {
-        opacity: 1 !important;
-        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 50%) !important;
-        display: flex !important;
-        align-items: flex-end !important;
-        justify-content: flex-start !important;
-    }
-
-    .overlay-content {
-        transform: none !important;
-        text-align: left !important;
-        padding: 24px !important;
-    }
-
-    .overlay-content i {
-        display: none !important;
-    }
-
-    .overlay-content h6 {
-        display: block !important;
-        font-size: 1.25rem !important;
-        font-weight: 700 !important;
-        color: var(--warning-color) !important;
-        margin-bottom: 0 !important;
-    }
-
-    #gallery-container .gallery-item {
-        height: 250px !important;
-        border-radius: 20px !important;
-        margin-bottom: 25px !important;
-    }
-}
+/* Scroll Indicator */
 
 .scroll-indicator {
     position: absolute;
@@ -435,37 +397,39 @@ a[href^="mailto:"]:hover {
 
 .gallery-view-more-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 @media (max-width: 768px) {
     .gallery-view-more-btn {
         display: block;
     }
-    
+
     #recent-gallery-container .col-highlight:nth-child(n+6) {
         display: none;
     }
-    
+
     #recent-gallery-container.show-all .col-highlight {
         display: block !important;
     }
-    
-    #recent-gallery-container.show-all ~ .gallery-view-more-btn {
+
+    #recent-gallery-container.show-all~.gallery-view-more-btn {
         display: none;
     }
 }
+
 /* Mobile Gallery 2x2 Grid when expanded */
 @media (max-width: 768px) {
     #recent-gallery-container.show-all .col-highlight {
         width: 50% !important;
         padding: 8px !important;
     }
-    
+
     #recent-gallery-container.show-all .gallery-item-alt {
         height: 220px !important;
     }
 }
+
 /* Hero Carousel Indicators (Dots) */
 .hero-section .carousel-indicators {
     bottom: 30px;
@@ -509,13 +473,13 @@ a[href^="mailto:"]:hover {
     .hero-section .carousel-indicators {
         bottom: 20px;
     }
-    
+
     .hero-section .carousel-indicators button {
         width: 10px;
         height: 10px;
         margin: 0 4px;
     }
-    
+
     .hero-section .carousel-control-prev,
     .hero-section .carousel-control-next {
         width: 40px;
