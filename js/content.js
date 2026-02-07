@@ -10,16 +10,20 @@
 
     const DEFAULT_CONTENT = {
         hero: {
-            tagline: "Kerala's #1 Exclusive Event Company",
-            title: "Partner with Storied International for Your Dream Events",
-            subtitle: "We make everything from corporate event planning and personal celebrations to customized event packages absolutely memorable!",
-            rating: "4.8/5",
-            yearsExp: "15+",
-            yearsLabel: "Years of Experience",
-            eventsCount: "5000+",
-            eventsLabel: "Events Covered",
-            clientsCount: "3000+",
-            clientsLabel: "Satisfied Clients"
+            slides: [
+                {
+                    image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1600&fit=crop",
+                    tagline: "Kerala's #1 Exclusive Event Company",
+                    title: "Partner with Storied International for Your Dream Events",
+                    subtitle: "We make everything from corporate event planning and personal celebrations to customized event packages absolutely memorable!"
+                }
+            ],
+            stats: {
+                rating: "4.8/5",
+                yearsExp: "15+",
+                eventsCount: "5000+",
+                clientsCount: "3000+"
+            }
         },
         certification: {
             line1: "ISO 9001:2015 CERTIFIED",
@@ -51,16 +55,24 @@
             description: "Planning a full event has never been easier! Storied International offers a wide range of services to make your events stress-free and memorable.",
             copyright: "© 2024 Storied International. All Rights Reserved."
         },
-        gallery: [
-            { url: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&h=400&fit=crop', title: 'Event 1' },
-            { url: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&h=400&fit=crop', title: 'Event 2' },
-            { url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&h=400&fit=crop', title: 'Event 3' },
-            { url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&h=400&fit=crop', title: 'Event 4' },
-            { url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=400&fit=crop', title: 'Event 5' },
-            { url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&h=400&fit=crop', title: 'Event 6' }
-        ]
+        gallery: {
+            albums: [
+                {
+                    id: 'album-1',
+                    title: 'Wedding Events',
+                    coverUrl: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&h=400&fit=crop',
+                    images: [
+                        { url: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&fit=crop', title: 'Wedding Day 1' },
+                        { url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&fit=crop', title: 'Wedding Day 2' }
+                    ]
+                }
+            ],
+            recent: [
+                { url: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&h=400&fit=crop', title: 'Event 1' },
+                { url: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&h=400&fit=crop', title: 'Event 2' }
+            ]
+        }
     };
-
     function deepMerge(target, source) {
         const result = { ...target };
         if (!source) return result;
@@ -75,6 +87,39 @@
         return result;
     }
 
+    function migrateContent(c) {
+        if (!c) return c;
+
+        // Migrate Hero
+        if (c.hero && !c.hero.slides && (c.hero.tagline || c.hero.title)) {
+            const old = c.hero;
+            c.hero = {
+                slides: [{
+                    image: old.imageUrl || "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1600&fit=crop",
+                    tagline: old.tagline || "",
+                    title: old.title || "",
+                    subtitle: old.subtitle || ""
+                }],
+                stats: {
+                    rating: old.rating || "4.8/5",
+                    yearsExp: old.yearsExp || "15+",
+                    eventsCount: old.eventsCount || "5000+",
+                    clientsCount: old.clientsCount || "3000+"
+                }
+            };
+        }
+
+        // Migrate Gallery
+        if (c.gallery && Array.isArray(c.gallery)) {
+            c.gallery = {
+                albums: [],
+                recent: c.gallery
+            };
+        }
+
+        return c;
+    }
+
     async function getContent() {
         try {
             // Try Supabase first
@@ -85,14 +130,14 @@
                     .single();
 
                 if (data && data.content) {
-                    return deepMerge(DEFAULT_CONTENT, data.content);
+                    return migrateContent(deepMerge(DEFAULT_CONTENT, data.content));
                 }
             }
 
             const stored = localStorage.getItem(STORAGE_KEY);
             if (stored) {
                 const parsed = JSON.parse(stored);
-                return deepMerge(DEFAULT_CONTENT, parsed);
+                return migrateContent(deepMerge(DEFAULT_CONTENT, parsed));
             }
         } catch (e) {
             console.error('Error loading content:', e);

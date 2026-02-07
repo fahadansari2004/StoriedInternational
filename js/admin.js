@@ -80,6 +80,39 @@ function deepMerge(target, source) {
     return result;
 }
 
+function migrateContent(c) {
+    if (!c) return c;
+
+    // Migrate Hero
+    if (c.hero && !c.hero.slides && (c.hero.tagline || c.hero.title)) {
+        const old = c.hero;
+        c.hero = {
+            slides: [{
+                image: old.imageUrl || "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1600&fit=crop",
+                tagline: old.tagline || "",
+                title: old.title || "",
+                subtitle: old.subtitle || ""
+            }],
+            stats: {
+                rating: old.rating || "4.8/5",
+                yearsExp: old.yearsExp || "15+",
+                eventsCount: old.eventsCount || "5000+",
+                clientsCount: old.clientsCount || "3000+"
+            }
+        };
+    }
+
+    // Migrate Gallery
+    if (c.gallery && Array.isArray(c.gallery)) {
+        c.gallery = {
+            albums: [],
+            recent: c.gallery
+        };
+    }
+
+    return c;
+}
+
 async function getSiteContent() {
     try {
         // Try Supabase first
@@ -90,7 +123,7 @@ async function getSiteContent() {
                 .single();
 
             if (data && data.content) {
-                return deepMerge(DEFAULT_CONTENT, data.content);
+                return migrateContent(deepMerge(DEFAULT_CONTENT, data.content));
             }
             if (error) console.warn('Supabase fetch error, falling back to localStorage:', error);
         }
@@ -98,7 +131,7 @@ async function getSiteContent() {
         const stored = localStorage.getItem(CONTENT_STORAGE_KEY);
         if (stored) {
             const parsed = JSON.parse(stored);
-            return deepMerge(DEFAULT_CONTENT, parsed);
+            return migrateContent(deepMerge(DEFAULT_CONTENT, parsed));
         }
         return JSON.parse(JSON.stringify(DEFAULT_CONTENT));
     } catch (e) {
