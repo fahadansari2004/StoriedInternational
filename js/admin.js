@@ -486,6 +486,7 @@ async function renderAlbumsList() {
                 <img src="${album.coverUrl}" class="card-img-top" style="height: 120px; object-fit: cover;">
                 <div class="card-body p-2">
                     <h6 class="mb-1">${album.title}</h6>
+                    ${album.subtitle ? `<p class="small text-muted mb-1">${album.subtitle}</p>` : ''}
                     <p class="small text-muted mb-2">${album.images?.length || 0} images</p>
                     <div class="btn-group w-100">
                         <button type="button" class="btn btn-primary btn-sm" onclick="openManageAlbum('${album.id}')">
@@ -590,23 +591,43 @@ async function initContentForms() {
 
     document.getElementById('createAlbumForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const c = await getSiteContent();
+        const btn = e.target.querySelector('button[type="submit"]');
+        const originalText = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Creating...';
 
-        const coverUrl = await getFileData('albumCoverFile', 'albumCoverUrl');
-        if (!coverUrl) return alert('Please provide a cover image URL or upload a file.');
+        try {
+            const c = await getSiteContent();
 
-        c.gallery.albums = c.gallery.albums || [];
-        c.gallery.albums.push({
-            id: 'album-' + Date.now(),
-            title: document.getElementById('albumTitle').value,
-            coverUrl: coverUrl,
-            images: []
-        });
-        await saveSiteContent(c);
-        e.target.reset();
-        document.getElementById('albumCoverPreview').style.display = 'none';
-        await renderAlbumsList();
-        alert('Album created!');
+            const coverUrl = await getFileData('albumCoverFile', 'albumCoverUrl');
+            if (!coverUrl) throw new Error('Please provide a cover image URL or upload a file.');
+
+            const newAlbum = {
+                id: 'album-' + Date.now(),
+                title: document.getElementById('albumTitle').value,
+                subtitle: document.getElementById('albumSubtitle').value,
+                descriptionTitle: document.getElementById('albumDescTitle').value,
+                description: document.getElementById('albumDescription').value,
+                coverUrl: coverUrl,
+                images: []
+            };
+
+            c.gallery.albums = c.gallery.albums || [];
+            c.gallery.albums.push(newAlbum);
+
+            await saveSiteContent(c);
+            e.target.reset();
+            const preview = document.getElementById('albumCoverPreview');
+            if (preview) preview.style.display = 'none';
+            await renderAlbumsList();
+            alert('Album created successfully!');
+        } catch (err) {
+            console.error('Error creating album:', err);
+            alert('Failed to create album: ' + err.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
     });
 
     document.getElementById('addImageToAlbumForm')?.addEventListener('submit', async (e) => {
