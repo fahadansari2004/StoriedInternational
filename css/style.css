@@ -494,7 +494,8 @@ footer a {
 /* Mobile Optimizations for Hero Overlap */
 @media (max-width: 991px) {
     .fixed-overlay {
-        padding-top: 160px;
+        padding-top: 130px;
+        /* Moved up slightly from 160px */
         /* Push content down below navbar */
         align-items: flex-start !important;
         /* Start from top + padding, don't center vertically */

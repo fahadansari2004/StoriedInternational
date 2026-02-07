@@ -401,6 +401,13 @@ async function loadContentForms() {
     set('aboutP2', c.about.paragraph2);
     set('aboutImageUrl', c.about.imageUrl);
     set('aboutBadge', c.about.badgeText);
+
+    // Certification
+    if (c.certification) {
+        set('certLine1', c.certification.line1);
+        set('certLine2', c.certification.line2);
+    }
+
     set('contactAddress', c.contact.address);
     set('contactPhone', c.contact.phone);
     set('contactEmail', c.contact.email);
@@ -587,6 +594,17 @@ async function initContentForms() {
         };
         await saveSiteContent(c);
         alert('Stats saved!');
+    });
+
+    document.getElementById('certForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const c = await getSiteContent();
+        c.certification = {
+            line1: document.getElementById('certLine1').value,
+            line2: document.getElementById('certLine2').value
+        };
+        await saveSiteContent(c);
+        alert('Certification details saved!');
     });
 
     document.getElementById('createAlbumForm')?.addEventListener('submit', async (e) => {
