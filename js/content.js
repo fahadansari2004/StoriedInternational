@@ -130,14 +130,16 @@
                     .single();
 
                 if (data && data.content) {
-                    return migrateContent(deepMerge(DEFAULT_CONTENT, data.content));
+                    const migrated = migrateContent(data.content);
+                    return deepMerge(DEFAULT_CONTENT, migrated);
                 }
             }
 
             const stored = localStorage.getItem(STORAGE_KEY);
             if (stored) {
                 const parsed = JSON.parse(stored);
-                return migrateContent(deepMerge(DEFAULT_CONTENT, parsed));
+                const migrated = migrateContent(parsed);
+                return deepMerge(DEFAULT_CONTENT, migrated);
             }
         } catch (e) {
             console.error('Error loading content:', e);

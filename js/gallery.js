@@ -76,10 +76,13 @@
             const recent = content.gallery?.recent || [];
             recentContainer.innerHTML = recent.map((img, index) => `
                 <div class="col-md-4 col-highlight">
-                    <div class="gallery-item position-relative overflow-hidden rounded shadow-sm" onclick="window.open('${img.url}', '_blank')">
-                        <img src="${img.url}" alt="${sanitize(img.title || 'Event')}" class="img-fluid w-100" loading="lazy">
-                        <div class="gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
-                            <i class="bi bi-zoom-in text-white fs-2"></i>
+                    <div class="gallery-item-alt position-relative overflow-hidden rounded shadow-sm mb-4" onclick="window.open('${img.url}', '_blank')">
+                        <img src="${img.url}" alt="${sanitize(img.title || 'Event Highlight')}" class="img-fluid w-100" loading="lazy">
+                        <div class="gallery-overlay-alt position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center text-white">
+                            <div class="overlay-content text-center p-3">
+                                <i class="bi bi-zoom-in fs-2 mb-2"></i>
+                                <h6 class="mb-0 fw-bold">${sanitize(img.title || 'Event Highlight')}</h6>
+                            </div>
                         </div>
                     </div>
                 </div>
