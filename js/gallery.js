@@ -90,25 +90,47 @@
         }
     }
 
+    // Open Album in Modal (Momenza-style)
     async function openAlbum(albumId) {
         const content = await window.EventProContent.getContent();
-        const album = content.gallery.albums.find(a => a.id === albumId);
+        const album = content.gallery?.albums?.find(a => a.id === albumId);
         if (!album) return;
 
-        const row = document.getElementById('album-images-row');
-        const title = document.getElementById('albumModalLabel');
-        if (title) title.textContent = album.title;
+        // Set cover image
+        const coverImg = document.getElementById('albumCoverImage');
+        if (coverImg) coverImg.src = album.coverUrl;
 
-        if (row) {
-            row.innerHTML = (album.images || []).map(img => `
-                <div class="col-6 col-md-4 col-lg-3 mb-3">
-                    <div class="album-img-wrapper rounded overflow-hidden shadow-sm h-100" style="height: 200px;">
-                        <img src="${img.url}" class="img-fluid w-100 h-100" style="object-fit: cover; cursor: pointer;" onclick="window.openLightbox('${img.url}', '${sanitize(img.title || album.title)}')">
-                    </div>
-                </div>
-            `).join('') || '<div class="col-12 text-center py-5">No images in this album yet.</div>';
+        // Set title and subtitle
+        const title = document.getElementById('albumModalLabel');
+        const subtitle = document.getElementById('albumSubtitle');
+        if (title) title.textContent = album.title;
+        if (subtitle) subtitle.textContent = album.subtitle || 'A Beautiful Event Collection';
+
+        // Set description section
+        const descTitle = document.getElementById('albumDescriptionTitle');
+        const descText = document.getElementById('albumDescriptionText');
+        if (descTitle) descTitle.textContent = album.descriptionTitle || 'A Timeless Story';
+        if (descText) {
+            descText.textContent = album.description ||
+                'A breathtaking celebration set against the majestic backdrop. Every detail, from the floral arrangements to the traditional ceremonies, was curated to reflect their timeless love story. The event was a beautiful blend of traditional rituals and modern festivities, creating memories that will be cherished for a lifetime.';
         }
 
+        // Populate gallery grid
+        const row = document.getElementById('albumImagesRow');
+        if (row) {
+            row.innerHTML = (album.images || []).map(img => `
+                <div class="col-6 col-md-4 col-lg-3">
+                    <div class="album-gallery-item position-relative overflow-hidden rounded shadow-sm" style="height: 250px; cursor: pointer;" onclick="window.openLightbox('${img.url}', '${sanitize(img.title || album.title)}')">
+                        <img src="${img.url}" alt="${sanitize(img.title || album.title)}" class="img-fluid w-100 h-100" style="object-fit: cover;">
+                        <div class="album-gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                            <i class="bi bi-zoom-in fs-1 text-white"></i>
+                        </div>
+                    </div>
+                </div>
+            `).join('') || '<div class="col-12 text-center py-5"><p class="text-muted">No images in this album yet.</p></div>';
+        }
+
+        // Show modal
         const modal = new bootstrap.Modal(document.getElementById('albumModal'));
         modal.show();
     }

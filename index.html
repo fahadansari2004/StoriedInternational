@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="css/lightbox.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/effects.css">
+    <link rel="stylesheet" href="css/album-modal.css">
 </head>
 
 <body>
@@ -680,6 +681,49 @@
                             <i class="bi bi-send-fill"></i>
                         </button>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Album Modal (Momenza-style) -->
+    <div class="modal fade" id="albumModal" tabindex="-1" aria-labelledby="albumModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                <!-- Album Hero Cover -->
+                <div id="albumHero" class="album-hero-cover position-relative">
+                    <img id="albumCoverImage" src="" alt="Album Cover" class="w-100"
+                        style="height: 400px; object-fit: cover;">
+                    <div
+                        class="album-hero-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                        <div class="text-center text-white">
+                            <h1 id="albumModalLabel" class="display-3 fw-bold mb-3"></h1>
+                            <p id="albumSubtitle" class="lead fs-4"></p>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white position-absolute top-0 end-0 m-4"
+                        data-bs-dismiss="modal" aria-label="Close" style="z-index: 10;"></button>
+                </div>
+
+                <!-- Album Description Section -->
+                <div class="album-description-section bg-white py-5">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-8 text-center">
+                                <h2 id="albumDescriptionTitle" class="display-5 fw-bold mb-4"></h2>
+                                <p id="albumDescriptionText" class="lead text-muted" style="line-height: 1.8;"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Album Gallery Grid -->
+                <div class="modal-body bg-light py-5">
+                    <div class="container">
+                        <div id="albumImagesRow" class="row g-4">
+                            <!-- Images will be loaded here -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
