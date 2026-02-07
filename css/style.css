@@ -542,6 +542,25 @@ footer a {
         padding: 1rem !important;
     }
 
+    /* Push buttons to bottom on mobile */
+    .fixed-overlay .container,
+    .fixed-overlay .row,
+    .hero-content-fade-in {
+        height: 100%;
+    }
+
+    .hero-content-fade-in {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hero-content-fade-in .d-flex {
+        margin-top: auto;
+        margin-bottom: 100px;
+        /* Just above 3 dots */
+        width: 100%;
+    }
+
     .stats-card h3 {
         font-size: 2rem;
         /* Smaller numbers */
