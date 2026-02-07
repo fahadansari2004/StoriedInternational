@@ -494,7 +494,7 @@ footer a {
 /* Mobile Optimizations for Hero Overlap */
 @media (max-width: 991px) {
     .fixed-overlay {
-        padding-top: 140px;
+        padding-top: 160px;
         /* Push content down below navbar */
         align-items: flex-start !important;
         /* Start from top + padding, don't center vertically */
@@ -518,8 +518,8 @@ footer a {
     }
 
     .hero-section {
-        min-height: 100vh;
+        min-height: 600px;
         /* Ensure full height on mobile too */
-        height: auto;
+        height: 100vh;
     }
 }
