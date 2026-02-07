@@ -135,18 +135,30 @@
         }
     };
 
-    // Escape key listener
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') window.closeLightbox();
-    });
+    // Toggle gallery view for mobile
+    window.toggleGalleryView = function () {
+        const container = document.getElementById('recent-gallery-container');
+        const btn = document.getElementById('viewMoreGalleryBtn');
+
+        if (container) {
+            container.classList.toggle('show-all');
+            if (container.classList.contains('show-all')) {
+                btn.textContent = 'Show Less';
+            } else {
+                btn.textContent = 'View More Images';
+                // Scroll back to gallery section
+                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    };
 
     // Expose for click handlers
     window.openAlbum = openAlbum;
     window.renderGallery = renderGallery;
+    window.toggleGalleryView = window.toggleGalleryView; // Expose the new function
 
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', renderGallery);
-    } else {
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
         renderGallery();
     }
 })();

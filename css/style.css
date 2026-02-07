@@ -947,3 +947,87 @@ button,
     transform: scale(1.03) translateY(-5px) !important;
     box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important;
 }
+/* WhatsApp Floating Button */
+.whatsapp-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: #25D366;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+    z-index: 1000;
+    transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+    text-decoration: none;
+    animation: whatsappPulse 2s infinite;
+}
+
+.whatsapp-float:hover {
+    background: #128C7E;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+    color: white;
+}
+
+@keyframes whatsappPulse {
+    0%, 100% {
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.7);
+    }
+}
+
+@media (max-width: 768px) {
+    .whatsapp-float {
+        bottom: 20px;
+        right: 20px;
+        width: 55px;
+        height: 55px;
+        font-size: 28px;
+    }
+}
+
+/* Mobile Gallery Limit with View More */
+.gallery-view-more-btn {
+    display: none;
+    margin: 30px auto 0;
+    padding: 12px 30px;
+    background: linear-gradient(45deg, #ffc107, #ff9800);
+    border: none;
+    color: #000;
+    font-weight: 600;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.gallery-view-more-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+@media (max-width: 768px) {
+    .gallery-view-more-btn {
+        display: block;
+    }
+    
+    #recent-gallery-container .col-highlight:nth-child(n+6) {
+        display: none;
+    }
+    
+    #recent-gallery-container.show-all .col-highlight {
+        display: block !important;
+    }
+    
+    #recent-gallery-container.show-all ~ .gallery-view-more-btn {
+        display: none;
+    }
+}

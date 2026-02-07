@@ -365,9 +365,14 @@
             </div>
 
             <!-- Flat gallery images loaded dynamically -->
-            <div id="recent-gallery-container" class="row g-1">
-                <!-- 4x4 mobile grid will apply here -->
+            <div id="recent-gallery-container" class="row g-4">
+                <!-- Recent highlights will be loaded here -->
             </div>
+
+            <!-- View More Button (Mobile Only) -->
+            <button id="viewMoreGalleryBtn" class="btn gallery-view-more-btn" onclick="toggleGalleryView()">
+                View More Images
+            </button>
         </div>
     </section>
 
@@ -667,6 +672,11 @@
             </div>
         </div>
     </div>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/917356044637" class="whatsapp-float" target="_blank" aria-label="Chat on WhatsApp">
+        <i class="bi bi-whatsapp"></i>
+    </a>
 
     <!-- Custom Lightbox Modal -->
     <div id="customLightbox" class="lightbox-overlay" onclick="window.closeLightbox()">
