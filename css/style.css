@@ -509,9 +509,10 @@ footer a {
     }
 
     #hero-title.display-3 {
-        font-size: 2.2rem;
-        /* Slightly larger as requested */
-        line-height: 1.2;
+        font-size: 2.4rem;
+        /* Larger for impact */
+        line-height: 1.1;
+        letter-spacing: -1px;
     }
 
     #hero-subtitle {
@@ -522,6 +523,8 @@ footer a {
     h2.display-2 {
         font-size: 2rem;
         /* Keep animated text prominent but fitting */
+        margin-bottom: 3rem !important;
+        /* More space before buttons */
     }
 
     #hero-stats .glass-effect {
