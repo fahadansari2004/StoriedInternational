@@ -10,9 +10,18 @@ const DEFAULT_CONTENT = {
         slides: [
             {
                 image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1600&fit=crop",
-                tagline: "Kerala's #1 Exclusive Event Company",
-                title: "Partner with Storied International for Your Dream Events",
-                subtitle: "We make everything from corporate event planning and personal celebrations to customized event packages absolutely memorable!"
+                title: "Elegant Weddings",
+                tagline: "Unforgettable Moments"
+            },
+            {
+                image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&fit=crop",
+                title: "Corporate Events",
+                tagline: "Professional Excellence"
+            },
+            {
+                image: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1600&fit=crop",
+                title: "Grand Celebrations",
+                tagline: "Perfect Execution"
             }
         ],
         stats: {

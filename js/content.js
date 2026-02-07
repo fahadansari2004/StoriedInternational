@@ -18,9 +18,18 @@
             slides: [
                 {
                     image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1600&fit=crop",
-                    tagline: "Kerala's #1 Exclusive Event Company",
-                    title: "Partner with Storied International for Your Dream Events",
-                    subtitle: "We make everything from corporate event planning and personal celebrations to customized event packages absolutely memorable!"
+                    title: "Elegant Weddings",
+                    tagline: "Unforgettable Moments"
+                },
+                {
+                    image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=1600&fit=crop",
+                    title: "Corporate Events",
+                    tagline: "Professional Excellence"
+                },
+                {
+                    image: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=1600&fit=crop",
+                    title: "Grand Celebrations",
+                    tagline: "Perfect Execution"
                 }
             ],
             stats: {
@@ -164,6 +173,7 @@
 
         // Hero Carousel & Static Text
         const carouselInner = document.getElementById('hero-carousel-inner');
+        const carouselIndicators = document.getElementById('hero-carousel-indicators'); // Get indicators container
         const heroTagline = document.getElementById('hero-tagline');
         const heroTitle = document.getElementById('hero-title');
         const heroSubtitle = document.getElementById('hero-subtitle');
@@ -175,6 +185,15 @@
                     <div class="carousel-item ${index === 0 ? 'active' : ''}">
                         <div class="hero-slide-bg" style="background-image: url('${slide.image}')"></div>
                     </div>
+                `).join('');
+            }
+
+            // Render dynamic indicators
+            if (carouselIndicators) {
+                carouselIndicators.innerHTML = content.hero.slides.map((_, index) => `
+                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="${index}" 
+                        class="${index === 0 ? 'active' : ''}" aria-current="${index === 0 ? 'true' : 'false'}" 
+                        aria-label="Slide ${index + 1}"></button>
                 `).join('');
             }
 
