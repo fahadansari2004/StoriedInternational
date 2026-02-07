@@ -356,17 +356,22 @@
     <!-- Gallery Section -->
     <section id="gallery" class="py-5 bg-light">
         <div class="container">
-            <div class="text-center mb-5">
+            <div class="text-center mb-5 reveal">
                 <h6 class="text-primary text-uppercase mb-3">Browse Our Work</h6>
                 <h2 class="display-5 fw-bold mb-3">Event Albums</h2>
                 <p class="lead">Explore curated collections of our special moments</p>
             </div>
 
-            <!-- Album covers loaded dynamically -->
-            <div id="gallery-container" class="row g-4">
-                <div class="col-12 text-center py-5">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading albums...</span>
+            <!-- Featured Album Cover (Center) -->
+            <div class="row justify-content-center mb-5 reveal-scale">
+                <div class="col-lg-6 col-md-8">
+                    <div id="featured-album-container" class="featured-album-wrapper">
+                        <!-- Featured album will be loaded here -->
+                        <div class="text-center py-5">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading album...</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

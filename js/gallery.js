@@ -50,25 +50,33 @@
 
     async function renderGallery() {
         const albumsContainer = document.getElementById('gallery-container');
+        const featuredContainer = document.getElementById('featured-album-container');
         const recentContainer = document.getElementById('recent-gallery-container');
 
         const content = await window.EventProContent.getContent();
 
-        // Render Albums
-        if (albumsContainer) {
+        // Render Featured Album (First album or most recent)
+        if (featuredContainer) {
             const albums = content.gallery?.albums || [];
-            albumsContainer.innerHTML = albums.map((album, index) => `
-                <div class="col-md-4 col-lg-3">
-                    <div class="gallery-item position-relative overflow-hidden rounded shadow-sm mb-4" onclick="openAlbum('${album.id}')">
-                        <img src="${album.coverUrl}" alt="${sanitize(album.title)}" class="img-fluid w-100" loading="lazy">
-                        <div class="gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center text-white p-3 text-center">
-                            <h5 class="mb-1">${sanitize(album.title)}</h5>
-                            <p class="small mb-0">${album.images?.length || 0} Photos</p>
-                            <i class="bi bi-zoom-in fs-2 mt-2"></i>
+            const featuredAlbum = albums[0]; // Get first album as featured
+
+            if (featuredAlbum) {
+                featuredContainer.innerHTML = `
+                    <div class="featured-album-cover" onclick="openAlbum('${featuredAlbum.id}')">
+                        <img src="${featuredAlbum.coverUrl}" alt="${sanitize(featuredAlbum.title)}" loading="lazy">
+                        <div class="featured-album-overlay">
+                            <h2 class="featured-album-title">${sanitize(featuredAlbum.title)}</h2>
+                            <p class="featured-album-subtitle">${sanitize(featuredAlbum.subtitle || 'A Beautiful Event Collection')}</p>
+                            <div class="featured-album-cta">
+                                <span>View Album</span>
+                                <i class="bi bi-arrow-right"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-            `).join('') || '<div class="col-12 text-center text-muted"><p>No gallery albums found.</p></div>';
+                `;
+            } else {
+                featuredContainer.innerHTML = '<div class="text-center py-5"><p class="text-muted">No albums available yet.</p></div>';
+            }
         }
 
         // Render Recent Highlights (Flat Gallery)
