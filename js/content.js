@@ -178,15 +178,16 @@
                 `).join('');
             }
 
-            // Render static text from first slide
-            const firstSlide = content.hero.slides[0];
-            if (heroTagline) heroTagline.textContent = firstSlide.tagline || '';
-            if (heroTitle) {
-                heroTitle.textContent = firstSlide.title || '';
-                // Re-init typing effect dynamically
-                if (window.initTypingEffect) window.initTypingEffect();
+            // Render static text from first slide -> DISABLED (Hardcoded premium text)
+            // const firstSlide = content.hero.slides[0];
+            // if (heroTagline) heroTagline.textContent = firstSlide.tagline || '';
+
+            // Ensure animation runs on the hardcoded text
+            if (heroTitle && window.initTypingEffect) {
+                window.initTypingEffect();
             }
-            if (heroSubtitle) heroSubtitle.textContent = firstSlide.subtitle || '';
+
+            // if (heroSubtitle) heroSubtitle.textContent = firstSlide.subtitle || '';
         }
 
         // Hero Stats

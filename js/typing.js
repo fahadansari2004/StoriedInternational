@@ -7,21 +7,29 @@ document.addEventListener('DOMContentLoaded', () => {
     // Expose init function to window so content.js can call it
     window.initTypingEffect = function () {
         const titleElement = document.getElementById('hero-title');
-        if (!titleElement) return;
-
-        // Clean up any existing intervals/timeouts if we were tracking them (optional optimization)
-
-        const phrases = ["Your Dream Events", "Unforgettable Memories", "Perfect Celebrations", "Corporate Excellence"];
-        let phraseIndex = 0;
-        let charIndex = phrases[0].length;
-        let isDeleting = true;
-
-        // Use current text as base
-        // content.js will have already set the full title.
-        const currentText = titleElement.innerText;
-        titleElement.innerHTML = currentText + ' <span id="dynamic-text"></span><span class="typing-cursor"></span>';
         const dynamicElement = document.getElementById('dynamic-text');
 
+        if (!titleElement || !dynamicElement) return;
+
+        // Premium Phrases meant to follow "Partner with Storied International for "
+        const phrases = [
+            "Your Dream Events",
+            "Unforgettable Memories",
+            "Perfect Celebrations",
+            "Corporate Excellence"
+        ];
+
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+
+        // This time, we do NOT overwrite innerHTML of titleElement.
+        // We solely manipulate dynamicElement.textContent
+
+        // Safety cleanup if re-initialized
+        dynamicElement.textContent = "";
+
+        // Re-declare internal run function to close over new vars
         function typeSafe() {
             const currentPhrase = phrases[phraseIndex];
 
@@ -52,6 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
         typeSafe();
     };
 
-    // Attempt to init on load, mainly for non-dynamic initial load or fallback
+    // Attempt to init on load
     window.initTypingEffect();
 });

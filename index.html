@@ -120,16 +120,52 @@
                         <div class="col-lg-8 text-white hero-content-fade-in">
                             <h6 id="hero-tagline" class="text-uppercase text-warning mb-3 fw-bold"
                                 style="letter-spacing: 2px;">Kerala's #1 Exclusive Event Company</h6>
-                            <h1 id="hero-title" class="display-2 fw-bold mb-4">Partner with Storied International for
-                                Your Dream Events</h1>
+
+                            <!-- Static Prefix + Animated Part -->
+                            <h1 id="hero-title" class="display-2 fw-bold mb-4">
+                                Partner with Storied International for <span id="dynamic-text"></span><span
+                                    class="typing-cursor"></span>
+                            </h1>
+
                             <p id="hero-subtitle" class="lead mb-4 opacity-75">We make everything from corporate event
                                 planning and personal celebrations to customized event packages absolutely memorable!
                             </p>
-                            <div class="d-flex flex-wrap gap-3">
+
+                            <div class="d-flex flex-wrap gap-3 mb-5">
                                 <a href="#contact" class="btn btn-warning btn-lg px-4 py-3 shadow-lg">Contact Us</a>
                                 <a href="#services" class="btn btn-outline-light btn-lg px-4 py-3 shadow-lg">Our
                                     Services</a>
                             </div>
+
+                            <!-- MOVED STATS INSIDE HERO CONTENT -->
+                            <div class="row text-center text-white g-3" id="hero-stats">
+                                <!-- Stats will be injected here by content.js -->
+                                <div class="col-6 col-md-3">
+                                    <div class="p-3 glass-effect rounded-3">
+                                        <h3 id="hero-rating" class="fw-bold text-warning mb-0">4.8/5</h3>
+                                        <small class="text-white-50">Client Rating</small>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="p-3 glass-effect rounded-3">
+                                        <h3 id="hero-years" class="fw-bold text-warning mb-0">15+</h3>
+                                        <small class="text-white-50">Years Experience</small>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="p-3 glass-effect rounded-3">
+                                        <h3 id="hero-events" class="fw-bold text-warning mb-0">5000+</h3>
+                                        <small class="text-white-50">Events Managed</small>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-3">
+                                    <div class="p-3 glass-effect rounded-3">
+                                        <h3 id="hero-clients" class="fw-bold text-warning mb-0">3000+</h3>
+                                        <small class="text-white-50">Happy Clients</small>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -145,37 +181,7 @@
             </button>
         </div>
 
-        <!-- HERO STATS SECTION -->
-        <div class="container position-relative z-2 mb-5 pb-5 hero-content-fade-in"
-            style="transform: translateY(-20px);">
-            <div class="row text-center text-white justify-content-center g-4" id="hero-stats">
-                <!-- Stats will be injected here by content.js -->
-                <div class="col-6 col-md-3">
-                    <div class="p-3 glass-effect rounded-3">
-                        <h3 id="hero-rating" class="fw-bold text-warning mb-0">4.8/5</h3>
-                        <small class="text-white-50">Client Rating</small>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="p-3 glass-effect rounded-3">
-                        <h3 id="hero-years" class="fw-bold text-warning mb-0">15+</h3>
-                        <small class="text-white-50">Years Experience</small>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="p-3 glass-effect rounded-3">
-                        <h3 id="hero-events" class="fw-bold text-warning mb-0">5000+</h3>
-                        <small class="text-white-50">Events Managed</small>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3">
-                    <div class="p-3 glass-effect rounded-3">
-                        <h3 id="hero-clients" class="fw-bold text-warning mb-0">3000+</h3>
-                        <small class="text-white-50">Happy Clients</small>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- Old Stats Removed -->
 
         <!-- Wave Divider -->
         <div class="position-absolute bottom-0 start-0 w-100 overflow-hidden" style="line-height: 0; z-index: 2;">
