@@ -99,7 +99,6 @@
                         <div class="gallery-overlay-alt position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center text-white">
                             <div class="overlay-content text-center p-3">
                                 <i class="bi bi-zoom-in fs-2 mb-2"></i>
-                                <h6 class="mb-0 fw-bold">${sanitize(img.title || 'Event Highlight')}</h6>
                             </div>
                         </div>
                     </div>
