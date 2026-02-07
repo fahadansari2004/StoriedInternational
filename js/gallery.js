@@ -155,10 +155,14 @@
     // Expose for click handlers
     window.openAlbum = openAlbum;
     window.renderGallery = renderGallery;
-    window.toggleGalleryView = window.toggleGalleryView; // Expose the new function
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
         renderGallery();
-    }
+
+        // Setup escape key to close lightbox
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') window.closeLightbox();
+        });
+    });
 })();
