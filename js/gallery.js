@@ -49,33 +49,33 @@
     }
 
     async function renderGallery() {
-        const albumsContainer = document.getElementById('gallery-container');
-        const featuredContainer = document.getElementById('featured-album-container');
+        const albumsGrid = document.getElementById('albums-grid');
         const recentContainer = document.getElementById('recent-gallery-container');
 
         const content = await window.EventProContent.getContent();
 
-        // Render Featured Album (First album or most recent)
-        if (featuredContainer) {
+        // Render Albums Grid
+        if (albumsGrid) {
             const albums = content.gallery?.albums || [];
-            const featuredAlbum = albums[0]; // Get first album as featured
 
-            if (featuredAlbum) {
-                featuredContainer.innerHTML = `
-                    <div class="featured-album-cover" onclick="window.location.href='album-details.html?id=${featuredAlbum.id}'" style="cursor: pointer;">
-                        <img src="${featuredAlbum.coverUrl}" alt="${sanitize(featuredAlbum.title)}" loading="lazy">
-                        <div class="featured-album-overlay">
-                            <h2 class="featured-album-title">${sanitize(featuredAlbum.title)}</h2>
-                            <p class="featured-album-subtitle">${sanitize(featuredAlbum.subtitle || 'A Beautiful Event Collection')}</p>
-                            <div class="featured-album-cta">
-                                <span>View Album</span>
-                                <i class="bi bi-arrow-right"></i>
+            if (albums.length > 0) {
+                albumsGrid.innerHTML = albums.map((album, index) => `
+                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch reveal-scale" style="transition-delay: ${index * 0.1}s">
+                        <div class="featured-album-cover w-100 shadow-sm" onclick="window.location.href='album-details.html?id=${album.id}'" style="cursor: pointer; height: 350px;">
+                            <img src="${album.coverUrl}" alt="${sanitize(album.title)}" loading="lazy" class="h-100 object-fit-cover">
+                            <div class="featured-album-overlay">
+                                <h3 class="featured-album-title fs-4">${sanitize(album.title)}</h3>
+                                <p class="featured-album-subtitle small mb-3">${sanitize(album.subtitle || '')}</p>
+                                <div class="featured-album-cta">
+                                    <span class="small text-uppercase fw-bold">View Album</span>
+                                    <i class="bi bi-arrow-right ms-2"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
-                `;
+                `).join('');
             } else {
-                featuredContainer.innerHTML = '<div class="text-center py-5"><p class="text-muted">No albums available yet.</p></div>';
+                albumsGrid.innerHTML = '<div class="col-12 text-center py-5"><p class="text-muted">No albums available yet.</p></div>';
             }
         }
 
