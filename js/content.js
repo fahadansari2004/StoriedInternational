@@ -8,6 +8,11 @@
 
     const STORAGE_KEY = 'eventpro_site_content';
 
+    window.EventProContent = {
+        getContent,
+        renderContent
+    };
+
     const DEFAULT_CONTENT = {
         hero: {
             slides: [

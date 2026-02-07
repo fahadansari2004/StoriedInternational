@@ -841,15 +841,52 @@ function handleFilePreview() {
     }
 }
 
-function handleAboutFilePreview() {
-    const file = aboutImageFile?.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-            if (aboutImagePreview) aboutImagePreview.innerHTML = `<img src="${e.target.result}" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover;">`;
-        };
-        reader.readAsDataURL(file);
+/**
+ * Helper to get image data from either a URL input or a File input
+ * Returns the URL (as string) or Base64 (after compression)
+ */
+async function getFileData(fileInputId, urlInputId) {
+    const fileInput = document.getElementById(fileInputId);
+    const urlInput = document.getElementById(urlInputId);
+
+    // Prioritize file upload if provided
+    if (fileInput && fileInput.files && fileInput.files[0]) {
+        const file = fileInput.files[0];
+        const reader = new Promise((resolve, reject) => {
+            const r = new FileReader();
+            r.onload = (e) => resolve(e.target.result);
+            r.onerror = (e) => reject(e);
+            r.readAsDataURL(file);
+        });
+        const base64 = await reader;
+        return await compressImage(base64);
     }
+
+    // Fallback to URL input
+    return urlInput ? urlInput.value.trim() : null;
+}
+
+/**
+ * Setup real-time preview for image file inputs
+ */
+function setupImagePreview(fileInputId, previewContainerId) {
+    const fileInput = document.getElementById(fileInputId);
+    const previewContainer = document.getElementById(previewContainerId);
+    if (!fileInput || !previewContainer) return;
+
+    fileInput.addEventListener('change', async function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewContainer.innerHTML = `<img src="${e.target.result}" class="img-fluid rounded shadow-sm" style="max-height: 120px; border: 2px solid #ddd;">`;
+                previewContainer.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            previewContainer.style.display = 'none';
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', init);

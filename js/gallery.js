@@ -76,7 +76,7 @@
             const recent = content.gallery?.recent || [];
             recentContainer.innerHTML = recent.map((img, index) => `
                 <div class="col-md-4 col-highlight">
-                    <div class="gallery-item-alt position-relative overflow-hidden rounded shadow-sm mb-4" onclick="window.open('${img.url}', '_blank')">
+                    <div class="gallery-item-alt position-relative overflow-hidden rounded shadow-sm mb-4" onclick="window.openLightbox('${img.url}', '${sanitize(img.title || 'Event Highlight')}')">
                         <img src="${img.url}" alt="${sanitize(img.title || 'Event Highlight')}" class="img-fluid w-100" loading="lazy">
                         <div class="gallery-overlay-alt position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center text-white">
                             <div class="overlay-content text-center p-3">
@@ -103,7 +103,7 @@
             row.innerHTML = (album.images || []).map(img => `
                 <div class="col-6 col-md-4 col-lg-3 mb-3">
                     <div class="album-img-wrapper rounded overflow-hidden shadow-sm h-100" style="height: 200px;">
-                        <img src="${img.url}" class="img-fluid w-100 h-100" style="object-fit: cover; cursor: pointer;" onclick="window.open('${img.url}', '_blank')">
+                        <img src="${img.url}" class="img-fluid w-100 h-100" style="object-fit: cover; cursor: pointer;" onclick="window.openLightbox('${img.url}', '${sanitize(img.title || album.title)}')">
                     </div>
                 </div>
             `).join('') || '<div class="col-12 text-center py-5">No images in this album yet.</div>';
@@ -112,6 +112,33 @@
         const modal = new bootstrap.Modal(document.getElementById('albumModal'));
         modal.show();
     }
+
+    // Global Lightbox Functions
+    window.openLightbox = function (url, caption = '') {
+        const lightbox = document.getElementById('customLightbox');
+        const img = document.getElementById('lightboxImg');
+        const captionEl = document.getElementById('lightboxCaption');
+
+        if (lightbox && img) {
+            img.src = url;
+            if (captionEl) captionEl.textContent = caption;
+            lightbox.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scroll
+        }
+    };
+
+    window.closeLightbox = function () {
+        const lightbox = document.getElementById('customLightbox');
+        if (lightbox) {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = ''; // Restore scroll
+        }
+    };
+
+    // Escape key listener
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') window.closeLightbox();
+    });
 
     // Expose for click handlers
     window.openAlbum = openAlbum;
