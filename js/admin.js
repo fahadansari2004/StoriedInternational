@@ -511,15 +511,20 @@ async function initContentForms() {
     document.getElementById('addHeroSlideForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const c = await getSiteContent();
+
+        const imageUrl = await getFileData('slideFile', 'slideImage');
+        if (!imageUrl) return alert('Please provide an image URL or upload a file.');
+
         c.hero.slides = c.hero.slides || [];
         c.hero.slides.push({
-            image: document.getElementById('slideImage').value,
+            image: imageUrl,
             tagline: document.getElementById('slideTagline').value,
             title: document.getElementById('slideTitle').value,
             subtitle: document.getElementById('slideSubtitle').value
         });
         await saveSiteContent(c);
         e.target.reset();
+        document.getElementById('slidePreview').style.display = 'none';
         await renderHeroSlidesList();
         alert('Slide added!');
     });
@@ -540,15 +545,20 @@ async function initContentForms() {
     document.getElementById('createAlbumForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const c = await getSiteContent();
+
+        const coverUrl = await getFileData('albumCoverFile', 'albumCoverUrl');
+        if (!coverUrl) return alert('Please provide a cover image URL or upload a file.');
+
         c.gallery.albums = c.gallery.albums || [];
         c.gallery.albums.push({
             id: 'album-' + Date.now(),
             title: document.getElementById('albumTitle').value,
-            coverUrl: document.getElementById('albumCoverUrl').value,
+            coverUrl: coverUrl,
             images: []
         });
         await saveSiteContent(c);
         e.target.reset();
+        document.getElementById('albumCoverPreview').style.display = 'none';
         await renderAlbumsList();
         alert('Album created!');
     });
@@ -558,14 +568,19 @@ async function initContentForms() {
         const c = await getSiteContent();
         const albumId = document.getElementById('currentAlbumId').value;
         const album = c.gallery.albums.find(a => a.id === albumId);
+
+        const imageUrl = await getFileData('newAlbumImageFile', 'newAlbumImageUrl');
+        if (!imageUrl) return alert('Please provide an image URL or upload a file.');
+
         if (album) {
             album.images = album.images || [];
             album.images.push({
-                url: document.getElementById('newAlbumImageUrl').value,
+                url: imageUrl,
                 title: album.title
             });
             await saveSiteContent(c);
             e.target.reset();
+            document.getElementById('newAlbumImagePreview').style.display = 'none';
             await renderAlbumImagesList();
             await renderAlbumsList();
         }
@@ -574,13 +589,18 @@ async function initContentForms() {
     document.getElementById('addRecentHighlightForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const c = await getSiteContent();
+
+        const imageUrl = await getFileData('recentHighlightFile', 'recentImageUrl');
+        if (!imageUrl) return alert('Please provide an image URL or upload a file.');
+
         c.gallery.recent = c.gallery.recent || [];
         c.gallery.recent.unshift({
-            url: document.getElementById('recentImageUrl').value,
+            url: imageUrl,
             title: 'Highlight'
         });
         await saveSiteContent(c);
         e.target.reset();
+        document.getElementById('recentHighlightPreview').style.display = 'none';
         await renderRecentHighlightsList();
         alert('Highlight added!');
     });
@@ -665,6 +685,12 @@ async function initContentForms() {
         await saveSiteContent(c);
         alert('Footer saved!');
     });
+
+    // Setup all previews
+    setupImagePreview('slideFile', 'slidePreview');
+    setupImagePreview('albumCoverFile', 'albumCoverPreview');
+    setupImagePreview('newAlbumImageFile', 'newAlbumImagePreview');
+    setupImagePreview('recentHighlightFile', 'recentHighlightPreview');
 }
 
 function escapeHtml(str) {
@@ -747,7 +773,6 @@ window.removeTestimonial = async (index) => {
     await renderTestimonialsList();
 };
 
-// ... keep existing file preview logic ...
 function handleFilePreview() {
     const file = imageFile?.files[0];
     if (file) {
@@ -758,6 +783,7 @@ function handleFilePreview() {
         reader.readAsDataURL(file);
     }
 }
+
 function handleAboutFilePreview() {
     const file = aboutImageFile?.files[0];
     if (file) {
