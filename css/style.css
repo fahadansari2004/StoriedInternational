@@ -467,6 +467,30 @@ footer a {
     }
 }
 
+/* Stats Section Styles */
+.stats-card {
+    background-color: #fff;
+    border: 1px solid #ffc107;
+    /* Gold border */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    min-height: 180px;
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.stats-card h3 {
+    color: #333;
+    font-family: 'Playfair Display', serif;
+    /* Optional for premium look check if loaded */
+}
+
+.spacing-2 {
+    letter-spacing: 2px;
+}
+
 /* Mobile Optimizations for Hero Overlap */
 @media (max-width: 991px) {
     .fixed-overlay {
