@@ -307,15 +307,17 @@ async function init() {
 
     // About toggle
     aboutSourceUrl?.addEventListener('change', () => {
-        aboutUrlGroup.style.display = 'block';
-        aboutUploadGroup.style.display = 'none';
+        if (aboutUrlGroup) aboutUrlGroup.style.display = 'block';
+        if (aboutUploadGroup) aboutUploadGroup.style.display = 'none';
+        document.getElementById('aboutImageUrl')?.focus();
     });
     aboutSourceUpload?.addEventListener('change', () => {
-        aboutUrlGroup.style.display = 'none';
-        aboutUploadGroup.style.display = 'block';
+        if (aboutUrlGroup) aboutUrlGroup.style.display = 'none';
+        if (aboutUploadGroup) aboutUploadGroup.style.display = 'block';
+        aboutImageFile?.focus();
     });
     aboutBrowseBtn?.addEventListener('click', () => aboutImageFile?.click());
-    aboutImageFile?.addEventListener('change', handleAboutFilePreview);
+    // aboutImageFile listener is handled by setupImagePreview
 
     // Content forms
     await initContentForms();
@@ -665,18 +667,9 @@ async function initContentForms() {
     document.getElementById('aboutForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const c = await getSiteContent();
-        let aboutImageUrl = document.getElementById('aboutImageUrl').value;
 
-        if (aboutSourceUpload?.checked && aboutImageFile?.files[0]) {
-            const file = aboutImageFile.files[0];
-            const reader = new Promise((resolve) => {
-                const r = new FileReader();
-                r.onload = (event) => resolve(event.target.result);
-                r.readAsDataURL(file);
-            });
-            const base64 = await reader;
-            aboutImageUrl = await compressImage(base64);
-        }
+        const imageUrl = await getFileData('aboutImageFile', 'aboutImageUrl');
+        if (!imageUrl) return alert('Please provide an image URL or upload a file.');
 
         c.about = {
             ...c.about,
@@ -684,11 +677,19 @@ async function initContentForms() {
             title: document.getElementById('aboutTitle').value,
             paragraph1: document.getElementById('aboutP1').value,
             paragraph2: document.getElementById('aboutP2').value,
-            imageUrl: aboutImageUrl,
+            imageUrl: imageUrl,
             badgeText: document.getElementById('aboutBadge').value
         };
         await saveSiteContent(c);
         alert('About section saved!');
+
+        // Clear preview and file input
+        const preview = document.getElementById('aboutImagePreview');
+        if (preview) {
+            preview.style.display = 'none';
+            const fileInput = document.getElementById('aboutImageFile');
+            if (fileInput) fileInput.value = '';
+        }
     });
 
     // Testimonial and other forms...
@@ -744,6 +745,7 @@ async function initContentForms() {
     });
 
     // Setup all previews
+    setupImagePreview('aboutImageFile', 'aboutImagePreview');
     setupImagePreview('slideFile', 'slidePreview');
     setupImagePreview('albumCoverFile', 'albumCoverPreview');
     setupImagePreview('newAlbumImageFile', 'newAlbumImagePreview');
