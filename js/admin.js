@@ -143,11 +143,19 @@ async function getSiteContent() {
 }
 
 async function saveSiteContent(content) {
+    const json = JSON.stringify(content);
+    const sizeMB = (json.length / (1024 * 1024)).toFixed(2);
+    console.log(`Saving content (Size: ${sizeMB} MB)`);
+
     try {
-        // Save to localStorage (local backup)
-        localStorage.setItem(CONTENT_STORAGE_KEY, JSON.stringify(content));
+        localStorage.setItem(CONTENT_STORAGE_KEY, json);
     } catch (e) {
-        console.warn('LocalStorage save failed (likely quota exceeded):', e);
+        console.error('LocalStorage save failed:', e);
+        if (e.name === 'QuotaExceededError' || e.code === 22) {
+            alert('CRITICAL: Storage Quota Exceeded!\nYou have uploaded too many high-resolution images. Please use "Image URL" instead of "Upload File" for new images, or remove some existing photos.');
+        } else {
+            alert('Error saving data locally. Your browser might be blocking storage.');
+        }
     }
 
     // Save to Supabase (global)
@@ -158,12 +166,10 @@ async function saveSiteContent(content) {
 
         if (error) {
             console.error('Supabase save error:', error);
-            alert('Error saving to Cloud Database: ' + error.message + '\n\nData saved LOCALLY only.');
+            alert('Cloud Database Sync Failed: ' + error.message + '\n\nYour changes are saved LOCALLY on this computer only.');
         } else {
-            console.log('Successfully saved to Supabase');
+            console.log('Successfully synced to Cloud Database');
         }
-    } else {
-        console.warn('Supabase not configured, saving locally only');
     }
 
     if (window.EventProContent?.renderContent) {
@@ -356,7 +362,6 @@ async function showAdminDashboard() {
     adminSection.style.display = 'block';
     await checkSupabaseConnection();
     await loadContentForms();
-    await renderGalleryList();
     await renderTestimonialsList();
 
     // Warn if opened via file:// - localStorage won't sync with main page
@@ -851,7 +856,8 @@ async function getFileData(fileInputId, urlInputId) {
     const fileInput = document.getElementById(fileInputId);
     const urlInput = document.getElementById(urlInputId);
 
-    // Prioritize file upload if provided
+    // Check if we should prioritize upload or URL based on visibility/source toggle
+    // However, the simplest logic is: if a file is selected, use it.
     if (fileInput && fileInput.files && fileInput.files[0]) {
         const file = fileInput.files[0];
         const reader = new Promise((resolve, reject) => {
@@ -865,7 +871,8 @@ async function getFileData(fileInputId, urlInputId) {
     }
 
     // Fallback to URL input
-    return urlInput ? urlInput.value.trim() : null;
+    const url = urlInput ? urlInput.value.trim() : null;
+    return url || null;
 }
 
 /**
