@@ -62,7 +62,7 @@
 
             if (featuredAlbum) {
                 featuredContainer.innerHTML = `
-                    <div class="featured-album-cover" onclick="openAlbum('${featuredAlbum.id}')">
+                    <div class="featured-album-cover" onclick="window.location.href='album-details.html?id=${featuredAlbum.id}'" style="cursor: pointer;">
                         <img src="${featuredAlbum.coverUrl}" alt="${sanitize(featuredAlbum.title)}" loading="lazy">
                         <div class="featured-album-overlay">
                             <h2 class="featured-album-title">${sanitize(featuredAlbum.title)}</h2>
