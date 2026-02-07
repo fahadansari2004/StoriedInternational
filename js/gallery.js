@@ -121,9 +121,9 @@
 
         if (lightbox && img) {
             img.src = url;
-            if (captionEl) captionEl.textContent = caption;
+            if (captionEl) captionEl.textContent = caption || '';
             lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scroll
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
         }
     };
 
@@ -131,7 +131,7 @@
         const lightbox = document.getElementById('customLightbox');
         if (lightbox) {
             lightbox.classList.remove('active');
-            document.body.style.overflow = ''; // Restore scroll
+            document.body.style.overflow = ''; // Restore scrolling
         }
     };
 
