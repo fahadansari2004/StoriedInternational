@@ -802,6 +802,18 @@
     <script src="js/gallery.js?v=2.2"></script>
     <script src="js/script.js?v=2.2"></script>
     <script src="js/chatbot.js?v=2.2"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/tilt.js"></script>
+    <script src="js/typing.js"></script>
+    <script>
+        // Scroll Progress Script
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scroll-progress').style.width = scrolled + '%';
+        });
+    </script>
 
     <!-- WhatsApp Floating Button -->
     <a href="https://wa.me/917356044637" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
