@@ -7,16 +7,20 @@ const CONTENT_STORAGE_KEY = 'eventpro_site_content';
 
 const DEFAULT_CONTENT = {
     hero: {
-        tagline: "Kerala's #1 Exclusive Event Company",
-        title: "Partner with Storied International for Your Dream Events",
-        subtitle: "We make everything from corporate event planning and personal celebrations to customized event packages absolutely memorable!",
-        rating: "4.8/5",
-        yearsExp: "15+",
-        yearsLabel: "Years of Experience",
-        eventsCount: "5000+",
-        eventsLabel: "Events Covered",
-        clientsCount: "3000+",
-        clientsLabel: "Satisfied Clients"
+        slides: [
+            {
+                image: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=1600&fit=crop",
+                tagline: "Kerala's #1 Exclusive Event Company",
+                title: "Partner with Storied International for Your Dream Events",
+                subtitle: "We make everything from corporate event planning and personal celebrations to customized event packages absolutely memorable!"
+            }
+        ],
+        stats: {
+            rating: "4.8/5",
+            yearsExp: "15+",
+            eventsCount: "5000+",
+            clientsCount: "3000+"
+        }
     },
     certification: { line1: "ISO 9001:2015 CERTIFIED", line2: "Professional Event Management Company" },
     about: {
@@ -43,14 +47,23 @@ const DEFAULT_CONTENT = {
         description: "Planning a full event has never been easier! Storied International offers a wide range of services to make your events stress-free and memorable.",
         copyright: "© 2024 Storied International. All Rights Reserved."
     },
-    gallery: [
-        { url: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&h=400&fit=crop', title: 'Event 1' },
-        { url: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&h=400&fit=crop', title: 'Event 2' },
-        { url: 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=600&h=400&fit=crop', title: 'Event 3' },
-        { url: 'https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?w=600&h=400&fit=crop', title: 'Event 4' },
-        { url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=600&h=400&fit=crop', title: 'Event 5' },
-        { url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&h=400&fit=crop', title: 'Event 6' }
-    ]
+    gallery: {
+        albums: [
+            {
+                id: 'album-1',
+                title: 'Wedding Events',
+                coverUrl: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=600&h=400&fit=crop',
+                images: [
+                    { url: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&fit=crop', title: 'Wedding Day 1' },
+                    { url: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&fit=crop', title: 'Wedding Day 2' }
+                ]
+            }
+        ],
+        recent: [
+            { url: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=600&h=400&fit=crop', title: 'Event 1' },
+            { url: 'https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?w=600&h=400&fit=crop', title: 'Event 2' }
+        ]
+    }
 };
 
 function deepMerge(target, source) {
@@ -327,13 +340,13 @@ async function showAdminDashboard() {
 async function loadContentForms() {
     const c = await getSiteContent();
     const set = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
-    set('heroTagline', c.hero.tagline);
-    set('heroTitle', c.hero.title);
-    set('heroSubtitle', c.hero.subtitle);
-    set('heroRating', c.hero.rating);
-    set('heroYears', c.hero.yearsExp);
-    set('heroEvents', c.hero.eventsCount);
-    set('heroClients', c.hero.clientsCount);
+
+    // Hero Stats
+    set('heroRating', c.hero.stats?.rating || '4.8/5');
+    set('heroYears', c.hero.stats?.yearsExp || '15+');
+    set('heroEvents', c.hero.stats?.eventsCount || '5000+');
+    set('heroClients', c.hero.stats?.clientsCount || '3000+');
+
     set('certLine1', c.certification.line1);
     set('certLine2', c.certification.line2);
     set('aboutHeading', c.about.heading);
@@ -348,47 +361,235 @@ async function loadContentForms() {
     set('footerName', c.footer.companyName);
     set('footerDesc', c.footer.description);
     set('footerCopyright', c.footer.copyright);
+
+    await renderHeroSlidesList();
+    await renderAlbumsList();
+    await renderRecentHighlightsList();
 }
 
-async function initContentForms() {
-    // Initial load happens in showAdminDashboard
+async function renderRecentHighlightsList() {
+    const c = await getSiteContent();
+    const list = document.getElementById('recentHighlightsList');
+    const badge = document.getElementById('recentImageCountBadge');
+    if (!list) return;
 
-    document.getElementById('heroForm')?.addEventListener('submit', async (e) => {
+    const recent = c.gallery.recent || [];
+    if (badge) badge.textContent = `${recent.length} images`;
+
+    list.innerHTML = recent.map((img, index) => `
+        <div class="col-md-3">
+            <div class="card">
+                <img src="${img.url}" class="card-img-top" style="height: 80px; object-fit: cover;">
+                <div class="card-body p-1">
+                    <button type="button" class="btn btn-danger btn-sm w-100" onclick="removeRecentHighlight(${index})">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    `).join('') || '<div class="col-12"><p class="text-muted text-center">No highlights yet.</p></div>';
+}
+
+window.removeRecentHighlight = async (index) => {
+    if (!confirm('Remove this highlight?')) return;
+    const c = await getSiteContent();
+    c.gallery.recent.splice(index, 1);
+    await saveSiteContent(c);
+    await renderRecentHighlightsList();
+};
+
+async function renderHeroSlidesList() {
+    const c = await getSiteContent();
+    const list = document.getElementById('heroSlidesList');
+    if (!list) return;
+
+    const slides = c.hero.slides || [];
+    list.innerHTML = slides.map((slide, index) => `
+        <div class="card mb-2">
+            <div class="card-body py-2 d-flex align-items-center">
+                <img src="${slide.image}" style="width: 50px; height: 50px; object-fit: cover;" class="rounded me-3">
+                <div class="flex-grow-1">
+                    <h6 class="mb-0">${slide.title || 'Untitled Slide'}</h6>
+                    <small class="text-muted">${slide.tagline || ''}</small>
+                </div>
+                <button type="button" class="btn btn-danger btn-sm" onclick="removeHeroSlide(${index})">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>
+    `).join('') || '<p class="text-muted">No slides yet.</p>';
+}
+
+window.removeHeroSlide = async (index) => {
+    if (!confirm('Remove this slide?')) return;
+    const c = await getSiteContent();
+    c.hero.slides.splice(index, 1);
+    await saveSiteContent(c);
+    await renderHeroSlidesList();
+};
+
+async function renderAlbumsList() {
+    const c = await getSiteContent();
+    const list = document.getElementById('albumsList');
+    if (!list) return;
+
+    const albums = c.gallery.albums || [];
+    list.innerHTML = albums.map((album, index) => `
+        <div class="col-md-4">
+            <div class="card h-100">
+                <img src="${album.coverUrl}" class="card-img-top" style="height: 120px; object-fit: cover;">
+                <div class="card-body p-2">
+                    <h6 class="mb-1">${album.title}</h6>
+                    <p class="small text-muted mb-2">${album.images?.length || 0} images</p>
+                    <div class="btn-group w-100">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="openManageAlbum('${album.id}')">
+                            <i class="bi bi-images me-1"></i>Manage
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeAlbum(${index})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `).join('') || '<div class="col-12"><p class="text-muted text-center">No albums created yet.</p></div>';
+}
+
+window.removeAlbum = async (index) => {
+    if (!confirm('Remove this entire album and all its images?')) return;
+    const c = await getSiteContent();
+    c.gallery.albums.splice(index, 1);
+    await saveSiteContent(c);
+    await renderAlbumsList();
+};
+
+window.openManageAlbum = async (albumId) => {
+    const c = await getSiteContent();
+    const album = c.gallery.albums.find(a => a.id === albumId);
+    if (!album) return;
+
+    document.getElementById('currentAlbumId').value = albumId;
+    document.getElementById('manageAlbumTitle').textContent = `Manage Album: ${album.title}`;
+    await renderAlbumImagesList();
+
+    const modal = new bootstrap.Modal(document.getElementById('manageAlbumModal'));
+    modal.show();
+};
+
+async function renderAlbumImagesList() {
+    const c = await getSiteContent();
+    const albumId = document.getElementById('currentAlbumId').value;
+    const album = c.gallery.albums.find(a => a.id === albumId);
+    const list = document.getElementById('albumImagesList');
+    if (!album || !list) return;
+
+    list.innerHTML = (album.images || []).map((img, index) => `
+        <div class="col-4">
+            <div class="position-relative">
+                <img src="${img.url}" class="img-fluid rounded" style="height: 80px; width: 100%; object-fit: cover;">
+                <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0" onclick="removeImageFromAlbum(${index})">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+        </div>
+    `).join('');
+}
+
+window.removeImageFromAlbum = async (index) => {
+    const c = await getSiteContent();
+    const albumId = document.getElementById('currentAlbumId').value;
+    const album = c.gallery.albums.find(a => a.id === albumId);
+    if (album) {
+        album.images.splice(index, 1);
+        await saveSiteContent(c);
+        await renderAlbumImagesList();
+        await renderAlbumsList();
+    }
+};
+
+async function initContentForms() {
+    document.getElementById('addHeroSlideForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const c = await getSiteContent();
-        c.hero = {
-            ...c.hero,
-            tagline: document.getElementById('heroTagline').value,
-            title: document.getElementById('heroTitle').value,
-            subtitle: document.getElementById('heroSubtitle').value,
+        c.hero.slides = c.hero.slides || [];
+        c.hero.slides.push({
+            image: document.getElementById('slideImage').value,
+            tagline: document.getElementById('slideTagline').value,
+            title: document.getElementById('slideTitle').value,
+            subtitle: document.getElementById('slideSubtitle').value
+        });
+        await saveSiteContent(c);
+        e.target.reset();
+        await renderHeroSlidesList();
+        alert('Slide added!');
+    });
+
+    document.getElementById('heroStatsForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const c = await getSiteContent();
+        c.hero.stats = {
             rating: document.getElementById('heroRating').value,
             yearsExp: document.getElementById('heroYears').value,
             eventsCount: document.getElementById('heroEvents').value,
             clientsCount: document.getElementById('heroClients').value
         };
         await saveSiteContent(c);
-        alert('Hero section saved!');
+        alert('Stats saved!');
     });
 
-    document.getElementById('certForm')?.addEventListener('submit', async (e) => {
+    document.getElementById('createAlbumForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const c = await getSiteContent();
-        c.certification = {
-            ...c.certification,
-            line1: document.getElementById('certLine1').value,
-            line2: document.getElementById('certLine2').value
-        };
+        c.gallery.albums = c.gallery.albums || [];
+        c.gallery.albums.push({
+            id: 'album-' + Date.now(),
+            title: document.getElementById('albumTitle').value,
+            coverUrl: document.getElementById('albumCoverUrl').value,
+            images: []
+        });
         await saveSiteContent(c);
-        alert('Certification saved!');
+        e.target.reset();
+        await renderAlbumsList();
+        alert('Album created!');
+    });
+
+    document.getElementById('addImageToAlbumForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const c = await getSiteContent();
+        const albumId = document.getElementById('currentAlbumId').value;
+        const album = c.gallery.albums.find(a => a.id === albumId);
+        if (album) {
+            album.images = album.images || [];
+            album.images.push({
+                url: document.getElementById('newAlbumImageUrl').value,
+                title: album.title
+            });
+            await saveSiteContent(c);
+            e.target.reset();
+            await renderAlbumImagesList();
+            await renderAlbumsList();
+        }
+    });
+
+    document.getElementById('addRecentHighlightForm')?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const c = await getSiteContent();
+        c.gallery.recent = c.gallery.recent || [];
+        c.gallery.recent.unshift({
+            url: document.getElementById('recentImageUrl').value,
+            title: 'Highlight'
+        });
+        await saveSiteContent(c);
+        e.target.reset();
+        await renderRecentHighlightsList();
+        alert('Highlight added!');
     });
 
     document.getElementById('aboutForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const c = await getSiteContent();
-
         let aboutImageUrl = document.getElementById('aboutImageUrl').value;
 
-        // Handle uploaded image
         if (aboutSourceUpload?.checked && aboutImageFile?.files[0]) {
             const file = aboutImageFile.files[0];
             const reader = new Promise((resolve) => {
@@ -413,6 +614,10 @@ async function initContentForms() {
         alert('About section saved!');
     });
 
+    // Testimonial and other forms...
+    // Note: I'm keeping the original logic for other forms but they need to be re-attached
+    // because I might have replaced their parent HTML or added new ones.
+
     document.getElementById('addTestimonialForm')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const c = await getSiteContent();
@@ -430,7 +635,7 @@ async function initContentForms() {
         await saveSiteContent(c);
         document.getElementById('addTestimonialForm').reset();
         await renderTestimonialsList();
-        alert('Testimonial added and published!');
+        alert('Testimonial added!');
     });
 
     document.getElementById('adminContactForm')?.addEventListener('submit', async (e) => {
@@ -475,7 +680,6 @@ async function renderTestimonialsList() {
     const pending = testimonials.filter(t => t.status === 'pending');
     const approved = testimonials.filter(t => t.status !== 'pending');
 
-    // Pending list
     const pendingList = document.getElementById('pendingTestimonialsList');
     const pendingCount = document.getElementById('pendingCount');
     if (pendingCount) pendingCount.textContent = pending.length;
@@ -492,15 +696,14 @@ async function renderTestimonialsList() {
                     <p class="small mb-2">"${escapeHtml(quotePreview)}"</p>
                     <small class="text-muted d-block mb-2">${escapeHtml(t.email || '')} • ${escapeHtml(t.date || 'Submitted')}</small>
                     <div class="btn-group btn-group-sm">
-                        <button type="button" class="btn btn-success" onclick="approveTestimonial(${idx})"><i class="bi bi-check-lg me-1"></i>Approve</button>
-                        <button type="button" class="btn btn-outline-danger" onclick="rejectTestimonial(${idx})"><i class="bi bi-x-lg me-1"></i>Reject</button>
+                        <button type="button" class="btn btn-success" onclick="approveTestimonial(${idx})">Approve</button>
+                        <button type="button" class="btn btn-outline-danger" onclick="rejectTestimonial(${idx})">Reject</button>
                     </div>
                 </div>
             </div>`;
         }).join('') || '<p class="text-muted mb-0">No pending reviews.</p>';
     }
 
-    // Approved list
     const list = document.getElementById('testimonialsList');
     if (list) {
         list.innerHTML = approved.map((t, i) => {
@@ -519,176 +722,51 @@ async function renderTestimonialsList() {
     }
 }
 
-async function approveTestimonial(index) {
+window.approveTestimonial = async (index) => {
     const c = await getSiteContent();
     if (c.testimonials && c.testimonials[index]) {
         c.testimonials[index].status = 'approved';
-        c.testimonials[index].rating = c.testimonials[index].rating || 5;
         await saveSiteContent(c);
         await renderTestimonialsList();
-        alert('Review approved and published!');
     }
-}
+};
 
-async function rejectTestimonial(index) {
-    if (!confirm('Reject this review? It will be removed permanently.')) return;
+window.rejectTestimonial = async (index) => {
+    if (!confirm('Reject and delete this review?')) return;
     const c = await getSiteContent();
     c.testimonials.splice(index, 1);
     await saveSiteContent(c);
     await renderTestimonialsList();
-    alert('Review rejected and removed.');
-}
+};
 
-async function removeTestimonial(index) {
-    if (!confirm('Remove this testimonial from the website?')) return;
+window.removeTestimonial = async (index) => {
+    if (!confirm('Remove this memorial?')) return;
     const c = await getSiteContent();
     c.testimonials.splice(index, 1);
     await saveSiteContent(c);
     await renderTestimonialsList();
-}
+};
 
-window.removeTestimonial = removeTestimonial;
-window.approveTestimonial = approveTestimonial;
-window.rejectTestimonial = rejectTestimonial;
-
-async function getGalleryImages() {
-    try {
-        const c = await getSiteContent();
-        return Array.isArray(c.gallery) && c.gallery.length > 0 ? c.gallery : [...GALLERY_CONFIG.DEFAULT_IMAGES];
-    } catch (e) {
-        console.error('getGalleryImages error:', e);
-        return [...GALLERY_CONFIG.DEFAULT_IMAGES];
-    }
-}
-
-async function saveGalleryImages(images) {
-    try {
-        const c = await getSiteContent();
-        c.gallery = images;
-        await saveSiteContent(c);
-        await renderGalleryList();
-    } catch (e) {
-        console.error('saveGalleryImages error:', e);
-        alert('Failed to save gallery: ' + e.message);
-    }
-}
-
+// ... keep existing file preview logic ...
 function handleFilePreview() {
-    const file = imageFile.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        imagePreview.innerHTML = `
-            <img src="${e.target.result}" class="img-fluid rounded" style="max-height: 140px; object-fit: contain;">
-        `;
-    };
-    reader.readAsDataURL(file);
-}
-
-function handleAboutFilePreview() {
-    const file = aboutImageFile.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        aboutImagePreview.innerHTML = `<img src="${e.target.result}" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover;">`;
-    };
-    reader.readAsDataURL(file);
-}
-
-async function handleAddImage(e) {
-    e.preventDefault();
-
-    const title = document.getElementById('imageTitle').value.trim() || 'Gallery Image';
-    let imageData = null;
-
-    if (sourceUrl.checked) {
-        const url = document.getElementById('imageUrl').value.trim();
-        if (!url) {
-            alert('Please enter an image URL');
-            return;
-        }
-        imageData = { url, title };
-    } else {
-        const file = imageFile.files[0];
-        if (!file) {
-            alert('Please select an image file');
-            return;
-        }
+    const file = imageFile?.files[0];
+    if (file) {
         const reader = new FileReader();
-        reader.onload = async (event) => {
-            const compressedUrl = await compressImage(event.target.result);
-            imageData = { url: compressedUrl, title };
-            await addImageAndSave(imageData);
+        reader.onload = (e) => {
+            if (imagePreview) imagePreview.innerHTML = `<img src="${e.target.result}" class="img-fluid rounded" style="max-height: 140px; object-fit: contain;">`;
         };
         reader.readAsDataURL(file);
-        return;
     }
-
-    await addImageAndSave(imageData);
 }
-
-async function addImageAndSave(imageData) {
-    try {
-        console.log('Adding new image to gallery...', imageData.title);
-        const images = await getGalleryImages();
-
-        // Safety check: avoid duplicates or infinite growth if something is wrong
-        if (!Array.isArray(images)) {
-            console.error('Gallery images is not an array:', images);
-            throw new Error('Gallery data is corrupted. Resetting to defaults.');
-        }
-
-        images.unshift(imageData);
-        await saveGalleryImages(images);
-
-        // Reset form
-        addImageForm.reset();
-        document.getElementById('imageUrl').value = '';
-        document.getElementById('imageTitle').value = '';
-        imagePreview.innerHTML = `
-            <i class="bi bi-cloud-upload fs-1"></i>
-            <p class="mb-0 mt-2 small">Preview will appear here</p>
-        `;
-
-        alert('Image added successfully!');
-    } catch (e) {
-        console.error('addImageAndSave error:', e);
-        alert('Could not add image: ' + e.message);
+function handleAboutFilePreview() {
+    const file = aboutImageFile?.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            if (aboutImagePreview) aboutImagePreview.innerHTML = `<img src="${e.target.result}" class="img-fluid rounded" style="width: 100%; height: 100%; object-fit: cover;">`;
+        };
+        reader.readAsDataURL(file);
     }
 }
 
-async function removeImage(index) {
-    if (!confirm('Remove this image from the gallery?')) return;
-
-    const images = await getGalleryImages();
-    images.splice(index, 1);
-    await saveGalleryImages(images);
-}
-
-async function renderGalleryList() {
-    const images = await getGalleryImages();
-    imageCountBadge.textContent = `${images.length} image${images.length !== 1 ? 's' : ''}`;
-
-    galleryList.innerHTML = images.map((img, index) => `
-        <div class="col-md-4 col-lg-3">
-            <div class="card h-100">
-                <img src="${img.url}" class="card-img-top gallery-preview w-100" alt="${img.title}" 
-                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22200%22 height=%22150%22%3E%3Crect fill=%22%23ddd%22 width=%22200%22 height=%22150%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22%3EFailed to load%3C/text%3E%3C/svg%3E'">
-                <div class="card-body p-2">
-                    <p class="card-text small mb-0 text-truncate" title="${img.title}">${img.title}</p>
-                    <button type="button" class="btn btn-danger btn-sm mt-1 w-100" onclick="removeImage(${index})">
-                        <i class="bi bi-trash me-1"></i>Remove
-                    </button>
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-// Make removeImage available globally for onclick
-window.removeImage = removeImage;
-
-// Initialize
 document.addEventListener('DOMContentLoaded', init);

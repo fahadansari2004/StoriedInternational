@@ -110,27 +110,40 @@
     async function renderContent() {
         const content = await getContent();
 
-        // Hero
-        const heroTagline = document.getElementById('hero-tagline');
-        const heroTitle = document.getElementById('hero-title');
-        const heroSubtitle = document.getElementById('hero-subtitle');
+        // Hero Carousel
+        const carouselInner = document.getElementById('hero-carousel-inner');
+        if (carouselInner && content.hero.slides?.length) {
+            carouselInner.innerHTML = content.hero.slides.map((slide, index) => `
+                <div class="carousel-item ${index === 0 ? 'active' : ''}">
+                    <div class="hero-slide-bg" style="background-image: url('${slide.image}')"></div>
+                    <div class="hero-overlay"></div>
+                    <div class="container hero-container">
+                        <div class="row align-items-center min-vh-100">
+                            <div class="col-lg-8 text-white">
+                                <h6 class="text-uppercase text-warning mb-3">${escapeHtml(slide.tagline || '')}</h6>
+                                <h1 class="display-2 fw-bold mb-4">${escapeHtml(slide.title || '')}</h1>
+                                <p class="lead mb-4">${escapeHtml(slide.subtitle || '')}</p>
+                                <div class="d-flex flex-wrap gap-3">
+                                    <a href="#contact" class="btn btn-warning btn-lg">Contact Us</a>
+                                    <a href="#services" class="btn btn-outline-light btn-lg">Our Services</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Hero Stats
+        const stats = content.hero.stats || {};
         const heroRating = document.getElementById('hero-rating');
         const heroYears = document.getElementById('hero-years');
         const heroEvents = document.getElementById('hero-events');
         const heroClients = document.getElementById('hero-clients');
-        if (heroTagline) heroTagline.textContent = content.hero.tagline;
-        if (heroTitle) heroTitle.textContent = content.hero.title;
-        if (heroSubtitle) heroSubtitle.textContent = content.hero.subtitle;
-        if (heroRating) heroRating.textContent = content.hero.rating;
-        if (heroYears) heroYears.textContent = content.hero.yearsExp;
-        const yearsLabel = heroYears?.parentElement?.querySelector('p');
-        if (yearsLabel) yearsLabel.textContent = content.hero.yearsLabel;
-        if (heroEvents) heroEvents.textContent = content.hero.eventsCount;
-        const eventsLabel = heroEvents?.parentElement?.querySelector('p');
-        if (eventsLabel) eventsLabel.textContent = content.hero.eventsLabel;
-        if (heroClients) heroClients.textContent = content.hero.clientsCount;
-        const clientsLabel = heroClients?.parentElement?.querySelector('p');
-        if (clientsLabel) clientsLabel.textContent = content.hero.clientsLabel;
+        if (heroRating) heroRating.textContent = stats.rating || '4.8/5';
+        if (heroYears) heroYears.textContent = stats.yearsExp || '15+';
+        if (heroEvents) heroEvents.textContent = stats.eventsCount || '5000+';
+        if (heroClients) heroClients.textContent = stats.clientsCount || '3000+';
 
         // Certification
         const cert1 = document.getElementById('cert-line1');

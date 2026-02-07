@@ -117,56 +117,61 @@
                     <div class="tab-pane fade show active" id="hero-panel" role="tabpanel">
                         <div class="card shadow mb-4">
                             <div class="card-body">
-                                <h5 class="mb-3"><i class="bi bi-house me-2"></i>Hero Section</h5>
-                                <form id="heroForm">
+                                <h5 class="mb-3"><i class="bi bi-images me-2"></i>Hero Carousel Slides</h5>
+                                <div id="heroSlidesList" class="mb-4">
+                                    <!-- Slides will appear here -->
+                                </div>
+                                <hr>
+                                <h6>Add New Slide</h6>
+                                <form id="addHeroSlideForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">Background Image URL</label>
+                                        <input type="url" class="form-control" id="slideImage" required
+                                            placeholder="https://example.com/hero.jpg">
+                                    </div>
                                     <div class="mb-3">
                                         <label class="form-label">Tagline</label>
-                                        <input type="text" class="form-control" id="heroTagline"
-                                            placeholder="e.g., Kerala's #1 Exclusive Event Company">
+                                        <input type="text" class="form-control" id="slideTagline"
+                                            placeholder="Kerala's #1 Exclusive Event Company">
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Main Title</label>
-                                        <input type="text" class="form-control" id="heroTitle"
-                                            placeholder="Main heading">
+                                        <input type="text" class="form-control" id="slideTitle"
+                                            placeholder="Your Dream Event">
                                     </div>
                                     <div class="mb-3">
                                         <label class="form-label">Subtitle</label>
-                                        <textarea class="form-control" id="heroSubtitle" rows="2"></textarea>
+                                        <textarea class="form-control" id="slideSubtitle" rows="2"></textarea>
                                     </div>
-                                    <div class="row g-3 mb-3">
-                                        <div class="col-md-4">
-                                            <label class="form-label">Rating (e.g., 4.8/5)</label>
-                                            <input type="text" class="form-control" id="heroRating">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Years Experience</label>
-                                            <input type="text" class="form-control" id="heroYears" placeholder="15+">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Events Count</label>
-                                            <input type="text" class="form-control" id="heroEvents" placeholder="5000+">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label">Clients Count</label>
-                                            <input type="text" class="form-control" id="heroClients"
-                                                placeholder="3000+">
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Save Hero</button>
+                                    <button type="submit" class="btn btn-primary">Add Slide</button>
                                 </form>
                             </div>
                         </div>
                         <div class="card shadow">
                             <div class="card-body">
-                                <h6 class="mb-3">Certification Badge</h6>
-                                <form id="certForm">
+                                <h6 class="mb-3">Hero Statistics</h6>
+                                <form id="heroStatsForm">
                                     <div class="row g-3">
-                                        <div class="col-md-6"><input type="text" class="form-control" id="certLine1"
-                                                placeholder="ISO 9001:2015 CERTIFIED"></div>
-                                        <div class="col-md-6"><input type="text" class="form-control" id="certLine2"
-                                                placeholder="Professional Event Management Company"></div>
-                                        <div class="col-12"><button type="submit" class="btn btn-primary">Save
-                                                Certification</button></div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Rating</label>
+                                            <input type="text" class="form-control" id="heroRating" placeholder="4.8/5">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Years</label>
+                                            <input type="text" class="form-control" id="heroYears" placeholder="15+">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Events</label>
+                                            <input type="text" class="form-control" id="heroEvents" placeholder="5000+">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Clients</label>
+                                            <input type="text" class="form-control" id="heroClients"
+                                                placeholder="3000+">
+                                        </div>
+                                        <div class="col-12">
+                                            <button type="submit" class="btn btn-primary">Save Stats</button>
+                                        </div>
                                     </div>
                                 </form>
                             </div>
@@ -339,81 +344,82 @@
                         </div>
                     </div>
 
-                    <!-- Gallery Panel -->
+                    <!-- Gallery Panel (Albums) -->
                     <div class="tab-pane fade" id="gallery-panel" role="tabpanel">
-                        <div class="card shadow">
+                        <div class="card shadow mb-4">
                             <div
                                 class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                                <h5 class="mb-0"><i class="bi bi-images me-2"></i>Gallery Management</h5>
-                                <span class="badge bg-light text-primary" id="imageCount">0 images</span>
+                                <h5 class="mb-0"><i class="bi bi-collection me-2"></i>Album Management</h5>
                             </div>
                             <div class="card-body">
-                                <!-- Add Image Form -->
-                                <div class="mb-4 p-4 bg-light rounded">
-                                    <h6 class="mb-3"><i class="bi bi-plus-circle me-2"></i>Add New Image</h6>
-                                    <form id="addImageForm">
-                                        <div class="row g-3">
-                                            <div class="col-12">
-                                                <label class="form-label">Image Source</label>
-                                                <div class="btn-group w-100" role="group">
-                                                    <input type="radio" class="btn-check" name="sourceType"
-                                                        id="sourceUrl" value="url" checked>
-                                                    <label class="btn btn-outline-primary" for="sourceUrl">Image
-                                                        URL</label>
-                                                    <input type="radio" class="btn-check" name="sourceType"
-                                                        id="sourceUpload" value="upload">
-                                                    <label class="btn btn-outline-primary" for="sourceUpload">Upload
-                                                        File</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-12" id="urlInputGroup">
-                                                <label for="imageUrl" class="form-label">Image URL</label>
-                                                <input type="url" class="form-control" id="imageUrl"
-                                                    placeholder="https://example.com/image.jpg">
-                                                <small class="text-muted">Paste a direct link to an image (Imgur, your
-                                                    server, etc.)</small>
-                                            </div>
-                                            <div class="col-12" id="uploadInputGroup" style="display: none;">
-                                                <label class="form-label">Choose Image from Computer</label>
-                                                <input type="file" id="imageFile"
-                                                    accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
-                                                    style="position:absolute;opacity:0;width:0;height:0;pointer-events:none">
-                                                <button type="button" class="btn btn-primary" id="browseImageBtn">
-                                                    <i class="bi bi-folder2-open me-2"></i>Click to Open File Manager
-                                                </button>
-                                                <small class="text-muted d-block mt-2">Select JPG, PNG, GIF or WebP
-                                                    image from your computer</small>
-                                                <div id="imagePreview"
-                                                    class="image-preview-box mt-2 p-3 text-center text-muted">
-                                                    <i class="bi bi-cloud-upload fs-1"></i>
-                                                    <p class="mb-0 mt-2 small">Preview will appear here after selecting
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <div class="col-12">
-                                                <label for="imageTitle" class="form-label">Image Title
-                                                    (optional)</label>
-                                                <input type="text" class="form-control" id="imageTitle"
-                                                    placeholder="e.g., Wedding Event 2024">
-                                            </div>
-                                            <div class="col-12">
-                                                <button type="submit" class="btn btn-primary">
-                                                    <i class="bi bi-plus-lg me-2"></i>Add to Gallery
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                <div id="albumsList" class="row g-3 mb-4">
+                                    <!-- Albums will be loaded here -->
                                 </div>
+                                <hr>
+                                <h6>Create New Album</h6>
+                                <form id="createAlbumForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">Album Title</label>
+                                        <input type="text" class="form-control" id="albumTitle" required
+                                            placeholder="e.g., Wedding Events 2024">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Cover Image URL</label>
+                                        <input type="url" class="form-control" id="albumCoverUrl" required
+                                            placeholder="https://example.com/cover.jpg">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Create Album</button>
+                                </form>
+                            </div>
+                        </div>
 
-                                <!-- Current Gallery Images -->
-                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h6 class="mb-0"><i class="bi bi-collection me-2"></i>Current Gallery Images</h6>
-                                    <button type="button" id="resetGalleryBtn" class="btn btn-outline-secondary btn-sm">
-                                        <i class="bi bi-arrow-counterclockwise me-1"></i>Reset to Defaults
-                                    </button>
+                        <div class="card shadow mb-4">
+                            <div
+                                class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                                <h5 class="mb-0"><i class="bi bi-star me-2"></i>Recent Highlights (Flat Gallery)</h5>
+                                <span class="badge bg-light text-primary" id="recentImageCountBadge">0 images</span>
+                            </div>
+                            <div class="card-body">
+                                <h6>Add New Highlight</h6>
+                                <form id="addRecentHighlightForm" class="mb-4">
+                                    <div class="row g-2">
+                                        <div class="col-md-9">
+                                            <input type="url" class="form-control" id="recentImageUrl"
+                                                placeholder="Image URL" required>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="submit" class="btn btn-primary w-100">Add Image</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <div id="recentHighlightsList" class="row g-2">
+                                    <!-- Recent highlights will be loaded here -->
                                 </div>
-                                <div id="galleryList" class="row g-3">
-                                    <!-- Images will be loaded here -->
+                            </div>
+                        </div>
+
+                        <!-- Modal for Managing Album Images -->
+                        <div class="modal fade" id="manageAlbumModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="manageAlbumTitle">Manage Album Images</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="addImageToAlbumForm" class="mb-4">
+                                            <input type="hidden" id="currentAlbumId">
+                                            <div class="input-group">
+                                                <input type="url" class="form-control" id="newAlbumImageUrl"
+                                                    placeholder="Image URL" required>
+                                                <button class="btn btn-primary" type="submit">Add Image</button>
+                                            </div>
+                                        </form>
+                                        <div id="albumImagesList" class="row g-2">
+                                            <!-- List of images in current album -->
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

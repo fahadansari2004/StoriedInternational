@@ -49,24 +49,69 @@
     }
 
     async function renderGallery() {
-        const container = document.getElementById('gallery-container');
-        if (!container) return;
+        const albumsContainer = document.getElementById('gallery-container');
+        const recentContainer = document.getElementById('recent-gallery-container');
 
-        const images = await getGalleryImages();
-        container.innerHTML = images.map((img, index) => `
-            <div class="col-md-4">
-                <div class="gallery-item position-relative overflow-hidden rounded shadow-sm">
-                    <img src="${img.url}" alt="${sanitize(img.title || 'Event ' + (index + 1))}" class="img-fluid w-100" loading="lazy"
-                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22400%22%3E%3Crect fill=%22%23f0f0f0%22 width=%22600%22 height=%22400%22/%3E%3Ctext fill=%22%23999%22 x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.3em%22 font-size=%2224%22%3EImage unavailable%3C/text%3E%3C/svg%3E'">
-                    <div class="gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
-                        <i class="bi bi-zoom-in text-white fs-1"></i>
+        const content = await window.EventProContent.getContent();
+
+        // Render Albums
+        if (albumsContainer) {
+            const albums = content.gallery?.albums || [];
+            albumsContainer.innerHTML = albums.map((album, index) => `
+                <div class="col-md-4 col-lg-3">
+                    <div class="gallery-item position-relative overflow-hidden rounded shadow-sm mb-4" onclick="openAlbum('${album.id}')">
+                        <img src="${album.coverUrl}" alt="${sanitize(album.title)}" class="img-fluid w-100" loading="lazy">
+                        <div class="gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center text-white p-3 text-center">
+                            <h5 class="mb-1">${sanitize(album.title)}</h5>
+                            <p class="small mb-0">${album.images?.length || 0} Photos</p>
+                            <i class="bi bi-zoom-in fs-2 mt-2"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
-        `).join('');
+            `).join('') || '<div class="col-12 text-center text-muted"><p>No gallery albums found.</p></div>';
+        }
+
+        // Render Recent Highlights (Flat Gallery)
+        if (recentContainer) {
+            const recent = content.gallery?.recent || [];
+            recentContainer.innerHTML = recent.map((img, index) => `
+                <div class="col-md-4 col-highlight">
+                    <div class="gallery-item position-relative overflow-hidden rounded shadow-sm" onclick="window.open('${img.url}', '_blank')">
+                        <img src="${img.url}" alt="${sanitize(img.title || 'Event')}" class="img-fluid w-100" loading="lazy">
+                        <div class="gallery-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center">
+                            <i class="bi bi-zoom-in text-white fs-2"></i>
+                        </div>
+                    </div>
+                </div>
+            `).join('') || '<div class="col-12 text-center text-muted"><p>No recent highlights found.</p></div>';
+        }
     }
 
-    // Expose for reactive updates
+    async function openAlbum(albumId) {
+        const content = await window.EventProContent.getContent();
+        const album = content.gallery.albums.find(a => a.id === albumId);
+        if (!album) return;
+
+        const row = document.getElementById('album-images-row');
+        const title = document.getElementById('albumModalLabel');
+        if (title) title.textContent = album.title;
+
+        if (row) {
+            row.innerHTML = (album.images || []).map(img => `
+                <div class="col-6 col-md-4 col-lg-3 mb-3">
+                    <div class="album-img-wrapper rounded overflow-hidden shadow-sm h-100" style="height: 200px;">
+                        <img src="${img.url}" class="img-fluid w-100 h-100" style="object-fit: cover; cursor: pointer;" onclick="window.open('${img.url}', '_blank')">
+                    </div>
+                </div>
+            `).join('') || '<div class="col-12 text-center py-5">No images in this album yet.</div>';
+        }
+
+        const modal = new bootstrap.Modal(document.getElementById('albumModal'));
+        modal.show();
+    }
+
+    // Expose for click handlers
+    window.openAlbum = openAlbum;
     window.renderGallery = renderGallery;
 
     if (document.readyState === 'loading') {

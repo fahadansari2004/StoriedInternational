@@ -107,14 +107,20 @@ body {
 .hero-section {
     position: relative;
     min-height: 100vh;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    background-image: url('https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=1920&h=1080&fit=crop');
+    padding-top: 0;
+    overflow: hidden;
+}
+
+.hero-slide-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
-    display: flex;
-    align-items: center;
-    padding-top: 72px;
+    z-index: 0;
 }
 
 .hero-overlay {
@@ -123,8 +129,22 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6);
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7));
     z-index: 1;
+}
+
+.hero-container {
+    position: relative;
+    z-index: 2;
+}
+
+#heroCarousel {
+    height: 100vh;
+}
+
+#heroCarousel .carousel-inner,
+#heroCarousel .carousel-item {
+    height: 100vh;
 }
 
 .hero-section .container {
@@ -132,22 +152,54 @@ body {
     z-index: 2;
 }
 
+/* Dense 4x4 Gallery for Mobile - ONLY for Highlights */
+@media (max-width: 576px) {
+    #recent-gallery-container {
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 2px !important;
+        padding: 0 2px;
+    }
+
+    #recent-gallery-container .col-highlight {
+        width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+
+    #recent-gallery-container .gallery-item {
+        height: 80px !important;
+        border-radius: 2px !important;
+    }
+
+    #gallery-container .gallery-item {
+        height: 180px !important;
+    }
+}
+
 .scroll-indicator {
     position: absolute;
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 2;
+    z-index: 10;
     animation: bounce 2s infinite;
 }
 
 @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
         transform: translateX(-50%) translateY(0);
     }
+
     40% {
         transform: translateX(-50%) translateY(-10px);
     }
+
     60% {
         transform: translateX(-50%) translateY(-5px);
     }
@@ -301,13 +353,14 @@ a[href^="mailto:"]:hover {
 
 /* Make phone and email buttons more prominent on mobile */
 @media (max-width: 768px) {
+
     a[href^="tel:"],
     a[href^="mailto:"] {
         display: inline-block;
         padding: 5px 10px;
         border-radius: 5px;
     }
-    
+
     a[href^="tel:"]:active,
     a[href^="mailto:"]:active {
         background-color: rgba(13, 110, 253, 0.1);
@@ -320,6 +373,7 @@ a[href^="mailto:"]:hover {
         opacity: 0;
         transform: translateY(30px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -341,6 +395,7 @@ section {
         height: 46px;
         max-width: 220px;
     }
+
     .footer-logo {
         height: 68px;
         max-width: 280px;
@@ -353,19 +408,19 @@ section {
         height: 50px;
         max-width: 250px;
     }
-    
+
     .display-2 {
         font-size: 2.5rem;
     }
-    
+
     .display-5 {
         font-size: 2rem;
     }
-    
+
     .hero-section {
         background-attachment: scroll;
     }
-    
+
     section {
         padding: 60px 0;
     }
@@ -413,6 +468,7 @@ a[href^="mailto:"]:hover {
 
 /* Mobile-specific enhancements for tel and mailto links */
 @media (max-width: 768px) {
+
     a[href^="tel:"],
     a[href^="mailto:"] {
         -webkit-tap-highlight-color: rgba(13, 110, 253, 0.3);
@@ -421,7 +477,10 @@ a[href^="mailto:"]:hover {
 }
 
 /* Smooth Transitions */
-a, button, .card, .btn {
+a,
+button,
+.card,
+.btn {
     transition: all 0.3s ease;
 }
 
@@ -455,6 +514,7 @@ a, button, .card, .btn {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -491,6 +551,7 @@ a, button, .card, .btn {
         opacity: 0;
         transform: translateY(10px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -530,10 +591,14 @@ a, button, .card, .btn {
 }
 
 @keyframes typingDot {
-    0%, 60%, 100% {
+
+    0%,
+    60%,
+    100% {
         opacity: 0.3;
         transform: translateY(0);
     }
+
     30% {
         opacity: 1;
         transform: translateY(-5px);
@@ -568,7 +633,7 @@ a, button, .card, .btn {
         max-width: 350px;
         right: 1rem !important;
     }
-    
+
     #chatbot-toggle {
         width: 55px !important;
         height: 55px !important;
@@ -577,6 +642,7 @@ a, button, .card, .btn {
 
 /* Print Styles */
 @media print {
+
     .navbar,
     .scroll-indicator,
     #scrollToTop,
@@ -584,7 +650,7 @@ a, button, .card, .btn {
     footer {
         display: none;
     }
-    
+
     .hero-section {
         min-height: auto;
         padding: 2rem 0;
@@ -594,7 +660,8 @@ a, button, .card, .btn {
 /* WhatsApp Widget */
 .whatsapp-float {
     position: fixed;
-    bottom: 110px; /* Positioned above the chatbot toggle */
+    bottom: 110px;
+    /* Positioned above the chatbot toggle */
     right: 24px;
     width: 60px;
     height: 60px;
