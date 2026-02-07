@@ -3,12 +3,21 @@
  * Simulates typing and deleting text
  */
 
+// Global timer to prevent race conditions
+let typingTimer = null;
+
 document.addEventListener('DOMContentLoaded', () => {
     // Expose init function to window so content.js can call it
     window.initTypingEffect = function () {
         const dynamicElement = document.getElementById('dynamic-text');
 
         if (!dynamicElement) return;
+
+        // CRITICAL: Stop any existing loop before starting a new one
+        if (typingTimer) {
+            clearTimeout(typingTimer);
+            typingTimer = null;
+        }
 
         // Premium Phrases meant to follow "Partner with Storied International for "
         const phrases = [
@@ -29,13 +38,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentPhrase = phrases[phraseIndex];
 
             // Logic to determine text to show
-            // Note: charIndex is 1-based length basically
-
             if (isDeleting) {
-                // Deleting
                 charIndex--;
             } else {
-                // Typing
                 charIndex++;
             }
 
@@ -48,11 +53,11 @@ document.addEventListener('DOMContentLoaded', () => {
             let typeSpeed = 100;
 
             if (!isDeleting && charIndex === currentPhrase.length) {
-                // Finished typing phrase
+                // Finished typing phrase -> Wait before deleting
                 typeSpeed = 2000;
                 isDeleting = true;
             } else if (isDeleting && charIndex === 0) {
-                // Finished deleting phrase
+                // Finished deleting phrase -> Move to next
                 isDeleting = false;
                 phraseIndex = (phraseIndex + 1) % phrases.length;
                 typeSpeed = 500;
@@ -60,7 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 typeSpeed = 50;
             }
 
-            setTimeout(typeSafe, typeSpeed);
+            // Save the timer ID so we can clear it next time init is called
+            typingTimer = setTimeout(typeSafe, typeSpeed);
         }
 
         typeSafe();
