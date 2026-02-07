@@ -1,6 +1,7 @@
 /**
  * Album Details Page Logic
  * Loads album data based on ID in URL parameters
+ * Optimized with Skeleton Loading and Animations
  */
 
 (function () {
@@ -18,7 +19,7 @@
         return div.innerHTML;
     }
 
-    // Global lightbox functions (copied from gallery.js for consistency)
+    // Global lightbox functions
     window.openLightbox = function (url, caption = '') {
         const lightbox = document.getElementById('customLightbox');
         const img = document.getElementById('lightboxImg');
@@ -42,21 +43,27 @@
 
     async function loadAlbumDetails() {
         const albumId = getAlbumIdFromUrl();
+        const heroSection = document.getElementById('album-hero');
+        const titleEl = document.getElementById('album-title');
+        const subtitleEl = document.getElementById('album-subtitle');
+        const grid = document.getElementById('album-images-grid');
 
         if (!albumId) {
-            document.getElementById('album-title').textContent = 'Album Not Found';
-            document.getElementById('album-images-grid').innerHTML = '<div class="col-12 text-center text-danger">No album ID provided.</div>';
+            titleEl.textContent = 'Album Not Found';
+            titleEl.classList.remove('skeleton', 'skeleton-text');
+            grid.innerHTML = '<div class="col-12 text-center text-danger">No album ID provided.</div>';
             return;
         }
 
         try {
-            // Wait for content content to be ready if needed, or just call getContent
-            // getContent is async and in js/content.js
+            // Wait for content content to be ready
             let content;
+            // Short delay to show off the skeleton (optional, for UX feel of 'fetching')
+            // await new Promise(r => setTimeout(r, 500)); 
+
             if (window.EventProContent && window.EventProContent.getContent) {
                 content = await window.EventProContent.getContent();
             } else {
-                // Fallback attempt to read from local storage directly if global not ready
                 const stored = localStorage.getItem('eventpro_site_content');
                 if (stored) content = JSON.parse(stored);
             }
@@ -68,25 +75,57 @@
             const album = content.gallery.albums.find(a => a.id === albumId);
 
             if (!album) {
-                document.getElementById('album-title').textContent = 'Album Not Found';
-                document.getElementById('album-images-grid').innerHTML = '<div class="col-12 text-center text-danger">The requested album does not exist.</div>';
+                titleEl.textContent = 'Album Not Found';
+                titleEl.classList.remove('skeleton', 'skeleton-text');
+                subtitleEl.classList.remove('skeleton', 'skeleton-text');
+                heroSection.classList.remove('skeleton');
+                grid.innerHTML = '<div class="col-12 text-center text-danger">The requested album does not exist.</div>';
                 return;
             }
 
-            // Populate Hero
-            document.getElementById('album-hero').style.backgroundImage = `url('${album.coverUrl}')`;
-            document.getElementById('album-title').textContent = album.title || 'Untitled Album';
-            document.getElementById('album-subtitle').textContent = album.subtitle || '';
+            // --- Populate Data & Remove Skeletons ---
 
-            // Populate Description
-            document.getElementById('album-desc-title').textContent = album.descriptionTitle || album.title;
-            document.getElementById('album-desc-text').textContent = album.description || '';
+            // Hero
+            // Using a high-res image loader callback to remove skeleton only when image is ready
+            const bgImg = new Image();
+            bgImg.src = album.coverUrl;
+            bgImg.onload = () => {
+                heroSection.style.backgroundImage = `url('${album.coverUrl}')`;
+                heroSection.classList.remove('skeleton');
+                heroSection.classList.add('reveal-scale', 'active'); // Animate in
+            };
 
-            // Populate Gallery
-            const grid = document.getElementById('album-images-grid');
+            titleEl.textContent = album.title || 'Untitled Album';
+            titleEl.classList.remove('skeleton-text');
+            titleEl.classList.add('reveal-left', 'active');
+            titleEl.style.minWidth = '0'; // reset skeleton styles
+            titleEl.style.minHeight = '0';
+
+            subtitleEl.textContent = album.subtitle || '';
+            subtitleEl.classList.remove('skeleton-text');
+            subtitleEl.classList.add('reveal-right', 'active');
+            subtitleEl.style.minWidth = '0';
+            subtitleEl.style.minHeight = '0';
+
+            // Description
+            const descTitle = document.getElementById('album-desc-title');
+            const descText = document.getElementById('album-desc-text');
+            descTitle.textContent = album.descriptionTitle || album.title;
+            descText.textContent = album.description || '';
+
+            // Re-trigger reveal animations for description if they are in viewport
+            if (window.EventProContent?.setupScrollReveal) {
+                window.EventProContent.setupScrollReveal();
+            }
+
+            // Gallery Grid
             const images = album.images || [];
 
             if (images.length > 0) {
+                // Clear skeletons
+                grid.innerHTML = '';
+
+                // Add images with staggered animation class
                 grid.innerHTML = images.map((img, index) => `
                     <div class="col-sm-6 col-md-4 col-lg-3">
                         <div class="gallery-item ratio ratio-1x1 position-relative overflow-hidden rounded shadow-sm"
@@ -100,14 +139,18 @@
                         </div>
                     </div>
                 `).join('');
+
+                // Add stagger class to grid container
+                grid.classList.add('stagger-fade-in');
+
             } else {
                 grid.innerHTML = '<div class="col-12 text-center text-muted py-5">No images added to this album yet.</div>';
             }
 
         } catch (e) {
             console.error('Error loading album:', e);
-            document.getElementById('album-title').textContent = 'Error Loading Album';
-            document.getElementById('album-images-grid').innerHTML = `<div class="col-12 text-center text-danger">Failed to load album data: ${e.message}</div>`;
+            titleEl.textContent = 'Error Loading Album';
+            grid.innerHTML = `<div class="col-12 text-center text-danger">Failed to load album data: ${e.message}</div>`;
         }
     }
 

@@ -14,6 +14,7 @@
     <link href="css/style.css" rel="stylesheet">
     <link href="css/whatsapp-gallery.css" rel="stylesheet">
     <link href="css/lightbox.css" rel="stylesheet">
+    <link href="css/animations.css" rel="stylesheet">
     <style>
         .album-hero {
             height: 60vh;
@@ -24,7 +25,7 @@
         }
 
         .album-hero-overlay {
-            background: rgba(0, 0, 0, 0.5);
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.8));
             position: absolute;
             top: 0;
             left: 0;
@@ -37,15 +38,6 @@
             text-align: center;
             color: white;
             padding: 20px;
-        }
-
-        .gallery-item {
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-
-        .gallery-item:hover {
-            transform: scale(1.02);
         }
     </style>
 </head>
@@ -79,10 +71,12 @@
     </nav>
 
     <!-- Hero Section -->
-    <section id="album-hero" class="album-hero">
+    <section id="album-hero" class="album-hero parallax-bg skeleton">
         <div class="album-hero-overlay">
-            <h1 id="album-title" class="display-3 fw-bold mb-3">Loading Album...</h1>
-            <p id="album-subtitle" class="lead fs-4"></p>
+            <h1 id="album-title" class="display-3 fw-bold mb-3 skeleton-text"
+                style="min-width: 300px; min-height: 3rem;"></h1>
+            <p id="album-subtitle" class="lead fs-4 skeleton-text delay-1"
+                style="min-width: 200px; min-height: 1.5rem;"></p>
         </div>
     </section>
 
@@ -91,8 +85,8 @@
         <div class="container">
             <div class="row justify-content-center text-center">
                 <div class="col-lg-8">
-                    <h2 id="album-desc-title" class="display-6 fw-bold mb-4"></h2>
-                    <p id="album-desc-text" class="lead text-secondary" style="line-height: 1.8;"></p>
+                    <h2 id="album-desc-title" class="display-6 fw-bold mb-4 reveal-scale"></h2>
+                    <p id="album-desc-text" class="lead text-secondary reveal" style="line-height: 1.8;"></p>
                 </div>
             </div>
         </div>
@@ -101,13 +95,32 @@
     <!-- Gallery Grid -->
     <section class="py-5 bg-light">
         <div class="container">
-            <h3 class="text-center mb-5 fw-bold">Event Gallery</h3>
-            <div id="album-images-grid" class="row g-3">
-                <!-- Images will be loaded here -->
-                <div class="col-12 text-center">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading images...</span>
-                    </div>
+            <h3 class="text-center mb-5 fw-bold reveal">Event Gallery</h3>
+            <div id="album-images-grid" class="row g-3 stagger-fade-in">
+                <!-- Skeleton Loader for Grid -->
+                <div class="col-sm-6 col-md-4 col-lg-3 skeleton-item">
+                    <div class="ratio ratio-1x1 rounded skeleton"></div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3 skeleton-item">
+                    <div class="ratio ratio-1x1 rounded skeleton"></div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3 skeleton-item">
+                    <div class="ratio ratio-1x1 rounded skeleton"></div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3 skeleton-item">
+                    <div class="ratio ratio-1x1 rounded skeleton"></div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3 skeleton-item">
+                    <div class="ratio ratio-1x1 rounded skeleton"></div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3 skeleton-item">
+                    <div class="ratio ratio-1x1 rounded skeleton"></div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3 skeleton-item">
+                    <div class="ratio ratio-1x1 rounded skeleton"></div>
+                </div>
+                <div class="col-sm-6 col-md-4 col-lg-3 skeleton-item">
+                    <div class="ratio ratio-1x1 rounded skeleton"></div>
                 </div>
             </div>
         </div>

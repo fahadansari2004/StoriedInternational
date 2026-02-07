@@ -370,5 +370,5 @@
         init();
     }
 
-    window.EventProContent = { getContent, renderContent };
+    window.EventProContent = { getContent, renderContent, setupScrollReveal };
 })();
