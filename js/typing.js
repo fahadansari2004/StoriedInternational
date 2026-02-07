@@ -23,30 +23,37 @@ document.addEventListener('DOMContentLoaded', () => {
         let charIndex = 0;
         let isDeleting = false;
 
-        // This time, we do NOT overwrite innerHTML of titleElement.
-        // We solely manipulate dynamicElement.textContent
-
         // Safety cleanup if re-initialized
         dynamicElement.textContent = "";
 
-        // Re-declare internal run function to close over new vars
         function typeSafe() {
             const currentPhrase = phrases[phraseIndex];
 
+            // Logic to determine text to show
+            // Note: charIndex is 1-based length basically
+
             if (isDeleting) {
-                dynamicElement.textContent = currentPhrase.substring(0, charIndex - 1);
+                // Deleting
                 charIndex--;
             } else {
-                dynamicElement.textContent = currentPhrase.substring(0, charIndex + 1);
+                // Typing
                 charIndex++;
             }
+
+            // Clamp
+            if (charIndex < 0) charIndex = 0;
+            if (charIndex > currentPhrase.length) charIndex = currentPhrase.length;
+
+            dynamicElement.textContent = currentPhrase.substring(0, charIndex);
 
             let typeSpeed = 100;
 
             if (!isDeleting && charIndex === currentPhrase.length) {
+                // Finished typing phrase
                 typeSpeed = 2000;
                 isDeleting = true;
             } else if (isDeleting && charIndex === 0) {
+                // Finished deleting phrase
                 isDeleting = false;
                 phraseIndex = (phraseIndex + 1) % phrases.length;
                 typeSpeed = 500;
