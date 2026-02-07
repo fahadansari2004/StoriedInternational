@@ -60,10 +60,10 @@
 
             if (albums.length > 0) {
                 albumsCarousel.innerHTML = albums.map((album, index) => `
-                    <div class="album-card flex-shrink-0" style="width: 300px; scroll-snap-align: start;">
-                        <div class="featured-album-cover w-100 shadow-sm rounded overflow-hidden position-relative h-100 reveal-scale active" 
+                    <div class="album-card flex-shrink-0 position-relative" style="width: 800px; max-width: 90vw; scroll-snap-align: center;">
+                        <div class="featured-album-cover w-100 shadow-lg rounded-3 overflow-hidden position-relative h-100 reveal-scale active" 
                              onclick="window.location.href='album-details.html?id=${album.id}'" 
-                             style="cursor: pointer; height: 400px; transition-delay: ${index * 0.05}s">
+                             style="cursor: pointer; height: 500px; transition-delay: ${index * 0.05}s; border: 1px solid rgba(255,255,255,0.1);">
                              
                             <img src="${album.coverUrl}" alt="${sanitize(album.title)}" loading="lazy" class="w-100 h-100 object-fit-cover">
                             <div class="featured-album-overlay">
