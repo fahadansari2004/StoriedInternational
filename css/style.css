@@ -526,6 +526,23 @@ footer a {
         font-size: 1.5rem;
     }
 
+    /* Stats Mobile Grid */
+    .stats-card {
+        min-height: 140px;
+        /* Reduced height */
+        padding: 1rem !important;
+    }
+
+    .stats-card h3 {
+        font-size: 2rem;
+        /* Smaller numbers */
+    }
+
+    .stats-card small {
+        font-size: 0.7rem;
+        letter-spacing: 1px;
+    }
+
     .hero-section {
         min-height: 600px;
         /* Ensure full height on mobile too */
