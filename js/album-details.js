@@ -129,7 +129,7 @@
                 grid.innerHTML = images.map((img, index) => `
                     <div class="col-sm-6 col-md-4 col-lg-3">
                         <div class="gallery-item ratio ratio-1x1 position-relative overflow-hidden rounded shadow-sm"
-                             onclick="window.openLightbox('${img.url}', '${sanitize(img.title || album.title)}')">
+                             onclick="window.openLightbox('${img.url}', '')">
                             <img src="${img.url}" class="w-100 h-100 object-fit-cover" 
                                  loading="${index < 8 ? 'eager' : 'lazy'}" 
                                  alt="${sanitize(img.title || 'Gallery Image')}">

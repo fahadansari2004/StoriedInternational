@@ -94,7 +94,7 @@
             const recent = content.gallery?.recent || [];
             recentContainer.innerHTML = recent.map((img, index) => `
                 <div class="col-md-4 col-sm-6 col-highlight">
-                    <div class="gallery-item-alt position-relative overflow-hidden rounded shadow-sm mb-4" onclick="window.openLightbox('${img.url}', '${sanitize(img.title || 'Event Highlight')}')" style="cursor: pointer;">
+                    <div class="gallery-item-alt position-relative overflow-hidden rounded shadow-sm mb-4" onclick="window.openLightbox('${img.url}', '')" style="cursor: pointer;">
                         <img src="${img.url}" alt="${sanitize(img.title || 'Event Highlight')}" class="img-fluid w-100" loading="lazy" style="height: 250px; object-fit: cover;">
                         <div class="gallery-overlay-alt position-absolute top-0 start-0 w-100 h-100 d-flex flex-column align-items-center justify-content-center text-white">
                             <div class="overlay-content text-center p-3">
