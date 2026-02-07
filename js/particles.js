@@ -5,7 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.createElement('canvas');
-    const heroSection = document.getElementById('home');
+    const heroSection = document.getElementById('home') || document.getElementById('album-hero');
 
     if (!heroSection) return;
 

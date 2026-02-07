@@ -181,7 +181,11 @@
             // Render static text from first slide
             const firstSlide = content.hero.slides[0];
             if (heroTagline) heroTagline.textContent = firstSlide.tagline || '';
-            if (heroTitle) heroTitle.textContent = firstSlide.title || '';
+            if (heroTitle) {
+                heroTitle.textContent = firstSlide.title || '';
+                // Re-init typing effect dynamically
+                if (window.initTypingEffect) window.initTypingEffect();
+            }
             if (heroSubtitle) heroSubtitle.textContent = firstSlide.subtitle || '';
         }
 

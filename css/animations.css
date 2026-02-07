@@ -416,3 +416,26 @@ html {
 .btn-premium:hover::after {
     opacity: 1;
 }
+
+/* ===== MOBILE OPTIMIZATIONS ===== */
+
+@media (max-width: 768px) {
+
+    .gallery-item:hover,
+    .gallery-item-alt:hover {
+        transform: none;
+        /* Disable scale on mobile to prevent stuck hover states */
+    }
+
+    .card:hover {
+        transform: none;
+    }
+
+    /* Touch Ripple Effect */
+    .btn:active,
+    .gallery-item:active,
+    .card:active {
+        transform: scale(0.98);
+        transition: transform 0.1s;
+    }
+}
