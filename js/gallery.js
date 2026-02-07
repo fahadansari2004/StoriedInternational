@@ -140,14 +140,25 @@
         const container = document.getElementById('recent-gallery-container');
         const btn = document.getElementById('viewMoreGalleryBtn');
 
-        if (container) {
-            container.classList.toggle('show-all');
-            if (container.classList.contains('show-all')) {
-                btn.textContent = 'Show Less';
-            } else {
+        if (container && btn) {
+            const isExpanded = container.classList.contains('show-all');
+
+            if (isExpanded) {
+                // Collapse: Show Less
+                container.classList.remove('show-all');
                 btn.textContent = 'View More Images';
-                // Scroll back to gallery section
-                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                // Scroll to gallery section smoothly
+                setTimeout(() => {
+                    const gallerySection = document.getElementById('gallery');
+                    if (gallerySection) {
+                        gallerySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 100);
+            } else {
+                // Expand: Show All
+                container.classList.add('show-all');
+                btn.textContent = 'Show Less';
             }
         }
     };
