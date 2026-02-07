@@ -1,116 +1,182 @@
-/* ===== FEATURED ALBUM STYLES ===== */
+/* Momenza-Inspired Album Modal Styles */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap');
 
-/* Featured Album Wrapper */
-.featured-album-wrapper {
+#albumModal .modal-content {
+    background-color: #fff;
+    border: none;
+}
+
+/* Close Button */
+#albumModal .btn-close-white {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+#albumModal .btn-close-white:hover {
+    transform: rotate(90deg);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Hero Section */
+#albumHero {
     position: relative;
-    cursor: pointer;
-    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    transition: all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.featured-album-wrapper:hover {
-    transform: translateY(-20px) scale(1.03);
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4),
-        0 0 50px rgba(255, 193, 7, 0.5);
+#albumModalLabel {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 
+#albumSubtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    margin-top: 10px;
+}
+
+/* Description Section */
+#albumDescriptionTitle {
+    font-family: 'Playfair Display', serif;
+    color: #1a1a1a;
+    position: relative;
+    padding-bottom: 25px;
+    margin-bottom: 25px;
+}
+
+#albumDescriptionTitle::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background-color: #d4af37;
+    /* Gold accent */
+}
+
+#albumDescriptionText {
+    font-family: 'Lato', sans-serif;
+    color: #555;
+    font-weight: 300;
+    font-size: 1.15rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Gallery Grid */
+.gallery-item-hover {
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    cursor: pointer;
+}
+
+.gallery-item-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15) !important;
+    z-index: 2;
+}
+
+.gallery-item-hover img {
+    transition: transform 0.6s ease;
+}
+
+.gallery-item-hover:hover img {
+    transform: scale(1.05);
+}
+
+/* Featured Album Card (Main Page) */
 .featured-album-cover {
     position: relative;
     height: 500px;
+    border-radius: 8px;
     overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 
 .featured-album-cover img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: transform 0.8s ease;
 }
 
-.featured-album-wrapper:hover .featured-album-cover img {
-    transform: scale(1.1) rotate(2deg);
+.featured-album-cover:hover img {
+    transform: scale(1.05);
 }
 
 .featured-album-overlay {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background: linear-gradient(to bottom,
-            rgba(0, 0, 0, 0.2) 0%,
-            rgba(0, 0, 0, 0.6) 70%,
-            rgba(0, 0, 0, 0.9) 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
     padding: 40px;
-    transition: background 0.4s ease;
-}
-
-.featured-album-wrapper:hover .featured-album-overlay {
-    background: linear-gradient(to bottom,
-            rgba(255, 193, 7, 0.3) 0%,
-            rgba(255, 152, 0, 0.7) 70%,
-            rgba(255, 87, 34, 0.9) 100%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.4) 60%, transparent);
+    color: white;
+    text-align: center;
+    transition: all 0.4s ease;
 }
 
 .featured-album-title {
-    font-size: 3rem;
-    font-weight: 700;
-    color: white;
-    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    margin-bottom: 15px;
-    transform: translateY(20px);
-    opacity: 0;
-    animation: slideUpFade 0.8s ease-out 0.2s forwards;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
 .featured-album-subtitle {
-    font-size: 1.3rem;
-    color: rgba(255, 255, 255, 0.9);
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-    margin-bottom: 20px;
-    transform: translateY(20px);
-    opacity: 0;
-    animation: slideUpFade 0.8s ease-out 0.4s forwards;
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    opacity: 0.9;
 }
 
 .featured-album-cta {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 15px 35px;
-    background: rgba(255, 193, 7, 0.9);
-    color: #000;
-    border-radius: 50px;
+    padding: 12px 35px;
+    background: rgba(212, 175, 55, 0.9);
+    /* Gold */
+    color: #fff;
+    border-radius: 30px;
     font-weight: 600;
-    text-transform: uppercase;
     letter-spacing: 1px;
-    transform: translateY(20px);
-    opacity: 0;
-    animation: slideUpFade 0.8s ease-out 0.6s forwards;
+    text-transform: uppercase;
+    font-size: 0.85rem;
     transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
 }
 
-.featured-album-wrapper:hover .featured-album-cta {
-    background: #ffc107;
-    transform: translateY(0) scale(1.1);
-    box-shadow: 0 10px 30px rgba(255, 193, 7, 0.5);
-}
-
-@keyframes slideUpFade {
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+.featured-album-cta:hover {
+    background: rgba(212, 175, 55, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
 }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
+    #albumModalLabel {
+        font-size: 2rem;
+    }
+
+    #albumSubtitle {
+        font-size: 1rem;
+    }
+
+    #albumDescriptionTitle {
+        font-size: 1.8rem;
+    }
+
+    #albumDescriptionText {
+        font-size: 1rem;
+    }
+
     .featured-album-cover {
         height: 400px;
     }

@@ -131,18 +131,28 @@
             if (galleryRow) {
                 const images = album.images || [];
                 if (images.length > 0) {
-                    galleryRow.innerHTML = images.map(img => `
-                        <div class="col-sm-6 col-md-4 col-lg-3">
+                    // Optimized rendering with fragment
+                    const fragment = document.createDocumentFragment();
+
+                    images.forEach((img, index) => {
+                        const col = document.createElement('div');
+                        col.className = 'col-sm-6 col-md-4 col-lg-3';
+                        col.innerHTML = `
                             <div class="ratio ratio-1x1 position-relative overflow-hidden rounded shadow-sm gallery-item-hover" 
-                                 onclick="window.openLightbox('${img.url}', '${sanitize(img.title || album.title)}')"
-                                 style="cursor: pointer;">
-                                <img src="${img.url}" class="w-100 h-100 object-fit-cover" loading="lazy" alt="Gallery Image">
+                                 onclick="window.openLightbox('${img.url}', '${sanitize(img.title || album.title)}')">
+                                <img src="${img.url}" class="w-100 h-100 object-fit-cover" 
+                                     loading="${index < 8 ? 'eager' : 'lazy'}" 
+                                     alt="${sanitize(img.title || 'Gallery Image')}">
                                 <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-dark bg-opacity-25 opacity-0 hover-opacity-100 transition-opacity">
-                                    <i class="bi bi-zoom-in text-white fs-2"></i>
+                                    <i class="bi bi-zoom-in text-white fs-2 text-shadow-sm"></i>
                                 </div>
                             </div>
-                        </div>
-                    `).join('');
+                        `;
+                        fragment.appendChild(col);
+                    });
+
+                    galleryRow.innerHTML = '';
+                    galleryRow.appendChild(fragment);
                 } else {
                     galleryRow.innerHTML = '<div class="col-12 text-center text-muted py-5">No images added to this album yet.</div>';
                 }
