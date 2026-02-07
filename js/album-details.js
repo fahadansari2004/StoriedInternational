@@ -69,10 +69,8 @@
             }
 
             if (!content || !content.gallery || !content.gallery.albums) {
-                console.error('Debug: No gallery content found', content);
                 throw new Error('No gallery content found.');
             }
-            console.log('Debug: Content loaded', content);
 
             const album = content.gallery.albums.find(a => a.id === albumId);
 
@@ -122,7 +120,6 @@
 
             // Gallery Grid
             const images = album.images || [];
-            console.log('Debug: Album images found', images.length, images);
 
             if (images.length > 0) {
                 // Clear skeletons
