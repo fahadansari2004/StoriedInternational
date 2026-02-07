@@ -502,50 +502,53 @@ footer a {
 /* Mobile Optimizations for Hero Overlap */
 @media (max-width: 991px) {
     .fixed-overlay {
-        padding-top: 130px;
-        /* Moved up slightly from 160px */
-        /* Push content down below navbar */
+        padding-top: 100px;
+        /* Moved up closer to logo */
         align-items: flex-start !important;
-        /* Start from top + padding, don't center vertically */
+        /* Start from top + padding */
     }
 
     #hero-title.display-3 {
-        font-size: 2.5rem;
-        /* Still large, but fit mobile */
+        font-size: 1.8rem;
+        /* Smaller to prevent 4-line wrapping */
+        line-height: 1.3;
     }
 
     h2.display-2 {
-        font-size: 2.2rem;
+        font-size: 2rem;
+        /* Keep animated text prominent but fitting */
     }
 
     #hero-stats .glass-effect {
-        padding: 0.5rem !important;
-    }
 
-    #hero-stats h3 {
-        font-size: 1.5rem;
-    }
+        #hero-stats .glass-effect {
+            padding: 0.5rem !important;
+        }
 
-    /* Stats Mobile Grid */
-    .stats-card {
-        min-height: 140px;
-        /* Reduced height */
-        padding: 1rem !important;
-    }
+        #hero-stats h3 {
+            font-size: 1.5rem;
+        }
 
-    .stats-card h3 {
-        font-size: 2rem;
-        /* Smaller numbers */
-    }
+        /* Stats Mobile Grid */
+        .stats-card {
+            min-height: 140px;
+            /* Reduced height */
+            padding: 1rem !important;
+        }
 
-    .stats-card small {
-        font-size: 0.7rem;
-        letter-spacing: 1px;
-    }
+        .stats-card h3 {
+            font-size: 2rem;
+            /* Smaller numbers */
+        }
 
-    .hero-section {
-        min-height: 600px;
-        /* Ensure full height on mobile too */
-        height: 100vh;
+        .stats-card small {
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+        }
+
+        .hero-section {
+            min-height: 600px;
+            /* Ensure full height on mobile too */
+            height: 100vh;
+        }
     }
-}
