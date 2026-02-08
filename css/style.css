@@ -285,6 +285,21 @@ section {
     border-color: #ffc107;
 }
 
+/* Text Color Effects on Hover */
+.service-card:hover .card-title,
+.feature-box:hover h3,
+.stats-card:hover h3 {
+    color: #ffc107 !important;
+    /* Turn Gold */
+    transition: color 0.3s ease;
+}
+
+.card-title,
+.feature-box h3,
+.stats-card h3 {
+    transition: color 0.3s ease;
+}
+
 /* Image Zoom on Box Hover */
 .service-card:hover img,
 .card:hover img {
@@ -618,8 +633,13 @@ footer a {
         opacity: 0;
         animation: cinematicSlideUp 1.2s ease-out forwards;
         animation-delay: 0.2s;
-        /* Text Glow */
-        text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        /* Text Glow & Gradient */
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.4);
+        background: linear-gradient(90deg, #ffffff, #ffe082, #ffffff);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        animation: gradientText 3s linear infinite, cinematicSlideUp 1.2s ease-out forwards;
     }
 
     /* Primary Button Shimmer */
