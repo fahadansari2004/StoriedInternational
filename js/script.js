@@ -406,21 +406,32 @@
      */
     function initAnimations() {
         const observerOptions = {
-            threshold: 0.1,
+            threshold: 0.15,
             rootMargin: '0px 0px -50px 0px'
         };
 
         const observer = new IntersectionObserver(function (entries) {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in-up');
+                    entry.target.classList.add('reveal', 'active');
+                    // Add subtle tilt on scroll for mobile resonance
+                    if (entry.target.classList.contains('card') || entry.target.classList.contains('service-card')) {
+                        entry.target.style.transition = 'all 0.6s cubic-bezier(0.2, 0.8, 0.2, 1)';
+                    }
                     observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
 
-        // Observe cards and sections
-        document.querySelectorAll('.card, section > .container > h2, section > .container > p').forEach(el => {
+        // Observe ALL key elements for high-end feel
+        const targets = document.querySelectorAll(`
+            .card, .service-card, .stats-card, .gallery-item, .contact-info-card,
+            section h2, section h3, section h5, section h6, section p.lead,
+            .btn:not(.navbar-toggler), img:not(.navbar-brand img)
+        `);
+
+        targets.forEach((el, index) => {
+            el.classList.add('reveal'); // Set initial hidden state
             observer.observe(el);
         });
     }

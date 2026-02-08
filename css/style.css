@@ -244,13 +244,52 @@ section {
     color: var(--warning-color);
 }
 
-/* Gallery */
+/* Gallery High Effects */
 .gallery-item {
     position: relative;
     overflow: hidden;
     border-radius: 10px;
     cursor: pointer;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Subtle border */
+}
+
+.gallery-item:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2), 0 0 15px rgba(255, 193, 7, 0.3);
+    /* Gold Glow */
+    z-index: 5;
+}
+
+/* Feature/Service Card High Effects */
+.service-card,
+.feature-box,
+.stats-card,
+.card {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    background: #fff;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Hover - Lift & Subtle Gradient Border */
+.service-card:hover,
+.feature-box:hover,
+.stats-card:hover,
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    border-color: #ffc107;
+}
+
+/* Image Zoom on Box Hover */
+.service-card:hover img,
+.card:hover img {
+    transform: scale(1.05);
+    transition: transform 0.6s ease;
 }
 
 .gallery-overlay {
@@ -606,9 +645,10 @@ footer a {
         letter-spacing: 2px;
         padding: 12px 25px;
         border-radius: 0;
-        box-shadow: 0 0 15px rgba(0,0,0,0.1) !important;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1) !important;
         width: auto !important;
-        backdrop-filter: blur(5px); /* Glass effect */
+        backdrop-filter: blur(5px);
+        /* Glass effect */
     }
 
     h2.display-2 {
