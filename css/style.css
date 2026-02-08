@@ -575,6 +575,40 @@ footer a {
         letter-spacing: 1px;
         text-transform: uppercase;
         margin-bottom: 1rem;
+        /* Cinematic Animation */
+        opacity: 0;
+        animation: cinematicSlideUp 1.2s ease-out forwards;
+        animation-delay: 0.2s;
+        /* Text Glow */
+        text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Primary Button Shimmer */
+    .hero-content-fade-in .btn:first-child {
+        background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.2) 50%, transparent 100%);
+        background-size: 200% 100%;
+        animation: buttonShimmer 3s infinite linear;
+        border-color: #fff !important;
+    }
+
+    /* Secondary Button Color Pulse */
+    .hero-content-fade-in .btn:last-child {
+        animation: float 6s ease-in-out infinite;
+    }
+
+    /* Mobile Buttons - Momenza Style */
+    .hero-content-fade-in .btn {
+        background: transparent !important;
+        border: 1px solid rgba(255, 255, 255, 0.6) !important;
+        color: #fff !important;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+        padding: 12px 25px;
+        border-radius: 0;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1) !important;
+        width: auto !important;
+        backdrop-filter: blur(5px); /* Glass effect */
     }
 
     h2.display-2 {

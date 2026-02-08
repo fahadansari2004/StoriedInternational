@@ -47,6 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
             this.alpha = Math.random() * 0.5 + 0.1;
             this.fadeSpeed = Math.random() * 0.005 + 0.002;
             this.fadingOut = Math.random() > 0.5;
+            // Random High-End Colors: Gold, White, or faint Orange
+            const colors = ['255, 193, 7', '255, 255, 255', '255, 152, 0'];
+            this.color = colors[Math.floor(Math.random() * colors.length)];
         }
 
         update() {
@@ -74,15 +77,15 @@ document.addEventListener('DOMContentLoaded', () => {
         draw() {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(255, 223, 100, ${this.alpha})`; // Goldish color
+            ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
             ctx.shadowBlur = 10;
-            ctx.shadowColor = 'rgba(255, 223, 100, 0.5)';
+            ctx.shadowColor = `rgba(${this.color}, 0.5)`;
             ctx.fill();
         }
     }
 
     // Init Particles
-    const particleCount = 50;
+    const particleCount = 80; // Increased for richer effect
     for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());
     }

@@ -4,7 +4,8 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('.service-card, .album-card, .gallery-item, .contact-info-card');
+    // Target cards AND buttons for premium feel
+    const cards = document.querySelectorAll('.service-card, .album-card, .gallery-item, .contact-info-card, .btn-lg, .btn-premium');
 
     cards.forEach(card => {
         card.addEventListener('mousemove', handleHover);
