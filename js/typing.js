@@ -19,12 +19,12 @@ document.addEventListener('DOMContentLoaded', () => {
             typingTimer = null;
         }
 
-        // Premium Phrases meant to follow "Partner with Storied International for "
+        // Premium Phrases meant to follow "FOR ..."
         const phrases = [
-            "Your Dream Events",
-            "Unforgettable Memories",
-            "Perfect Celebrations",
-            "Corporate Excellence"
+            "YOUR DREAM WEDDING",
+            "CORPORATE EXCELLENCE",
+            "UNFORGETTABLE MEMORIES",
+            "PERFECT CELEBRATIONS"
         ];
 
         let phraseIndex = 0;
