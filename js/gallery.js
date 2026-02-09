@@ -59,6 +59,13 @@
             const albums = content.gallery?.albums || [];
 
             if (albums.length > 0) {
+                // Center if single album, standard scroll if multiple
+                if (albums.length === 1) {
+                    albumsCarousel.classList.add('justify-content-center');
+                } else {
+                    albumsCarousel.classList.remove('justify-content-center');
+                }
+
                 albumsCarousel.innerHTML = albums.map((album, index) => `
                     <div class="album-card flex-shrink-0 position-relative" style="width: 800px; height: 500px; max-width: 90vw; scroll-snap-align: center;">
                         <div class="featured-album-cover w-100 shadow-lg rounded-3 overflow-hidden position-relative h-100 reveal-scale active" 
